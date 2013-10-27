@@ -1,0 +1,7 @@
+== TODO ==
+
+- File extension check
+- Number of files allowed check
+- Upload at checkout page
+- Link to uploaded file on the View Order Details screen (for admins)
+- Link to uploaded file on the [purchase_history] short code (for buyers)
