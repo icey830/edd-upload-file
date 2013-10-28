@@ -9,7 +9,7 @@ function edd_fu_settings( $settings ) {
 			'type' 	=> 'header'
 		),
 		array(
-			'id'    => 'fu_file_location',
+			'id'    => 'fu_upload_location',
 			'name'  => __( 'File Upload Location', 'edd-fu' ),
 			'desc'  => '',
 			'type'  => 'select',
