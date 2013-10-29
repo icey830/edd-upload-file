@@ -39,7 +39,7 @@ class EDD_File_Upload {
 
 	private function includes() {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/settings.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/file-upload-form.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/hooks.php';
 
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/install.php';
 	}
@@ -268,6 +268,38 @@ class EDD_File_Upload {
 
 				// delete file
 				unlink( EDD_File_Upload::instance()->get_file_dir() . '/' . $_GET[ 'delete-file' ] );
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Function to attach temp files (attached in checkout screen) to payment (on payment complete)
+	 *
+	 * @param $payment_id
+	 */
+	public function attach_temp_files_to_payment( $payment_id ) {
+		$temp_files = $this->get_session_files();
+
+		if( is_array( $temp_files ) && count( $temp_files ) > 0 ) {
+
+			foreach( $temp_files as $temp_file ) {
+
+				// Copy file from temp to upload dir
+				if( copy( get_temp_dir() . $temp_file, EDD_File_Upload::instance()->get_file_dir() . '/' . $temp_file ) ) {
+
+					// Attach uploaded file to post
+					add_post_meta( $payment_id, 'edd_fu_file', $temp_file );
+
+					// Remove file from temp
+					unlink( get_temp_dir() . $temp_file );
+
+					// Remove file from session
+					$this->delete_file_from_session( $temp_file );
+
+				}
 
 			}
 

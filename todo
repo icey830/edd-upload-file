@@ -3,6 +3,6 @@
 - File extension check
 - Number of files allowed check
 - Link to uploaded file on the View Order Details screen (for admins)
-- Link to uploaded file on the [purchase_history] short code (for buyers)
 - Strange CSS bug when one or more files have been uploaded in the receipt page
-- Move uploaded temp files from session to payment on succesfull payment
+- Add EDD plugin updater class
+- Add security to GET variables in combination with file system functions (ie unlink)

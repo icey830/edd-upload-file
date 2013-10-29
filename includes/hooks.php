@@ -1,5 +1,12 @@
 <?php
 
+function edd_fu_confirmation_print_uploaded_files( $payment, $edd_receipt_args ) {
+
+	// Print uploaded files
+	EDD_File_Upload::instance()->print_uploaded_files( $payment->ID );
+
+}
+
 function edd_fu_confirmation_upload_field( $payment, $edd_receipt_args ) {
 
 	// Handle the upload
@@ -7,9 +14,6 @@ function edd_fu_confirmation_upload_field( $payment, $edd_receipt_args ) {
 
 	// Handle the delete
 	EDD_File_Upload::instance()->handle_file_delete( $payment );
-
-	// Print uploaded files
-	EDD_File_Upload::instance()->print_uploaded_files( $payment->ID );
 
 	?>
 		<h3><?php _e( 'Upload new file', 'edd-fu' ); ?></h3>
@@ -51,11 +55,20 @@ function edd_fu_checkout_upload_field() {
 <?php
 }
 
+function edd_fu_attach_temp_files_to_payment( $payment_id ) {
+
+}
 
 $edd_fu_options = EDD_File_Upload::instance()->get_options();
 
-if( $edd_fu_options[ 'fu_upload_location' ] == 'receipt' )
+if( $edd_fu_options[ 'fu_upload_location' ] == 'receipt' ) {
 	add_action( 'edd_payment_receipt_after', 'edd_fu_confirmation_upload_field', 10, 2 );
+}
 
-if( $edd_fu_options[ 'fu_upload_location' ] == 'checkout' )
+if( $edd_fu_options[ 'fu_upload_location' ] == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_fu_checkout_upload_field', 10 );
+	add_action( 'edd_complete_purchase', array( EDD_File_Upload(), 'attach_temp_files_to_payment' ) );
+}
+
+// Print uploaded files at receipt page
+add_action( 'edd_payment_receipt_after', 'edd_fu_confirmation_print_uploaded_files', 9, 2 );
