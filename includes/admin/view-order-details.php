@@ -23,7 +23,7 @@ function edd_fu_view_uploaded_files( $payment_id ) {
 							</td>
 							<td class="price column-price">
 							<?php
-								echo '<a href="' . EDD_File_Upload::instance()->get_file_url() . '/' . $uploaded_file . '" target="_blank">' . __( 'View', 'edd-fu' ) . '</a>';
+								echo '<a href="' . EDD_FU_File_Manager::instance()->get_file_url() . '/' . $uploaded_file . '" target="_blank">' . __( 'View', 'edd-fu' ) . '</a>';
 							?>
 							</td>
 						</tr>
@@ -36,8 +36,8 @@ function edd_fu_view_uploaded_files( $payment_id ) {
 				?>
 				</tbody>
 			</table>
-		</div><!-- /.inside -->
-	</div><!-- /#edd-purchased-files -->
+		</div>
+	</div>
 
 <?php
 

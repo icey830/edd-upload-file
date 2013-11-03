@@ -1,6 +1,7 @@
 <?php
 
 function edd_fu_settings( $settings ) {
+
 	$edd_fu_settings = array(
 		array(
 			'id' 		=> 'fu_settings',
@@ -35,6 +36,7 @@ function edd_fu_settings( $settings ) {
 	);
 
 	return array_merge( $settings, $edd_fu_settings );
+
 }
 
 add_filter( 'edd_settings_extensions', 'edd_fu_settings', 1 );
