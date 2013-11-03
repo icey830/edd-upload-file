@@ -40,6 +40,7 @@ class EDD_File_Upload {
 	private function includes() {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/settings.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/hooks.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/view-order-details.php';
 
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/install.php';
 	}
@@ -146,6 +147,36 @@ class EDD_File_Upload {
 	}
 
 	/**
+	 * Function to check file extension
+	 *
+	 * @param String $file_name
+	 *
+	 * @return bool
+	 */
+	private function check_file_extension( $file_name ) {
+
+		// Get options
+		$options 		= $this->get_options();
+		$extensions = $options[ 'fu_file_extensions' ];
+
+		// Check file extension
+		if( $extensions != '' ) {
+
+			$extensions = explode( ',', $extensions );
+
+			if( ! in_array( edd_get_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ), $extensions ) ) {
+
+				return false;
+
+			}
+
+		}
+
+		return true;
+
+	}
+
+	/**
 	 * Function to handle the file upload, also does the actual file upload
 	 *
 	 * @todo Add security checks
@@ -155,8 +186,24 @@ class EDD_File_Upload {
 
 		if( isset ( $_FILES[ 'edd-fu-file' ] ) && $_FILES[ 'edd-fu-file' ][ 'error' ] == 0 ) {
 
+			// Get options
+			$options = $this->get_options();
+
+			// Check if the maximum
+			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
+			if( count( $uploaded_files ) >= $options[ 'fu_file_limit' ] ) {
+				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
+				return;
+			}
+
+			// Check extension
+			if( ! $this->check_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ) ) {
+				_e( 'File extension not allowed.', 'edd-fu' );
+				return;
+			}
+
 			// Create temp name
-			$new_file_name = uniqid() . '.' . pathinfo( $_FILES[ 'edd-fu-file' ][ 'name' ], PATHINFO_EXTENSION );
+			$new_file_name = uniqid() . '.' . edd_get_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] );
 
 			// Upload file
 			if( move_uploaded_file( $_FILES[ 'edd-fu-file' ][ 'tmp_name' ], EDD_File_Upload::instance()->get_file_dir() . '/' . $new_file_name ) ) {
@@ -176,6 +223,22 @@ class EDD_File_Upload {
 	public function handle_temp_file_upload() {
 
 		if( isset ( $_FILES[ 'edd-fu-file' ] ) && $_FILES[ 'edd-fu-file' ][ 'error' ] == 0 ) {
+
+			// Get options
+			$options = $this->get_options();
+
+			// Check if the maximum
+			$uploaded_files = $this->get_session_files();
+			if( count( $uploaded_files ) >= $options[ 'fu_file_limit' ] ) {
+				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
+				return;
+			}
+
+			// Check extension
+			if( ! $this->check_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ) ) {
+				_e( 'File extension not allowed', 'edd-fu' );
+				return;
+			}
 
 			// Create temp name
 			$new_file_name = uniqid() . '.' . pathinfo( $_FILES[ 'edd-fu-file' ][ 'name' ], PATHINFO_EXTENSION );
@@ -241,8 +304,6 @@ class EDD_File_Upload {
 
 		if( isset( $_GET[ 'delete-file' ] ) ) {
 
-
-
 			if( $this->delete_file_from_session( $_GET[ 'delete-file' ] ) ) {
 
 				// delete file
@@ -281,6 +342,7 @@ class EDD_File_Upload {
 	 * @param $payment_id
 	 */
 	public function attach_temp_files_to_payment( $payment_id ) {
+
 		$temp_files = $this->get_session_files();
 
 		if( is_array( $temp_files ) && count( $temp_files ) > 0 ) {

@@ -71,4 +71,4 @@ if( $edd_fu_options[ 'fu_upload_location' ] == 'checkout' ) {
 }
 
 // Print uploaded files at receipt page
-add_action( 'edd_payment_receipt_after', 'edd_fu_confirmation_print_uploaded_files', 9, 2 );
+add_action( 'edd_payment_receipt_after', 'edd_fu_confirmation_print_uploaded_files', 11, 2 );
