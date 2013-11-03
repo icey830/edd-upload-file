@@ -27,6 +27,7 @@ class EDD_File_Upload {
 
 	private function __construct() {
 		$this->includes();
+		$this->init();
 	}
 
 	public static function instance() {
@@ -49,6 +50,19 @@ class EDD_File_Upload {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_SL_Plugin_Updater.php';
+
+	}
+
+	private function init() {
+
+		// Load plugin textdomain
+		load_plugin_textdomain( 'edd-fu', false, dirname( plugin_basename( EDD_FILE_UPLOAD_PLUGIN_FILE ) ) . '/languages/' );
+
+
+		// Instantiate the licensing / updater.
+		$license = new EDD_License( __FILE__, self::PLUGIN_NAME, self::PLUGIN_VERSION_NAME, self::PLUGIN_AUTHOR );
 
 	}
 
