@@ -11,7 +11,7 @@ function edd_fu_view_uploaded_files( $payment_id ) {
 				<tbody id="the-list">
 				<?php
 				$uploaded_files = get_post_meta( $payment_id, 'edd_fu_file' );
-				if( $uploaded_files != '' ) {
+				if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
 					$i = 0;
 					foreach ( $uploaded_files as $key => $uploaded_file ) {
 						?>
@@ -30,6 +30,8 @@ function edd_fu_view_uploaded_files( $payment_id ) {
 						<?php
 						$i++;
 					}
+				}else {
+					echo "<tr><td colspan='2'>" . __( 'No files uploaded', 'edd-fu' ) . "</td>";
 				}
 				?>
 				</tbody>
