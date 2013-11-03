@@ -1,8 +1,6 @@
 == TODO ==
 
-- File extension check
-- Number of files allowed check
-- Link to uploaded file on the View Order Details screen (for admins)
 - Strange CSS bug when one or more files have been uploaded in the receipt page
 - Add EDD plugin updater class
 - Add security to GET variables in combination with file system functions (ie unlink)
+- Translate plugin + add language files
