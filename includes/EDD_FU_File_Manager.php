@@ -157,7 +157,8 @@ class EDD_FU_File_Manager {
 			if( delete_post_meta( $payment->ID, 'edd_fu_file', $_GET[ 'delete-file' ] ) ) {
 
 				// delete file
-				unlink( $this->get_file_dir() . '/' . $_GET[ 'delete-file' ] );
+				if( file_exists( $this->get_file_dir() . '/' . $_GET[ 'delete-file' ] ) )
+					unlink( $this->get_file_dir() . '/' . $_GET[ 'delete-file' ] );
 
 			}
 
@@ -301,7 +302,8 @@ class EDD_FU_File_Manager {
 			if( $this->delete_file_from_session( $_GET[ 'delete-file' ] ) ) {
 
 				// delete file
-				unlink( get_temp_dir() . $_GET[ 'delete-file' ] );
+				if( file_exists( get_temp_dir() . $_GET[ 'delete-file' ]  ) )
+					unlink( get_temp_dir() . $_GET[ 'delete-file' ] );
 
 			}
 
@@ -329,7 +331,8 @@ class EDD_FU_File_Manager {
 					add_post_meta( $payment_id, 'edd_fu_file', $temp_file );
 
 					// Remove file from temp
-					unlink( get_temp_dir() . $temp_file );
+					if( file_exists( get_temp_dir() . $temp_file ) )
+						unlink( get_temp_dir() . $temp_file );
 
 					// Remove file from session
 					$this->delete_file_from_session( $temp_file );
