@@ -72,7 +72,7 @@ class EDD_FU_File_Manager {
 	 * @param $payment_id
 	 */
 	public function print_uploaded_files( $payment_id ) {
-		
+
 		echo "<h3>" . __( 'Uploaded Files', 'edd-fu' ) . "</h3>\n";
 
 		$uploaded_files = get_post_meta( $payment_id, 'edd_fu_file' );
