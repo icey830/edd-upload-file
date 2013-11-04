@@ -1,0 +1,111 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EDD File Upload\n"
+"POT-Creation-Date: 2013-11-04 21:21+0100\n"
+"PO-Revision-Date: 2013-11-04 21:21+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ../.\n"
+
+#: .././includes/EDD_FU_File_Manager.php:75
+#: .././includes/EDD_FU_File_Manager.php:259
+#: .././includes/admin/view-order-details.php:8
+msgid "Uploaded Files"
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:87
+#: .././includes/EDD_FU_File_Manager.php:272
+#: .././includes/admin/view-order-details.php:21
+#: .././includes/frontend/checkout.php:20
+msgid "File"
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:91
+#: .././includes/EDD_FU_File_Manager.php:276
+msgid "Delete"
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:101
+#: .././includes/EDD_FU_File_Manager.php:286
+msgid "No files found"
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:122
+#: .././includes/EDD_FU_File_Manager.php:186
+msgid "Maximum number of file uploads reached."
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:128
+msgid "File extension not allowed."
+msgstr ""
+
+#: .././includes/EDD_FU_File_Manager.php:192
+msgid "File extension not allowed"
+msgstr ""
+
+#: .././includes/admin/settings.php:8
+msgid "File Upload Settings"
+msgstr ""
+
+#: .././includes/admin/settings.php:14
+msgid "File Upload Location"
+msgstr ""
+
+#: .././includes/admin/settings.php:24
+msgid "Allowed File Extensions"
+msgstr ""
+
+#: .././includes/admin/settings.php:25
+msgid "Comma separate extensions, leave blank to allow all"
+msgstr ""
+
+#: .././includes/admin/settings.php:30
+msgid "Allowed number of files"
+msgstr ""
+
+#: .././includes/admin/settings.php:31
+msgid ""
+"Enter the allowed number of file uploads per download, enter 0 for unlimited"
+msgstr ""
+
+#: .././includes/admin/view-order-details.php:26
+msgid "View"
+msgstr ""
+
+#: .././includes/admin/view-order-details.php:34
+msgid "No files uploaded"
+msgstr ""
+
+#: .././includes/frontend/checkout.php:17
+msgid "File Upload"
+msgstr ""
+
+#: .././includes/frontend/checkout.php:22
+msgid "Please select the file to attach to this order."
+msgstr ""
+
+#: .././includes/frontend/checkout.php:25
+#: .././includes/frontend/receipt.php:15
+msgid "Upload"
+msgstr ""
+
+#: .././includes/frontend/receipt.php:12
+msgid "Upload new file"
+msgstr ""
+
+#: .././includes/updater/EDD_License_Handler.php:126
+#, php-format
+msgid "%1$s License Key"
+msgstr ""
+
+#: .././includes/updater/EDD_License_Handler.php:256
+msgid "Deactivate License"
+msgstr ""
