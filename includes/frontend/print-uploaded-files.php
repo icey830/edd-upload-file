@@ -8,4 +8,4 @@ function edd_fu_confirmation_print_uploaded_files( $payment, $edd_receipt_args )
 }
 
 // Print uploaded files at receipt page
-add_action( 'edd_payment_receipt_after', 'edd_fu_confirmation_print_uploaded_files', 11, 2 );
+add_action( 'edd_payment_receipt_after_table', 'edd_fu_confirmation_print_uploaded_files', 11, 2 );
