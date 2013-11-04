@@ -125,7 +125,7 @@ class EDD_FU_File_Manager {
 
 			// Check extension
 			if( ! $this->check_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ) ) {
-				_e( 'File extension not allowed.', 'edd-fu' );
+				_e( 'File extension not allowed', 'edd-fu' );
 				return;
 			}
 
