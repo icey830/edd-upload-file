@@ -11,7 +11,6 @@ function edd_fu_checkout_upload_field() {
 	// Print uploaded files
 	EDD_FU_File_Manager::instance()->print_temp_uploaded_files();
 
-
 ?>
 	<fieldset id="edd_checkout_user_info">
 		<span><legend><?php _e( 'File Upload', 'edd-fu' ); ?></legend></span>
@@ -29,13 +28,9 @@ function edd_fu_checkout_upload_field() {
 <?php
 }
 
-function edd_fu_attach_temp_files_to_payment( $payment_id ) {
-
-}
-
 $edd_fu_options = EDD_File_Upload::instance()->get_options();
 
 if( $edd_fu_options[ 'fu_upload_location' ] == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_fu_checkout_upload_field', 10 );
-	add_action( 'edd_complete_purchase', array( EDD_File_Upload(), 'attach_temp_files_to_payment' ) );
+	add_action( 'edd_complete_purchase', array( EDD_FU_File_Manager::instance(), 'attach_temp_files_to_payment' ), 10, 1 );
 }

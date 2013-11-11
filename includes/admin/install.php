@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function edd_fu_install() {
 
 	// Create the EDD Files Upload dir
-	wp_mkdir_p( EDD_File_Upload::instance()->get_file_dir() );
+	wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
 
 }
 
