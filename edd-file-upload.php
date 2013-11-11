@@ -51,7 +51,6 @@ class EDD_File_Upload {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_SL_Plugin_Updater.php';
 
 	}
 
