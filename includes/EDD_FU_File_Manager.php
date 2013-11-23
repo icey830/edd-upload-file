@@ -10,7 +10,7 @@ class EDD_FU_File_Manager {
 	private static $instance = null;
 
 	public static function instance() {
-		if( self::$instance == null ) {
+		if ( self::$instance == null ) {
 			self::$instance = new self();
 		}
 
@@ -33,7 +33,7 @@ class EDD_FU_File_Manager {
 	 */
 	public function get_file_url() {
 		$upload_dir = wp_upload_dir();
-		return $upload_dir[ 'baseurl' ] . '/edd/files';
+		return $upload_dir['baseurl'] . '/edd/files';
 	}
 
 	/**
@@ -46,15 +46,15 @@ class EDD_FU_File_Manager {
 	private function check_file_extension( $file_name ) {
 
 		// Get options
-		$options 		= EDD_File_Upload::instance()->get_options();
-		$extensions = $options[ 'fu_file_extensions' ];
+		$options    = EDD_File_Upload::instance()->get_options();
+		$extensions = $options['fu_file_extensions'];
 
 		// Check file extension
-		if( $extensions != '' ) {
+		if ( $extensions != '' ) {
 
 			$extensions = explode( ',', $extensions );
 
-			if( ! in_array( edd_get_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ), $extensions ) ) {
+			if ( ! in_array( edd_get_file_extension( $_FILES['edd-fu-file']['name'] ), $extensions ) ) {
 
 				return false;
 
@@ -76,29 +76,30 @@ class EDD_FU_File_Manager {
 		echo "<h3>" . __( 'Uploaded Files', 'edd-fu' ) . "</h3>\n";
 
 		$uploaded_files = get_post_meta( $payment_id, 'edd_fu_file' );
-		if( count( $uploaded_files ) > 0 ) {
+		if ( count( $uploaded_files ) > 0 ) {
 
 			echo "<table>\n";
 
 			$i = 1;
-			foreach( $uploaded_files as $uploaded_file ) {
+			foreach ( $uploaded_files as $uploaded_file ) {
 				echo "<tr>\n";
 
 				echo "<td>\n";
-				echo "<a href='" . $this->get_file_url() . '/' . $uploaded_file . "' target='_blank'>" . __ ( 'File', 'edd-fu' ) . " {$i}</a>";
+				echo "<a href='" . $this->get_file_url() . '/' . $uploaded_file . "' target='_blank'>" . __( 'File', 'edd-fu' ) . " {$i}</a>";
 				echo "</td>\n";
 
 				echo "<td>\n";
-				echo "<a href='?delete-file={$uploaded_file}'>" . __ ( 'Delete', 'edd-fu' ) . "</a>";
+				echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
 				echo "</td>\n";
 
 				echo "</tr>\n";
-				$i++;
+				$i ++;
 			}
 
 			echo "</table>\n";
 
-		}else {
+		}
+		else {
 			echo "<p>" . __( 'No files found', 'edd-fu' ) . "</p>";
 		}
 
@@ -108,33 +109,34 @@ class EDD_FU_File_Manager {
 	 * Function to handle the file upload, also does the actual file upload
 	 *
 	 * @todo Add security checks
+	 *
 	 * @param $payment
 	 */
 	public function handle_file_upload( $payment ) {
 
-		if( isset ( $_FILES[ 'edd-fu-file' ] ) && $_FILES[ 'edd-fu-file' ][ 'error' ] == 0 ) {
+		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
 			$options = EDD_File_Upload::instance()->get_options();
 
 			// Check if the maximum
 			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
-			if( count( $uploaded_files ) >= $options[ 'fu_file_limit' ] ) {
+			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
 				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
 				return;
 			}
 
 			// Check extension
-			if( ! $this->check_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ) ) {
+			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
 				_e( 'File extension not allowed', 'edd-fu' );
 				return;
 			}
 
 			// Create temp name
-			$new_file_name = uniqid() . '.' . edd_get_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] );
+			$new_file_name = uniqid() . '.' . edd_get_file_extension( $_FILES['edd-fu-file']['name'] );
 
 			// Upload file
-			if( move_uploaded_file( $_FILES[ 'edd-fu-file' ][ 'tmp_name' ], $this->get_file_dir() . '/' . $new_file_name ) ) {
+			if ( move_uploaded_file( $_FILES['edd-fu-file']['tmp_name'], $this->get_file_dir() . '/' . $new_file_name ) ) {
 
 				// Attach uploaded file to post
 				add_post_meta( $payment->ID, 'edd_fu_file', $new_file_name );
@@ -149,17 +151,18 @@ class EDD_FU_File_Manager {
 	 * Function to handle the file delete
 	 *
 	 * @todo Add security checks
+	 *
 	 * @param $payment
 	 */
 	public function handle_file_delete( $payment ) {
 
-		if( isset( $_GET[ 'delete-file' ] ) ) {
+		if ( isset( $_GET['delete-file'] ) ) {
 
-			if( delete_post_meta( $payment->ID, 'edd_fu_file', $_GET[ 'delete-file' ] ) ) {
+			if ( delete_post_meta( $payment->ID, 'edd_fu_file', $_GET['delete-file'] ) ) {
 
 				// delete file
-				if( file_exists( $this->get_file_dir() . '/' . $_GET[ 'delete-file' ] ) )
-					unlink( $this->get_file_dir() . '/' . $_GET[ 'delete-file' ] );
+				if ( file_exists( $this->get_file_dir() . '/' . $_GET['delete-file'] ) )
+					unlink( $this->get_file_dir() . '/' . $_GET['delete-file'] );
 
 			}
 
@@ -176,29 +179,29 @@ class EDD_FU_File_Manager {
 	 */
 	public function handle_temp_file_upload() {
 
-		if( isset ( $_FILES[ 'edd-fu-file' ] ) && $_FILES[ 'edd-fu-file' ][ 'error' ] == 0 ) {
+		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
 			$options = EDD_File_Upload::instance()->get_options();
 
 			// Check if the maximum
 			$uploaded_files = $this->get_session_files();
-			if( count( $uploaded_files ) >= $options[ 'fu_file_limit' ] ) {
+			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
 				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
 				return;
 			}
 
 			// Check extension
-			if( ! $this->check_file_extension( $_FILES[ 'edd-fu-file' ][ 'name' ] ) ) {
+			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
 				_e( 'File extension not allowed', 'edd-fu' );
 				return;
 			}
 
 			// Create temp name
-			$new_file_name = uniqid() . '.' . pathinfo( $_FILES[ 'edd-fu-file' ][ 'name' ], PATHINFO_EXTENSION );
+			$new_file_name = uniqid() . '.' . pathinfo( $_FILES['edd-fu-file']['name'], PATHINFO_EXTENSION );
 
 			// Upload file
-			if( move_uploaded_file( $_FILES[ 'edd-fu-file' ][ 'tmp_name' ], get_temp_dir()  . $new_file_name ) ) {
+			if ( move_uploaded_file( $_FILES['edd-fu-file']['tmp_name'], get_temp_dir() . $new_file_name ) ) {
 
 				// Add temp file to session
 				$this->add_file_to_session( $new_file_name );
@@ -224,9 +227,9 @@ class EDD_FU_File_Manager {
 	 * @param $file_name
 	 */
 	public function add_file_to_session( $file_name ) {
-		$session_files = $this->get_session_files();
+		$session_files   = $this->get_session_files();
 		$session_files[] = $file_name;
-		EDD()->session->set( 'edd_fu_files',  $session_files );
+		EDD()->session->set( 'edd_fu_files', $session_files );
 	}
 
 	/**
@@ -241,9 +244,9 @@ class EDD_FU_File_Manager {
 		$session_files = $this->get_session_files();
 
 		$file_key = array_search( $file_name, $session_files );
-		if( $file_key !== false ) {
-			unset( $session_files[ $file_key ] );
-			EDD()->session->set( 'edd_fu_files',  $session_files );
+		if ( $file_key !== false ) {
+			unset( $session_files[$file_key] );
+			EDD()->session->set( 'edd_fu_files', $session_files );
 			return true;
 		}
 
@@ -261,29 +264,30 @@ class EDD_FU_File_Manager {
 		echo "<p id='edd-fu-files-wrap'>\n";
 
 		$uploaded_files = $this->get_session_files();
-		if( count( $uploaded_files ) > 0 ) {
+		if ( count( $uploaded_files ) > 0 ) {
 
 			echo "<table>\n";
 
 			$i = 1;
-			foreach( $uploaded_files as $uploaded_file ) {
+			foreach ( $uploaded_files as $uploaded_file ) {
 				echo "<tr>\n";
 
 				echo "<td>\n";
-				echo __ ( 'File', 'edd-fu' ) . $i;
+				echo __( 'File', 'edd-fu' ) . $i;
 				echo "</td>\n";
 
 				echo "<td>\n";
-				echo "<a href='?delete-file={$uploaded_file}'>" . __ ( 'Delete', 'edd-fu' ) . "</a>";
+				echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
 				echo "</td>\n";
 
 				echo "</tr>\n";
-				$i++;
+				$i ++;
 			}
 
 			echo "</table>\n";
 
-		}else {
+		}
+		else {
 			echo "<p>" . __( 'No files found', 'edd-fu' ) . "</p>";
 		}
 		echo "</p>";
@@ -298,13 +302,13 @@ class EDD_FU_File_Manager {
 	 */
 	public function handle_temp_file_delete() {
 
-		if( isset( $_GET[ 'delete-file' ] ) ) {
+		if ( isset( $_GET['delete-file'] ) ) {
 
-			if( $this->delete_file_from_session( $_GET[ 'delete-file' ] ) ) {
+			if ( $this->delete_file_from_session( $_GET['delete-file'] ) ) {
 
 				// delete file
-				if( file_exists( get_temp_dir() . $_GET[ 'delete-file' ]  ) )
-					unlink( get_temp_dir() . $_GET[ 'delete-file' ] );
+				if ( file_exists( get_temp_dir() . $_GET['delete-file'] ) )
+					unlink( get_temp_dir() . $_GET['delete-file'] );
 
 			}
 
@@ -321,18 +325,18 @@ class EDD_FU_File_Manager {
 
 		$temp_files = $this->get_session_files();
 
-		if( is_array( $temp_files ) && count( $temp_files ) > 0 ) {
+		if ( is_array( $temp_files ) && count( $temp_files ) > 0 ) {
 
-			foreach( $temp_files as $temp_file ) {
+			foreach ( $temp_files as $temp_file ) {
 
 				// Copy file from temp to upload dir
-				if( copy( get_temp_dir() . $temp_file, $this->get_file_dir() . '/' . $temp_file ) ) {
+				if ( copy( get_temp_dir() . $temp_file, $this->get_file_dir() . '/' . $temp_file ) ) {
 
 					// Attach uploaded file to post
 					add_post_meta( $payment_id, 'edd_fu_file', $temp_file );
 
 					// Remove file from temp
-					if( file_exists( get_temp_dir() . $temp_file ) )
+					if ( file_exists( get_temp_dir() . $temp_file ) )
 						unlink( get_temp_dir() . $temp_file );
 
 					// Remove file from session
