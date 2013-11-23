@@ -44,6 +44,7 @@ class EDD_File_Upload {
 	private function includes() {
 
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/install.php';
