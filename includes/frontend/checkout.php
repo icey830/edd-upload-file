@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function edd_fu_checkout_upload_field() {
 
 	// Handle the temp upload

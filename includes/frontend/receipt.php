@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function edd_fu_receipt_upload_field( $payment, $edd_receipt_args ) {
 
 	// Handle the upload

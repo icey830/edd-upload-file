@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function edd_fu_confirmation_print_uploaded_files( $payment, $edd_receipt_args ) {
 
 	// Print uploaded files

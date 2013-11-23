@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function edd_fu_view_uploaded_files( $payment_id ) {
 
 	?>
