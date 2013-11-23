@@ -18,12 +18,12 @@ if ( ! defined( 'EDD_FILE_UPLOAD_PLUGIN_FILE' ) ) {
 
 class EDD_File_Upload {
 
-	private static $instance 			= null;
+	private static $instance = null;
 
-	const PLUGIN_NAME							= 'EDD File Upload';
-	const PLUGIN_VERSION_NAME 		= '1.0.0';
-	const PLUGIN_VERSION_CODE 		= '1';
-	const PLUGIN_AUTHOR						= 'Barry Kooij';
+	const PLUGIN_NAME         = 'EDD File Upload';
+	const PLUGIN_VERSION_NAME = '1.0.0';
+	const PLUGIN_VERSION_CODE = '1';
+	const PLUGIN_AUTHOR       = 'Barry Kooij';
 
 	private function __construct() {
 		$this->includes();
@@ -31,7 +31,7 @@ class EDD_File_Upload {
 	}
 
 	public static function instance() {
-		if( self::$instance == null ) {
+		if ( self::$instance == null ) {
 			self::$instance = new EDD_File_Upload();
 		}
 
@@ -73,9 +73,9 @@ class EDD_File_Upload {
 	public function get_options() {
 		global $edd_options;
 		return wp_parse_args( $edd_options, array(
-			'fu_upload_location' 	=> 'receipt',
-			'fu_file_limit' 			=> '1',
-			'fu_file_extensions' 	=> '',
+			'fu_upload_location' => 'receipt',
+			'fu_file_limit'      => '1',
+			'fu_file_extensions' => '',
 		) );
 	}
 
