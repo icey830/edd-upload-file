@@ -23,7 +23,8 @@ class EDD_FU_File_Manager {
 	 * @return string
 	 */
 	public function get_file_dir() {
-		return edd_get_upload_dir() . '/files';
+		$wp_upload_dir = wp_upload_dir();
+		return $wp_upload_dir['basedir'] . '/edd-upload-files';
 	}
 
 	/**
@@ -119,9 +120,16 @@ class EDD_FU_File_Manager {
 			// Get options
 			$options = EDD_File_Upload::instance()->get_options();
 
+			$file_limit = (int) $options['fu_file_limit'];
+
+			// Empty string is also unlimited
+			if( $file_limit == '' ) {
+				$file_limit = 0;
+			}
+
 			// Check if the maximum
 			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
-			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
+			if ( $file_limit != 0 && count( $uploaded_files ) >= $options['fu_file_limit'] ) {
 				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
 				return;
 			}
