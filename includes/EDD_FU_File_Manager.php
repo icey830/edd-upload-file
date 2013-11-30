@@ -34,7 +34,7 @@ class EDD_FU_File_Manager {
 	 */
 	public function get_file_url() {
 		$upload_dir = wp_upload_dir();
-		return $upload_dir['baseurl'] . '/edd/files';
+		return $upload_dir['baseurl'] . '/edd-upload-files';
 	}
 
 	/**
