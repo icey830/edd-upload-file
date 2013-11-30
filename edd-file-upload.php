@@ -80,6 +80,28 @@ class EDD_File_Upload {
 		) );
 	}
 
+	public function error_message( $message ) {
+
+		$edd_fu_options = EDD_File_Upload::instance()->get_options();
+
+		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
+
+			$messages = EDD()->session->get( 'edd_cart_messages' );
+
+			if ( ! $messages ) {
+				$messages = array();
+			}
+
+			$messages['edd_fu_error_message'] = $message;
+
+			EDD()->session->set( 'edd_cart_messages', $messages );
+
+		}else {
+
+		}
+
+	}
+
 }
 
 function EDD_File_Upload() {

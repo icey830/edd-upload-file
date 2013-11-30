@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function edd_fu_checkout_upload_field() {
 
 	// Handle the temp upload
-	EDD_FU_File_Manager::instance()->handle_temp_file_upload();
+//	EDD_FU_File_Manager::instance()->handle_temp_file_upload();
 
 	// Handle the delete
 	EDD_FU_File_Manager::instance()->handle_temp_file_delete();

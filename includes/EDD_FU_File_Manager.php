@@ -1,20 +1,45 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: barrykooij
- * Date: 11/3/13
- */
 
 class EDD_FU_File_Manager {
 
 	private static $instance = null;
 
+	/**
+	 * Singleton getter
+	 *
+	 * @return EDD_FU_File_Manager|null
+	 */
 	public static function instance() {
 		if ( self::$instance == null ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Constructor
+	 */
+	private function __construct() {
+		$this->hooks();
+	}
+
+	/**
+	 * Setup hooks
+	 */
+	private function hooks() {
+
+		// Get options
+		$edd_fu_options = EDD_File_Upload::instance()->get_options();
+
+		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
+			add_action( 'init', array( $this, 'handle_temp_file_upload' ) );
+		} else {
+			add_action( 'init', array( $this, 'handle_file_upload' ) );
+		}
+
+
+
 	}
 
 	/**
@@ -195,13 +220,13 @@ class EDD_FU_File_Manager {
 			// Check if the maximum
 			$uploaded_files = $this->get_session_files();
 			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
-				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
+				EDD_File_Upload::instance()->error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
 				return;
 			}
 
 			// Check extension
 			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
-				_e( 'File extension not allowed', 'edd-fu' );
+				EDD_File_Upload::instance()->error_message( __( 'File extension not allowed.', 'edd-fu' ) );
 				return;
 			}
 
