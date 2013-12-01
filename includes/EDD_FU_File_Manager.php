@@ -34,8 +34,7 @@ class EDD_FU_File_Manager {
 		$edd_fu_options = EDD_File_Upload::get_options();
 
 		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
-			// ADD CHECK TO CHECK IF WE'RE ON THE CHECKOUT PAGE
-			add_action( 'init', array( $this, 'handle_temp_file_upload' ) );
+			add_action( 'template_redirect', array( $this, 'handle_temp_file_upload' ) );
 		} else {
 			add_action( 'edd_payment_receipt_before', array( $this, 'handle_file_upload' ), 0, 1 );
 		}
@@ -212,7 +211,7 @@ class EDD_FU_File_Manager {
 	 */
 	public function handle_temp_file_upload() {
 
-		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
+		if ( edd_is_checkout() && isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
 			$options = EDD_File_Upload::get_options();
