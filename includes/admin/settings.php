@@ -51,6 +51,8 @@ function edd_fu_sanitize_file_limit( $value, $key ) {
 		return str_ireplace( '.', '', str_ireplace( ' ', '', $value ) );
 	}
 
+	return $value;
+
 }
 
 add_filter( 'edd_settings_sanitize', 'edd_fu_sanitize_file_limit', 10, 2 );
