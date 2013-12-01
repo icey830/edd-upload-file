@@ -116,6 +116,9 @@ class EDD_File_Upload {
 			return;
 		}
 
+		// Load the File Manager
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
+
 		// Create the EDD Files Upload dir
 		wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
 
