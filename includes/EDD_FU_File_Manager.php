@@ -215,7 +215,7 @@ class EDD_FU_File_Manager {
 		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
-			$options = EDD_File_Upload::instance()->get_options();
+			$options = EDD_File_Upload::get_options();
 
 			// Check if the maximum
 			$uploaded_files = $this->get_session_files();
