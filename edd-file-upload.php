@@ -25,17 +25,9 @@ class EDD_File_Upload {
 	const PLUGIN_VERSION_CODE = '1';
 	const PLUGIN_AUTHOR       = 'Barry Kooij';
 
-	private function __construct() {
+	public function __construct() {
 		$this->includes();
 		$this->init();
-	}
-
-	public static function instance() {
-		if ( self::$instance == null ) {
-			self::$instance = new EDD_File_Upload();
-		}
-
-		return self::$instance;
 	}
 
 	/**
@@ -47,7 +39,6 @@ class EDD_File_Upload {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/install.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
@@ -55,6 +46,9 @@ class EDD_File_Upload {
 
 	}
 
+	/**
+	 * Function that setups the plugin
+	 */
 	private function init() {
 
 		// Load plugin textdomain
@@ -64,6 +58,9 @@ class EDD_File_Upload {
 		// Instantiate the licensing / updater.
 		$license = new EDD_License( __FILE__, self::PLUGIN_NAME, self::PLUGIN_VERSION_NAME, self::PLUGIN_AUTHOR );
 
+		// Setup the File Manager
+		EDD_FU_File_Manager::instance();
+
 	}
 
 	/**
@@ -71,7 +68,7 @@ class EDD_File_Upload {
 	 *
 	 * @return array EDD options
 	 */
-	public function get_options() {
+	public static function get_options() {
 		global $edd_options;
 		return wp_parse_args( $edd_options, array(
 			'fu_upload_location' => 'receipt',
@@ -80,9 +77,14 @@ class EDD_File_Upload {
 		) );
 	}
 
-	public function error_message( $message ) {
+	/**
+	 * Function to display error messages
+	 *
+	 * @param $message
+	 */
+	public static function error_message( $message ) {
 
-		$edd_fu_options = EDD_File_Upload::instance()->get_options();
+		$edd_fu_options = self::get_options();
 
 		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
 
@@ -98,15 +100,31 @@ class EDD_File_Upload {
 
 		}else {
 
+			echo "<tr><td colspan='2'>{$message}</td></tr>\n";
+
 		}
+
+	}
+
+	/**
+	 * Function that is run when plugin is installed
+	 */
+	public static function install() {
+
+		// Check if EDD is installed and activated
+		if ( ! is_plugin_active( 'easy-digital-downloads/easy-digital-downloads.php' ) ) {
+			return;
+		}
+
+		// Create the EDD Files Upload dir
+		wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
 
 	}
 
 }
 
-function EDD_File_Upload() {
-	return EDD_File_Upload::instance();
-}
+// Create object - Plugin init
+add_action( 'plugins_loaded', create_function( '', 'new EDD_File_Upload();' ) );
 
-// Run EDD File Upload
-EDD_File_Upload();
+// Activation hook
+register_activation_hook( EDD_FILE_UPLOAD_PLUGIN_FILE, array( 'EDD_File_Upload', 'install' ) );
