@@ -5,13 +5,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function edd_fu_settings( $settings ) {
 
 	$edd_fu_settings = array(
-		array(
+		'fu_settings' => array(
 			'id'   => 'fu_settings',
 			'name' => '<strong>' . __( 'File Upload Settings', 'edd-fu' ) . '</strong>',
 			'desc' => '',
 			'type' => 'header'
 		),
-		array(
+		'fu_upload_location' => array(
 			'id'      => 'fu_upload_location',
 			'name'    => __( 'File Upload Location', 'edd-fu' ),
 			'desc'    => '',
@@ -21,13 +21,13 @@ function edd_fu_settings( $settings ) {
 				'checkout' => 'Checkout Page',
 			),
 		),
-		array(
+		'fu_file_extensions' => array(
 			'id'   => 'fu_file_extensions',
 			'name' => __( 'Allowed File Extensions', 'edd-fu' ),
 			'desc' => __( 'Comma separate extensions, leave blank to allow all', 'edd-fu' ),
 			'type' => 'text'
 		),
-		array(
+		'fu_file_limit' => array(
 			'id'   => 'fu_file_limit',
 			'name' => __( 'Allowed number of files', 'edd-fu' ),
 			'desc' => __( 'Enter the allowed number of file uploads per download, enter 0 for unlimited', 'edd-fu' ),
@@ -42,3 +42,15 @@ function edd_fu_settings( $settings ) {
 }
 
 add_filter( 'edd_settings_extensions', 'edd_fu_settings', 1 );
+
+function edd_fu_sanitize_file_limit( $value, $key ) {
+
+	if ( 'fu_file_limit' == $key ) {
+			return (int) $value;
+	}else if ( 'fu_file_extensions' == $key ) {
+		return str_ireplace( '.', '', str_ireplace( ' ', '', $value ) );
+	}
+
+}
+
+add_filter( 'edd_settings_sanitize', 'edd_fu_sanitize_file_limit', 10, 2 );
