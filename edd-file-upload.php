@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: EDD File Upload
+Plugin Name: Easy Digital Downloads - File Upload
 Plugin URI: http://www.barrykooij.com/edd-file-upload
-Description: EDD File Upload Extension
+Description: Easy Digital Downloads - File Upload Extension
 Version: 1.0.0
 Author: Barry Kooij
 Author URI: http://www.barrykooij.com/
