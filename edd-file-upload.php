@@ -2,7 +2,7 @@
 /*
 Plugin Name: Easy Digital Downloads - File Upload
 Plugin URI: http://www.barrykooij.com/edd-file-upload
-Description: Easy Digital Downloads - File Upload Extension
+Description: The File Upload extension allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
 Version: 1.0.0
 Author: Barry Kooij
 Author URI: http://www.barrykooij.com/
