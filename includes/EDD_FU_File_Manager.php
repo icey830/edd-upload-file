@@ -92,7 +92,7 @@ class EDD_FU_File_Manager {
 	}
 
 	/**
-	 * Function that prints uploaded files of payment
+	 * Function that prints uploaded files of payment on the receipt page
 	 *
 	 * @param $payment_id
 	 */
@@ -113,9 +113,15 @@ class EDD_FU_File_Manager {
 				echo "<a href='" . $this->get_file_url() . '/' . $uploaded_file . "' target='_blank'>" . __( 'File', 'edd-fu' ) . " {$i}</a>";
 				echo "</td>\n";
 
-				echo "<td>\n";
-				echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
-				echo "</td>\n";
+				// Get options
+				$edd_fu_options = EDD_File_Upload::get_options();
+
+				// Only display the delete link if the file upload location is the receipt page
+				if ( 'receipt' == $edd_fu_options['fu_upload_location'] ) {
+					echo "<td>\n";
+					echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
+					echo "</td>\n";
+				}
 
 				echo "</tr>\n";
 				$i ++;
@@ -188,7 +194,11 @@ class EDD_FU_File_Manager {
 	 */
 	public function handle_file_delete( $payment ) {
 
-		if ( isset( $_GET['delete-file'] ) ) {
+		// Get options
+		$edd_fu_options = EDD_File_Upload::get_options();
+
+		// Only display the delete link if the file upload location is the receipt page
+		if ( 'receipt' == $edd_fu_options['fu_upload_location'] && isset( $_GET['delete-file'] ) ) {
 
 			if ( delete_post_meta( $payment->ID, 'edd_fu_file', $_GET['delete-file'] ) ) {
 
