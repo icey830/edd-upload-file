@@ -32,7 +32,7 @@ function edd_fu_checkout_upload_field() {
 <?php
 }
 
-$edd_fu_options = EDD_File_Upload::instance()->get_options();
+$edd_fu_options = EDD_File_Upload::get_options();
 
 if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_fu_checkout_upload_field', 10 );

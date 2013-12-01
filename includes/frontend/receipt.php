@@ -21,7 +21,7 @@ function edd_fu_receipt_upload_field( $payment, $edd_receipt_args ) {
 
 }
 
-$edd_fu_options = EDD_File_Upload::instance()->get_options();
+$edd_fu_options = EDD_File_Upload::get_options();
 
 if ( $edd_fu_options['fu_upload_location'] == 'receipt' ) {
 	add_action( 'edd_payment_receipt_after_table', 'edd_fu_receipt_upload_field', 10, 2 );
