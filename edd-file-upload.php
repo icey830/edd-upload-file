@@ -100,7 +100,7 @@ class EDD_File_Upload {
 
 		}else {
 
-			echo "<tr><td colspan='2'>{$message}</td></tr>\n";
+			echo "<tr><td colspan='2' style='color:#ff0000;font-weight:bold;'>{$message}</td></tr>\n";
 
 		}
 
