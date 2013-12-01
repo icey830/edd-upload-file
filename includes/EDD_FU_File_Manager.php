@@ -10,7 +10,8 @@ class EDD_FU_File_Manager {
 	 * @return EDD_FU_File_Manager|null
 	 */
 	public static function instance() {
-		if ( self::$instance == null ) {
+
+		if ( null == self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -30,15 +31,14 @@ class EDD_FU_File_Manager {
 	private function hooks() {
 
 		// Get options
-		$edd_fu_options = EDD_File_Upload::instance()->get_options();
+		$edd_fu_options = EDD_File_Upload::get_options();
 
 		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
+			// ADD CHECK TO CHECK IF WE'RE ON THE CHECKOUT PAGE
 			add_action( 'init', array( $this, 'handle_temp_file_upload' ) );
 		} else {
-			add_action( 'init', array( $this, 'handle_file_upload' ) );
+			add_action( 'edd_payment_receipt_before', array( $this, 'handle_file_upload' ), 0, 1 );
 		}
-
-
 
 	}
 
@@ -72,7 +72,7 @@ class EDD_FU_File_Manager {
 	private function check_file_extension( $file_name ) {
 
 		// Get options
-		$options    = EDD_File_Upload::instance()->get_options();
+		$options    = EDD_File_Upload::get_options();
 		$extensions = $options['fu_file_extensions'];
 
 		// Check file extension
@@ -143,7 +143,7 @@ class EDD_FU_File_Manager {
 		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
-			$options = EDD_File_Upload::instance()->get_options();
+			$options = EDD_File_Upload::get_options();
 
 			$file_limit = (int) $options['fu_file_limit'];
 
@@ -155,13 +155,13 @@ class EDD_FU_File_Manager {
 			// Check if the maximum
 			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
 			if ( $file_limit != 0 && count( $uploaded_files ) >= $options['fu_file_limit'] ) {
-				_e( 'Maximum number of file uploads reached.', 'edd-fu' );
+				EDD_File_Upload::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
 				return;
 			}
 
 			// Check extension
 			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
-				_e( 'File extension not allowed', 'edd-fu' );
+				EDD_File_Upload::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
 				return;
 			}
 
@@ -220,13 +220,13 @@ class EDD_FU_File_Manager {
 			// Check if the maximum
 			$uploaded_files = $this->get_session_files();
 			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
-				EDD_File_Upload::instance()->error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
+				EDD_File_Upload::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
 				return;
 			}
 
 			// Check extension
 			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
-				EDD_File_Upload::instance()->error_message( __( 'File extension not allowed.', 'edd-fu' ) );
+				EDD_File_Upload::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
 				return;
 			}
 
