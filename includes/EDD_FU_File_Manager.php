@@ -42,6 +42,19 @@ class EDD_FU_File_Manager {
 	}
 
 	/**
+	 * Function to generate a new filename
+	 *
+	 * @param $original_filename
+	 *
+	 * @return string
+	 */
+	private function generate_filename( $original_filename ) {
+		$file_name_parts = explode( '.', $original_filename );
+		return array_shift( $file_name_parts ) . '-' . uniqid() . '.' . edd_get_file_extension( $original_filename );
+	}
+
+
+	/**
 	 * Function to get the path to the files directory
 	 *
 	 * @return string
@@ -157,7 +170,7 @@ class EDD_FU_File_Manager {
 				$file_limit = 0;
 			}
 
-			// Check if the maximum
+			// Check the maximum
 			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
 			if ( $file_limit != 0 && count( $uploaded_files ) >= $options['fu_file_limit'] ) {
 				EDD_File_Upload::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
@@ -171,7 +184,7 @@ class EDD_FU_File_Manager {
 			}
 
 			// Create temp name
-			$new_file_name = uniqid() . '.' . edd_get_file_extension( $_FILES['edd-fu-file']['name'] );
+			$new_file_name = $this->generate_filename( $_FILES['edd-fu-file']['name'] );
 
 			// Upload file
 			if ( move_uploaded_file( $_FILES['edd-fu-file']['tmp_name'], $this->get_file_dir() . '/' . $new_file_name ) ) {
@@ -240,7 +253,7 @@ class EDD_FU_File_Manager {
 			}
 
 			// Create temp name
-			$new_file_name = uniqid() . '.' . pathinfo( $_FILES['edd-fu-file']['name'], PATHINFO_EXTENSION );
+			$new_file_name = $this->generate_filename( $_FILES['edd-fu-file']['name'] );
 
 			// Upload file
 			if ( move_uploaded_file( $_FILES['edd-fu-file']['tmp_name'], get_temp_dir() . $new_file_name ) ) {
