@@ -22,9 +22,9 @@ function edd_fu_view_uploaded_files( $payment_id ) {
 							echo 'alternate';
 						} ?>">
 							<td class="name column-name">
-								<?php
-								echo __( 'File', 'edd-fu' ) . ' ' . ( $i + 1 );
-								?>
+							<?php
+								echo EDD_FU_File_Manager::instance()->get_userfriendly_filename( $uploaded_file );
+							?>
 							</td>
 							<td class="price column-price">
 								<?php

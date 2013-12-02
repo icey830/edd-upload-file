@@ -53,6 +53,31 @@ class EDD_FU_File_Manager {
 		return array_shift( $file_name_parts ) . '-' . uniqid() . '.' . edd_get_file_extension( $original_filename );
 	}
 
+	/**
+	 * Function that strips off the unique code at the end of a filename
+	 *
+	 * @param $filename
+	 *
+	 * @return string
+	 */
+	public function get_userfriendly_filename( $filename ) {
+
+		// Explode filename in parts
+		$filename_parts = explode( '-', $filename );
+
+		// Remove last part
+		array_pop( $filename_parts );
+
+		// Glue parts back together
+		$new_filename = implode( '-', $filename_parts );
+
+		// Add original extension
+		$new_filename .= '.' . edd_get_file_extension( $filename );
+
+		// Return new filename
+		return $new_filename;;
+	}
+
 
 	/**
 	 * Function to get the path to the files directory
@@ -123,7 +148,7 @@ class EDD_FU_File_Manager {
 				echo "<tr>\n";
 
 				echo "<td>\n";
-				echo "<a href='" . $this->get_file_url() . '/' . $uploaded_file . "' target='_blank'>" . __( 'File', 'edd-fu' ) . " {$i}</a>";
+				echo "<a href='" . $this->get_file_url() . '/' . $uploaded_file . "' target='_blank'>" . $this->get_userfriendly_filename( $uploaded_file ) . "</a>";
 				echo "</td>\n";
 
 				// Get options
