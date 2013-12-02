@@ -122,6 +122,16 @@ class EDD_File_Upload {
 		// Create the EDD Files Upload dir
 		wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
 
+		// Create an empty .htaccess file
+		if ( ! file_exists( EDD_FU_File_Manager::instance()->get_file_dir() . '/.htaccess' ) ) {
+			@file_put_contents( EDD_FU_File_Manager::instance()->get_file_dir() . '/.htaccess', '' );
+		}
+
+		// Create an empty index.php file
+		if ( ! file_exists( EDD_FU_File_Manager::instance()->get_file_dir() . '/index.php' ) ) {
+			@file_put_contents( EDD_FU_File_Manager::instance()->get_file_dir() . '/index.php', '' );
+		}
+
 	}
 
 }
