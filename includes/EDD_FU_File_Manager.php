@@ -33,6 +33,7 @@ class EDD_FU_File_Manager {
 		// Get options
 		$edd_fu_options = EDD_File_Upload::get_options();
 
+		// Handle file upload in the correct place
 		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
 			add_action( 'template_redirect', array( $this, 'handle_temp_file_upload' ) );
 		} else {
