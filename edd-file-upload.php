@@ -39,6 +39,7 @@ class EDD_File_Upload {
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
+		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/meta-box.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
