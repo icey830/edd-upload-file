@@ -136,10 +136,10 @@ class EDD_FU_File_Manager {
 	 */
 	public function print_uploaded_files( $payment_id ) {
 
-		echo "<h3>" . __( 'Uploaded Files', 'edd-fu' ) . "</h3>\n";
-
 		$uploaded_files = get_post_meta( $payment_id, 'edd_fu_file' );
 		if ( count( $uploaded_files ) > 0 ) {
+
+			echo "<h3>" . __( 'Uploaded Files', 'edd-fu' ) . "</h3>\n";
 
 			echo "<table>\n";
 
@@ -167,9 +167,6 @@ class EDD_FU_File_Manager {
 
 			echo "</table>\n";
 
-		}
-		else {
-			echo "<p>" . __( 'No files found', 'edd-fu' ) . "</p>";
 		}
 
 	}
