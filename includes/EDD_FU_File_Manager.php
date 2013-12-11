@@ -353,11 +353,11 @@ class EDD_FU_File_Manager {
 				echo "<tr>\n";
 
 				echo "<td>\n";
-				echo __( 'File', 'edd-fu' ) . $i;
+					echo $this->get_userfriendly_filename( $uploaded_file );
 				echo "</td>\n";
 
 				echo "<td>\n";
-				echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
+					echo "<a href='?delete-file={$uploaded_file}'>" . __( 'Delete', 'edd-fu' ) . "</a>";
 				echo "</td>\n";
 
 				echo "</tr>\n";
