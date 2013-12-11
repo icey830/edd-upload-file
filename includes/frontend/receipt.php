@@ -4,9 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function edd_fu_receipt_upload_field( $payment, $edd_receipt_args ) {
 
-	// Handle the upload
-//	EDD_FU_File_Manager::instance()->handle_file_upload( $payment );
-
 	// Handle the delete
 	EDD_FU_File_Manager::instance()->handle_file_delete( $payment );
 
