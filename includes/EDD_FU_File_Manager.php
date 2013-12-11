@@ -378,7 +378,7 @@ class EDD_FU_File_Manager {
 	 */
 	public function handle_temp_file_delete() {
 
-		if ( isset( $_GET['delete-file'] ) ) {
+		if ( edd_is_checkout() && isset( $_GET['delete-file'] ) ) {
 
 			if ( $this->delete_file_from_session( $_GET['delete-file'] ) ) {
 
