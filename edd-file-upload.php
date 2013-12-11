@@ -36,15 +36,19 @@ class EDD_File_Upload {
 	private function includes() {
 
 		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/meta-box.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
 
+		if ( is_admin() ) {
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/meta-box.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
+		}else {
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
+			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
+		}
+		
 	}
 
 	/**
