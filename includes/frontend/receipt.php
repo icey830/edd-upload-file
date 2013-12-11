@@ -3,11 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function edd_fu_receipt_upload_field( $payment, $edd_receipt_args ) {
-
-	// Handle the delete
-	EDD_FU_File_Manager::instance()->handle_file_delete( $payment );
-
-	?>
+?>
 	<h3><?php _e( 'Upload new file', 'edd-fu' ); ?></h3>
 	<form action="" method="post" enctype="multipart/form-data">
 		<input type="file" name="edd-fu-file" value="" />

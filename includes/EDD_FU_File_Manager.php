@@ -40,6 +40,13 @@ class EDD_FU_File_Manager {
 			add_action( 'edd_payment_receipt_before', array( $this, 'handle_file_upload' ), 0, 1 );
 		}
 
+		// Handle file delete in the correct place
+		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
+			add_action( 'edd_before_purchase_form', array( $this, 'handle_temp_file_delete' ), 9 );
+		} else {
+			add_action( 'edd_payment_receipt_after_table', array( $this, 'handle_file_delete' ), 0, 1 );
+		}
+
 	}
 
 	/**
