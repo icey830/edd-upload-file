@@ -339,12 +339,12 @@ class EDD_FU_File_Manager {
 	 */
 	public function print_temp_uploaded_files() {
 
-		echo "<fieldset id='edd_checkout_user_info'>\n";
-		echo "<span><legend>" . __( 'Uploaded Files', 'edd-fu' ) . "</legend></span>\n";
-		echo "<p id='edd-fu-files-wrap'>\n";
-
 		$uploaded_files = $this->get_session_files();
 		if ( count( $uploaded_files ) > 0 ) {
+
+			echo "<fieldset id='edd_checkout_user_info'>\n";
+			echo "<span><legend>" . __( 'Uploaded Files', 'edd-fu' ) . "</legend></span>\n";
+			echo "<p id='edd-fu-files-wrap'>\n";
 
 			echo "<table>\n";
 
@@ -366,12 +366,10 @@ class EDD_FU_File_Manager {
 
 			echo "</table>\n";
 
+
+			echo "</p>";
+			echo "</fieldset>\n";
 		}
-		else {
-			echo "<p>" . __( 'No files found', 'edd-fu' ) . "</p>";
-		}
-		echo "</p>";
-		echo "</fieldset>\n";
 
 	}
 
