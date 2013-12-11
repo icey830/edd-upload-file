@@ -4,6 +4,27 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function edd_fu_checkout_upload_field() {
 
+	// Get cart contents
+	$cart_items = edd_get_cart_contents();
+
+	// Set default file upload
+	$fu_enabled = false;
+
+	// Loop & check
+	if ( count( $cart_items ) > 0 ) {
+		foreach ( $cart_items as $cart_item ) {
+			if ( ( get_post_meta( $cart_item['id'], '_edd_fu_enabled', true ) ? true : false ) ) {
+				$fu_enabled = true;
+				break;
+			}
+		}
+	}
+
+	// Check if there is at least one product that has file uploads enabled
+	if ( false === $fu_enabled ) {
+		return;
+	}
+
 	// Get EDD options
 	$options = EDD_File_Upload::get_options();
 
