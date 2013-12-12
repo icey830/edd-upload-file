@@ -31,7 +31,7 @@ class EDD_FU_File_Manager {
 	private function hooks() {
 
 		// Get options
-		$edd_fu_options = EDD_File_Upload::get_options();
+		$edd_fu_options = EDD_Upload_File::get_options();
 
 		// Handle file upload in the correct place
 		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
@@ -117,7 +117,7 @@ class EDD_FU_File_Manager {
 	private function check_file_extension( $file_name ) {
 
 		// Get options
-		$options    = EDD_File_Upload::get_options();
+		$options    = EDD_Upload_File::get_options();
 		$extensions = $options['fu_file_extensions'];
 
 		// Check file extension
@@ -160,7 +160,7 @@ class EDD_FU_File_Manager {
 				echo "</td>\n";
 
 				// Get options
-				$edd_fu_options = EDD_File_Upload::get_options();
+				$edd_fu_options = EDD_Upload_File::get_options();
 
 				// Only display the delete link if the file upload location is the receipt page
 				if ( 'receipt' == $edd_fu_options['fu_upload_location'] ) {
@@ -191,7 +191,7 @@ class EDD_FU_File_Manager {
 		if ( isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
-			$options = EDD_File_Upload::get_options();
+			$options = EDD_Upload_File::get_options();
 
 			$file_limit = (int) $options['fu_file_limit'];
 
@@ -203,13 +203,13 @@ class EDD_FU_File_Manager {
 			// Check the maximum
 			$uploaded_files = get_post_meta( $payment->ID, 'edd_fu_file' );
 			if ( $file_limit != 0 && count( $uploaded_files ) >= $options['fu_file_limit'] ) {
-				EDD_File_Upload::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
+				EDD_Upload_File::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
 				return;
 			}
 
 			// Check extension
 			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
-				EDD_File_Upload::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
+				EDD_Upload_File::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
 				return;
 			}
 
@@ -238,7 +238,7 @@ class EDD_FU_File_Manager {
 	public function handle_file_delete( $payment ) {
 
 		// Get options
-		$edd_fu_options = EDD_File_Upload::get_options();
+		$edd_fu_options = EDD_Upload_File::get_options();
 
 		// Only display the delete link if the file upload location is the receipt page
 		if ( 'receipt' == $edd_fu_options['fu_upload_location'] && isset( $_GET['delete-file'] ) ) {
@@ -267,18 +267,18 @@ class EDD_FU_File_Manager {
 		if ( edd_is_checkout() && isset ( $_FILES['edd-fu-file'] ) && $_FILES['edd-fu-file']['error'] == 0 ) {
 
 			// Get options
-			$options = EDD_File_Upload::get_options();
+			$options = EDD_Upload_File::get_options();
 
 			// Check if the maximum
 			$uploaded_files = $this->get_session_files();
 			if ( count( $uploaded_files ) >= $options['fu_file_limit'] ) {
-				EDD_File_Upload::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
+				EDD_Upload_File::error_message( __( 'Maximum number of file uploads reached.', 'edd-fu' ) );
 				return;
 			}
 
 			// Check extension
 			if ( ! $this->check_file_extension( $_FILES['edd-fu-file']['name'] ) ) {
-				EDD_File_Upload::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
+				EDD_Upload_File::error_message( __( 'File extension not allowed.', 'edd-fu' ) );
 				return;
 			}
 

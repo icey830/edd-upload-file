@@ -11,7 +11,7 @@ function edd_fu_dependency_check() {
 	// Check if EDD is installed and activated
 	if ( ! is_plugin_active( 'easy-digital-downloads/easy-digital-downloads.php' ) ) {
 		add_action( 'admin_notices', 'edd_fu_dependency_notice' );
-		deactivate_plugins( plugin_basename( EDD_FILE_UPLOAD_PLUGIN_FILE ) );
+		deactivate_plugins( plugin_basename( EDD_UPLOAD_FILE_PLUGIN_FILE ) );
 	}
 
 }

@@ -1,26 +1,26 @@
 <?php
 /*
-Plugin Name: Easy Digital Downloads - File Upload
-Plugin URI: http://www.barrykooij.com/edd-file-upload
-Description: The File Upload extension allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
+Plugin Name: Easy Digital Downloads - Upload File
+Plugin URI: http://www.barrykooij.com/edd-upload-file
+Description: The Upload File extension allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
 Version: 1.0.0
 Author: Barry Kooij
 Author URI: http://www.barrykooij.com/
 */
 
-if ( ! defined( 'EDD_FILE_UPLOAD_PLUGIN_DIR' ) ) {
-	define( 'EDD_FILE_UPLOAD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'EDD_UPLOAD_FILE_PLUGIN_DIR' ) ) {
+	define( 'EDD_UPLOAD_FILE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
-if ( ! defined( 'EDD_FILE_UPLOAD_PLUGIN_FILE' ) ) {
-	define( 'EDD_FILE_UPLOAD_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'EDD_UPLOAD_FILE_PLUGIN_FILE' ) ) {
+	define( 'EDD_UPLOAD_FILE_PLUGIN_FILE', __FILE__ );
 }
 
-class EDD_File_Upload {
+class EDD_Upload_File {
 
 	private static $instance = null;
 
-	const PLUGIN_NAME         = 'EDD File Upload';
+	const PLUGIN_NAME         = 'EDD Upload File';
 	const PLUGIN_VERSION_NAME = '1.0.0';
 	const PLUGIN_VERSION_CODE = '1';
 	const PLUGIN_AUTHOR       = 'Barry Kooij';
@@ -35,18 +35,18 @@ class EDD_File_Upload {
 	 */
 	private function includes() {
 
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
+		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
+		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
 
 		if ( is_admin() ) {
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/settings.php';
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/view-order-details.php';
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/admin/meta-box.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/settings.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/view-order-details.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/meta-box.php';
 		}else {
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/receipt.php';
-			require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/frontend/checkout.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/receipt.php';
+			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/checkout.php';
 		}
 
 	}
@@ -57,7 +57,7 @@ class EDD_File_Upload {
 	private function init() {
 
 		// Load plugin textdomain
-		load_plugin_textdomain( 'edd-fu', false, dirname( plugin_basename( EDD_FILE_UPLOAD_PLUGIN_FILE ) ) . '/languages/' );
+		load_plugin_textdomain( 'edd-fu', false, dirname( plugin_basename( EDD_UPLOAD_FILE_PLUGIN_FILE ) ) . '/languages/' );
 
 
 		// Instantiate the licensing / updater.
@@ -122,7 +122,7 @@ class EDD_File_Upload {
 		}
 
 		// Load the File Manager
-		require_once EDD_FILE_UPLOAD_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
+		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
 
 		// Create the EDD Files Upload dir
 		wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
@@ -142,7 +142,7 @@ class EDD_File_Upload {
 }
 
 // Create object - Plugin init
-add_action( 'plugins_loaded', create_function( '', 'new EDD_File_Upload();' ) );
+add_action( 'plugins_loaded', create_function( '', 'new EDD_Upload_File();' ) );
 
 // Activation hook
-register_activation_hook( EDD_FILE_UPLOAD_PLUGIN_FILE, array( 'EDD_File_Upload', 'install' ) );
+register_activation_hook( EDD_UPLOAD_FILE_PLUGIN_FILE, array( 'EDD_Upload_File', 'install' ) );

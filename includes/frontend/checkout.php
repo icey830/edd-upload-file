@@ -26,7 +26,7 @@ function edd_fu_checkout_upload_field() {
 	}
 
 	// Get EDD options
-	$options = EDD_File_Upload::get_options();
+	$options = EDD_Upload_File::get_options();
 
 	// Get correct button classes
 	$button_style = isset( $options[ 'button_style' ] ) ? $options[ 'button_style' ] : 'button' ;
@@ -54,7 +54,7 @@ function edd_fu_checkout_upload_field() {
 <?php
 }
 
-$edd_fu_options = EDD_File_Upload::get_options();
+$edd_fu_options = EDD_Upload_File::get_options();
 
 if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_fu_checkout_upload_field', 10 );
