@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function edd_fu_dependency_notice() {
-	echo '<div class="error"><p><strong>' . __( 'EDD File Upload requires Easy Digital Downloads to be installed and activated.', 'edd-fu' ) . '</strong></p></div>';
+	echo '<div class="error"><p><strong>' . __( 'EDD Upload File requires Easy Digital Downloads to be installed and activated.', 'edd-fu' ) . '</strong></p></div>';
 }
 
 function edd_fu_dependency_check() {
