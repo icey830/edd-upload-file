@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: EDD File Upload\n"
-"POT-Creation-Date: 2013-11-04 21:24+0100\n"
-"PO-Revision-Date: 2013-11-04 21:28+0100\n"
+"POT-Creation-Date: 2013-12-12 10:04+0100\n"
+"PO-Revision-Date: 2013-12-12 10:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: English\n"
@@ -15,98 +15,109 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ../.\n"
 
-#: .././includes/EDD_FU_File_Manager.php:75
-#: .././includes/EDD_FU_File_Manager.php:259
-#: .././includes/admin/view-order-details.php:8
+#: .././includes/EDD_FU_File_Manager.php:150
+#: .././includes/EDD_FU_File_Manager.php:351
+#: .././includes/admin/view-order-details.php:10
 msgid "Uploaded Files"
 msgstr "Geüploade bestanden"
 
-#: .././includes/EDD_FU_File_Manager.php:87
-#: .././includes/EDD_FU_File_Manager.php:272
-#: .././includes/admin/view-order-details.php:21
-#: .././includes/frontend/checkout.php:20
-msgid "File"
-msgstr "Bestand"
-
-#: .././includes/EDD_FU_File_Manager.php:91
-#: .././includes/EDD_FU_File_Manager.php:276
+#: .././includes/EDD_FU_File_Manager.php:168
+#: .././includes/EDD_FU_File_Manager.php:365
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: .././includes/EDD_FU_File_Manager.php:101
-#: .././includes/EDD_FU_File_Manager.php:286
-msgid "No files found"
-msgstr "Geen bestanden gevonden"
-
-#: .././includes/EDD_FU_File_Manager.php:122
-#: .././includes/EDD_FU_File_Manager.php:186
+#: .././includes/EDD_FU_File_Manager.php:206
+#: .././includes/EDD_FU_File_Manager.php:275
 msgid "Maximum number of file uploads reached."
 msgstr "Maximaal aantal bestanden bereikt."
 
-#: .././includes/EDD_FU_File_Manager.php:128
-#: .././includes/EDD_FU_File_Manager.php:192
-msgid "File extension not allowed"
+#: .././includes/EDD_FU_File_Manager.php:212
+#: .././includes/EDD_FU_File_Manager.php:281
+msgid "File extension not allowed."
 msgstr "Bestand extensie niet toegestaan"
 
-#: .././includes/admin/settings.php:8
+#: .././includes/admin/meta-box.php:8
+msgid "File Uploads"
+msgstr "Bestand Uploaden"
+
+#: .././includes/admin/meta-box.php:31
+msgid "Check to enable file uploads"
+msgstr "Vink aan om bestand uploads aan te zetten"
+
+#: .././includes/admin/plugin-dependency.php:6
+msgid ""
+"EDD Upload File requires Easy Digital Downloads to be installed and "
+"activated."
+msgstr ""
+"Om EDD Upload File te kunnen gebruiken moet Easy Digital Downloads "
+"geïnstalleerd en geactiveerd zijn."
+
+#: .././includes/admin/settings.php:10
 msgid "File Upload Settings"
 msgstr "Bestand upload instellingen"
 
-#: .././includes/admin/settings.php:14
+#: .././includes/admin/settings.php:16
 msgid "File Upload Location"
 msgstr "Bestand upload locatie"
 
-#: .././includes/admin/settings.php:24
+#: .././includes/admin/settings.php:26
 msgid "Allowed File Extensions"
 msgstr "Toegestane bestand extensies"
 
-#: .././includes/admin/settings.php:25
+#: .././includes/admin/settings.php:27
 msgid "Comma separate extensions, leave blank to allow all"
 msgstr "Comma gescheiden, laat leeg om alles toe te staan"
 
-#: .././includes/admin/settings.php:30
+#: .././includes/admin/settings.php:32
 msgid "Allowed number of files"
 msgstr "Toegestaan aantal bestanden"
 
-#: .././includes/admin/settings.php:31
+#: .././includes/admin/settings.php:33
 msgid ""
 "Enter the allowed number of file uploads per download, enter 0 for unlimited"
 msgstr ""
 "Vul het maximaal aantal bestanden per download in, laat leeg voor onbeperkt"
 
-#: .././includes/admin/view-order-details.php:26
+#: .././includes/admin/view-order-details.php:31
 msgid "View"
 msgstr "Bekijk"
 
-#: .././includes/admin/view-order-details.php:34
+#: .././includes/admin/view-order-details.php:40
 msgid "No files uploaded"
 msgstr "Geen bestanden geupload"
 
-#: .././includes/frontend/checkout.php:17
+#: .././includes/frontend/checkout.php:40
 msgid "File Upload"
 msgstr "Bestand uploaden"
 
-#: .././includes/frontend/checkout.php:22
+#: .././includes/frontend/checkout.php:44
+msgid "File"
+msgstr "Bestand"
+
+#: .././includes/frontend/checkout.php:46
 msgid "Please select the file to attach to this order."
 msgstr "Kies het bestand om aan deze bestelling te kopellen"
 
-#: .././includes/frontend/checkout.php:25
-#: .././includes/frontend/receipt.php:15
+#: .././includes/frontend/checkout.php:50
+#: .././includes/frontend/receipt.php:39
 msgid "Upload"
 msgstr "Upload"
 
-#: .././includes/frontend/receipt.php:12
+#: .././includes/frontend/receipt.php:36
 msgid "Upload new file"
 msgstr "Upload nieuw bestand"
 
-#: .././includes/updater/EDD_License_Handler.php:126
+#: .././includes/updater/EDD_License_Handler.php:129
 #, php-format
 msgid "%1$s License Key"
 msgstr "%1$s License Key"
 
-#: .././includes/updater/EDD_License_Handler.php:256
+#: .././includes/updater/EDD_License_Handler.php:259
 msgid "Deactivate License"
 msgstr "Deactivate License"
 
-#~ msgid "File extension not allowed."
+#~ msgid "No files found"
+#~ msgstr "Geen bestanden gevonden"
+
+#~ msgid "File extension not allowed"
 #~ msgstr "Bestand extensie niet toegestaan"
