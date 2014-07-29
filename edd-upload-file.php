@@ -81,6 +81,7 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
          */
         private function includes() {
             // Include scripts
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/actions.php';
             require_once EDD_UPLOAD_FILE_DIR . 'includes/functions.php';
             require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
             require_once EDD_UPLOAD_FILE_DIR . 'includes/templates/checkout.php';
@@ -187,35 +188,42 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
             $new_settings = array(
             	array(
 					'id'	=> 'edd_upload_file_settings',
-					'name'	=> '<strong>' . __( 'File Upload Settings', 'edd-file-upload' ) . '</strong>',
+					'name'	=> '<strong>' . __( 'File Upload Settings', 'edd-upload-file' ) . '</strong>',
 					'desc'	=> '',
 					'type'	=> 'header'
 				),
 				array(
 					'id'	=> 'edd_upload_file_location',
-					'name'	=> __( 'File Upload Location', 'edd-file-upload' ),
-					'desc'	=> __( 'Specify where to display the file upload form', 'edd-file-upload' ),
+					'name'	=> __( 'File Upload Location', 'edd-upload-file' ),
+					'desc'	=> __( 'Specify where to display the file upload form', 'edd-upload-file' ),
 					'type'	=> 'select',
 					'options'	=> array(
-						'checkout'	=> __( 'Checkout Page', 'edd-file-upload' ),
-						'receipt'	=> __( 'Receipt Page', 'edd-file-upload' )
+						'checkout'	=> __( 'Checkout Page', 'edd-upload-file' ),
+						'receipt'	=> __( 'Receipt Page', 'edd-upload-file' )
 					),
 					'std'	=> 'checkout',
 				),
 				array(
 					'id'	=> 'edd_upload_file_extensions',
-					'name'	=> __( 'Allowed File Extensions', 'edd-file-upload' ),
-					'desc'	=> __( 'Comma separate list of allowed extensions, leave blank to allow all', 'edd-file-upload' ),
+					'name'	=> __( 'Allowed File Extensions', 'edd-upload-file' ),
+					'desc'	=> __( 'Comma separate list of allowed extensions, leave blank to allow all', 'edd-upload-file' ),
 					'type'	=> 'text'
 				),
 				array(
 					'id'	=> 'edd_upload_file_limit',
-					'name'	=> __( 'Maximum number of files', 'edd-file-upload' ),
-					'desc'	=> __( 'Enter the allowed number of file uploads per download, or 0 for unlimited', 'edd-file-upload' ),
+					'name'	=> __( 'Maximum number of files', 'edd-upload-file' ),
+					'desc'	=> __( 'Enter the allowed number of file uploads per download, or 0 for unlimited', 'edd-upload-file' ),
 					'type'	=> 'number',
 					'size'	=> 'small',
 					'std'	=> 1,
-				)
+				),
+                array(
+                    'id'    => 'edd_upload_file_form_desc',
+                    'name'  => __( 'Upload form description', 'edd-upload-file' ),
+                    'desc'  => __( 'Specify the description to display on the file upload form', 'edd-upload-file' ),
+                    'type'  => 'text',
+                    'std'   => __( 'Please select the file to attach to this order.', 'edd-upload-file' ),
+                )
             );
 
             return array_merge( $settings, $new_settings );

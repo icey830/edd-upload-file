@@ -43,23 +43,30 @@ function edd_upload_file_checkout_upload_field() {
 	// Print uploaded files
 	EDD_Upload_File_Manager::instance()->print_temp_uploaded_files();
 
-	?>
-	<fieldset id="edd_checkout_user_info">
-		<span><legend><?php _e( 'File Upload', 'edd-upload-file' ); ?></legend></span>
+	// Get the file upload limit
+    $limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
 
-		<p id="edd-upload-file-wrap">
-			<label class="edd-label" for="edd-upload-file">
-				<?php _e( 'File', 'edd-upload-file' ); ?> <span class="edd-required-indicator">*</span>
-			</label>
-			<span class="edd-description"><?php _e( 'Please select the file to attach to this order.', 'edd-upload-file' ); ?></span>
+    // Make sure we aren't over our limit
+    $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
+    if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) + 1 < $limit ) {
+		?>
+		<fieldset id="edd_checkout_user_info">
+			<span><legend><?php _e( 'File Upload', 'edd-upload-file' ); ?></legend></span>
 
-			<form action="" method="post" enctype="multipart/form-data">
-				<input type="file" name="edd-upload-file" value="" />
-				<input type="submit" name="Submit" value="<?php _e( 'Upload', 'edd-upload-file' ); ?>" class="<?php echo $button_style . ' ' . $color; ?>" />
-			</form>
-		</p>
-	</fieldset>
-<?php
+			<p id="edd-upload-file-wrap">
+				<label class="edd-label" for="edd-upload-file">
+					<?php _e( 'File', 'edd-upload-file' ); ?> <span class="edd-required-indicator">*</span>
+				</label>
+				<span class="edd-description"><?php echo edd_get_option( 'edd_upload_file_field_desc', __( 'Please select the file to attach to this order.', 'edd-upload-file' ) ); ?></span>
+
+				<form action="" method="post" enctype="multipart/form-data">
+					<input type="file" name="edd-upload-file" value="" />
+					<input type="submit" name="Submit" value="<?php _e( 'Upload', 'edd-upload-file' ); ?>" class="<?php echo $button_style . ' ' . $color; ?>" />
+				</form>
+			</p>
+		</fieldset>
+		<?php
+	}
 }
 
 

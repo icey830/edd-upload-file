@@ -56,7 +56,6 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
             	add_action( 'edd_payment_receipt_after_table', array( $this, 'handle_file_delete' ), 0, 1 );
             } else {
             	add_action( 'template_redirect', array( $this, 'handle_temp_file_upload' ) );
-            	add_action( 'edd_before_purchase_form', array( $this, 'handle_temp_file_delete' ) );
             }
         }
 
@@ -220,28 +219,6 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
 
 
         /**
-         * Process temp file delete from session
-         *
-         * @access		public
-         * @since		1.0.1
-         * @param		string $filename The file to delete
-         * @return		void
-         */
-        public function handle_temp_file_delete( $filename ) {
-        	if( edd_is_checkout() && isset( $_GET['delete-file'] ) ) {
-
-        		if( $this->delete_file_from_session( $_GET['delete-file'] ) ) {
-
-        			// Actually delete file
-        			if( file_exists( get_temp_dir() . $_GET['delete-file'] ) ) {
-        				unlink( get_temp_dir() . $_GET['delete-file'] );
-        			}
-        		}
-        	}
-        }
-
-
-        /**
          * Get uploaded files from session
          *
          * @access		public
@@ -316,7 +293,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
 
         			if( edd_get_option( 'edd_upload_file_location' ) == 'receipt' ) {
         				echo '<td>';
-        				echo '<a href="?delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a>';
+        				echo '<a href="?edd_action=upload_file_delete&delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a>';
         				echo '</td>';
         			}
 
@@ -351,7 +328,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         		foreach( $uploaded_files as $key => $file ) {
         			echo '<tr>';
         			echo '<td>' . $this->get_original_filename( $file ) . '</td>';
-        			echo '<td><a href="?delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
+        			echo '<td><a href="?edd_action=upload_file_delete&delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
         			echo '</tr>';
 
         			$i++;
