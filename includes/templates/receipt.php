@@ -52,7 +52,21 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
 }
 
 
+/**
+ * Print uploaded files on receipt
+ *
+ * @since		1.0.1
+ * @param		object $payment The purchase we are working with
+ * @param		array $edd_receipt_args Arguemnts for this receipt
+ * @return		void
+ */
+function edd_upload_file_print_uploaded_files( $payment, $edd_receipt_args ) {
+	EDD_Upload_File_Manager::instance()->print_uploaded_files( $payment->ID );
+}
+
+
 // Hook to the receipt page
 if( edd_get_option( 'edd_upload_file_location' ) == 'receipt' ) {
+	add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_print_uploaded_files', 11, 2 );
 	add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_receipt_upload_field', 12, 2 );
 }
