@@ -82,7 +82,11 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
         private function includes() {
             // Include scripts
             require_once EDD_UPLOAD_FILE_DIR . 'includes/functions.php';
-            require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
+            //require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
+
+            if( is_admin() ) {
+            	require_once EDD_UPLOAD_FILE_DIR . 'includes/metabox.php';
+            }
         }
 
 
@@ -180,13 +184,13 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
         public function settings( $settings ) {
             $new_settings = array(
             	array(
-					'id'	=> 'edd_file_upload_settings',
+					'id'	=> 'edd_upload_file_settings',
 					'name'	=> '<strong>' . __( 'File Upload Settings', 'edd-file-upload' ) . '</strong>',
 					'desc'	=> '',
 					'type'	=> 'header'
 				),
 				array(
-					'id'	=> 'edd_file_upload_location',
+					'id'	=> 'edd_upload_file_location',
 					'name'	=> __( 'File Upload Location', 'edd-file-upload' ),
 					'desc'	=> __( 'Specify where to display the file upload form', 'edd-file-upload' ),
 					'type'	=> 'select',
@@ -197,13 +201,13 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
 					'std'	=> 'checkout',
 				),
 				array(
-					'id'	=> 'edd_file_upload_extensions',
+					'id'	=> 'edd_upload_file_extensions',
 					'name'	=> __( 'Allowed File Extensions', 'edd-file-upload' ),
 					'desc'	=> __( 'Comma separate list of allowed extensions, leave blank to allow all', 'edd-file-upload' ),
 					'type'	=> 'text'
 				),
 				array(
-					'id'	=> 'edd_file_upload_limit',
+					'id'	=> 'edd_upload_file_limit',
 					'name'	=> __( 'Maximum number of files', 'edd-file-upload' ),
 					'desc'	=> __( 'Enter the allowed number of file uploads per download, or 0 for unlimited', 'edd-file-upload' ),
 					'type'	=> 'number',
@@ -224,8 +228,7 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
          * @return      void
          */
         public static function create_upload_dir() {
-			$wp_upload_dir = wp_upload_dir();
-            $uploadPath = $wp_upload_dir['basedir'] . '/edd-upload-files/';
+            $uploadPath = edd_upload_file_get_upload_dir();
 
             if( !is_dir( $uploadPath ) ) {
                 // Ensure that the upload directory is protected
@@ -285,18 +288,18 @@ add_action( 'plugins_loaded', 'EDD_Upload_File_load' );
 function edd_upload_file_upgrade() {
 	global $edd_options;
 
-    if( empty( $edd_options['edd_file_upload_location'] ) && ! empty( $edd_options['fu_upload_location'] ) ) {
-    	$edd_options['edd_file_upload_location'] = $edd_options['fu_upload_location'];
+    if( empty( $edd_options['edd_upload_file_location'] ) && ! empty( $edd_options['fu_upload_location'] ) ) {
+    	$edd_options['edd_upload_file_location'] = $edd_options['fu_upload_location'];
     	unset( $edd_options['fu_upload_location'] );
     }
 
-    if( empty( $edd_options['edd_file_upload_extensions'] ) && ! empty( $edd_options['fu_file_extensions'] ) ) {
-    	$edd_options['edd_file_upload_extensions'] = $edd_options['fu_file_extensions'];
+    if( empty( $edd_options['edd_upload_file_extensions'] ) && ! empty( $edd_options['fu_file_extensions'] ) ) {
+    	$edd_options['edd_upload_file_extensions'] = $edd_options['fu_file_extensions'];
     	unset( $edd_options['fu_file_extensions'] );
     }
 
-    if( empty( $edd_options['edd_file_upload_limit'] ) && ! empty( $edd_options['fu_file_limit'] ) ) {
-    	$edd_options['edd_file_upload_limit'] = $edd_options['fu_file_limit'];
+    if( empty( $edd_options['edd_upload_file_limit'] ) && ! empty( $edd_options['fu_file_limit'] ) ) {
+    	$edd_options['edd_upload_file_limit'] = $edd_options['fu_file_limit'];
     	unset( $edd_options['fu_file_limit'] );
     }
 
