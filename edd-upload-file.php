@@ -82,7 +82,9 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
         private function includes() {
             // Include scripts
             require_once EDD_UPLOAD_FILE_DIR . 'includes/functions.php';
-            //require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/templates/checkout.php';
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/templates/receipt.php';
 
             if( is_admin() ) {
             	require_once EDD_UPLOAD_FILE_DIR . 'includes/metabox.php';

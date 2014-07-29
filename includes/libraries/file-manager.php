@@ -132,7 +132,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
 
         		// Make sure we aren't over our limit
         		$uploaded_files = get_post_meta( $payment->ID, 'edd_upload_file' );
-        		if( $file_limit != 0 && count( $uploaded_files ) >= $limit ) {
+        		if( $limit != 0 && count( $uploaded_files ) >= $limit ) {
         			edd_upload_file_error( __( 'Maximum number of uploads reached!', 'edd-upload-file' ) );
         			return;
         		}
@@ -195,7 +195,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
 
         		// Make sure we aren't over our limit
         		$uploaded_files = $this->get_session_files();
-        		if( $file_limit != 0 && count( $uploaded_files ) >= $limit ) {
+        		if( $limit != 0 && count( $uploaded_files ) >= $limit ) {
         			edd_upload_file_error( __( 'Maximum number of uploads reached!', 'edd-upload-file' ) );
         			return;
         		}
@@ -277,7 +277,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
          * @param		string $filename The file to delete from the session
          * @return		bool $return True if file removed successfully, false otherwise
          */
-        public function add_file_to_session( $filename ) {
+        public function delete_file_from_session( $filename ) {
         	$session_files		= $this->get_session_files();
         	$file_key			= array_search( $filename, $session_files );
         	$return				= false;
@@ -337,7 +337,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
          * @since		1.0.1
          * @return		void
          */
-        public function print_uploaded_files() {
+        public function print_temp_uploaded_files() {
         	$uploaded_files = $this->get_session_files();
 
         	if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
@@ -350,8 +350,8 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
 
         		foreach( $uploaded_files as $key => $file ) {
         			echo '<tr>';
-        			echo '<td>' . $this->get_original_filename( $uploaded_file ) . '</td>';
-        			echo '<td><a href="?delete-file=' . $uploaded_file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
+        			echo '<td>' . $this->get_original_filename( $file ) . '</td>';
+        			echo '<td><a href="?delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
         			echo '</tr>';
 
         			$i++;
