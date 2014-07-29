@@ -433,4 +433,4 @@ class EDD_FU_File_Manager {
 
 	}
 
-} 
+}

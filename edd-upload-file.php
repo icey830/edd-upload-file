@@ -1,148 +1,305 @@
 <?php
 /*
-Plugin Name: Easy Digital Downloads - Upload File
-Plugin URI: http://www.barrykooij.com/edd-upload-file
-Description: The Upload File extension allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
-Version: 1.0.0
-Author: Barry Kooij
-Author URI: http://www.barrykooij.com/
-*/
+Plugin Name:     Easy Digital Downloads - Upload File
+Plugin URI:      https://easydigitaldownloads.com/extensions/edd-upload-file/
+Description:     Allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
+Version:         1.0.1
+Author:          Daniel J Griffiths and Barry Kooij
+Author URI:      https://easydigitaldownloads.com
+@package         EDD\UploadFile
+ */
 
-if ( ! defined( 'EDD_UPLOAD_FILE_PLUGIN_DIR' ) ) {
-	define( 'EDD_UPLOAD_FILE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
+
+
+if( !class_exists( 'EDD_Upload_File' ) ) {
+
+    /**
+     * Main EDD_Upload_File class
+     *
+     * @since       1.0.1
+     */
+    class EDD_Upload_File {
+
+        /**
+         * @var         EDD_Upload_File $instance The one true EDD_Upload_File
+         * @since       1.0.1
+         */
+        private static $instance;
+
+
+        /**
+         * Get active instance
+         *
+         * @access      public
+         * @since       1.0.1
+         * @return      object self::$instance The one true EDD_Upload_File
+         */
+        public static function instance() {
+            if( !self::$instance ) {
+                self::$instance = new EDD_Upload_File();
+                self::$instance->setup_constants();
+                self::$instance->includes();
+                self::$instance->load_textdomain();
+                self::$instance->hooks();
+            }
+
+            return self::$instance;
+        }
+
+
+        /**
+         * Setup plugin constants
+         *
+         * @access      private
+         * @since       1.0.1
+         * @return      void
+         */
+        private function setup_constants() {
+            // Plugin version
+            define( 'EDD_UPLOAD_FILE_VERSION', '1.0.1' );
+
+            // Plugin path
+            define( 'EDD_UPLOAD_FILE_DIR', plugin_dir_path( __FILE__ ) );
+
+            // Plugin URL
+            define( 'EDD_UPLOAD_FILE_URL', plugin_dir_url( __FILE__ ) );
+
+            // Plugin File
+            define( 'EDD_UPLOAD_FILE_FILE', __FILE__ );
+        }
+
+
+        /**
+         * Include necessary files
+         *
+         * @access      private
+         * @since       1.0.1
+         * @return      void
+         */
+        private function includes() {
+            // Include scripts
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/functions.php';
+            require_once EDD_UPLOAD_FILE_DIR . 'includes/libraries/file-manager.php';
+        }
+
+
+        /**
+         * Run action and filter hooks
+         *
+         * @access      private
+         * @since       1.0.1
+         * @return      void
+         */
+        private function hooks() {
+            // Edit plugin metalinks
+            add_filter( 'plugin_row_meta', array( $this, 'plugin_metalinks' ), null, 2 );
+
+            // Handle licensing
+            if( class_exists( 'EDD_License' ) ) {
+                $license = new EDD_License( __FILE__, 'Upload File', EDD_UPLOAD_FILE_VERSION, 'Daniel J Griffiths' );
+            }
+
+            // Ensure the upload directory exists
+            add_action( 'admin_init', array( $this, 'create_upload_dir' ) );
+
+            // Register settings
+            add_filter( 'edd_settings_extensions', array( $this, 'settings' ), 1 );
+        }
+
+
+        /**
+         * Internationalization
+         *
+         * @access      public
+         * @since       1.0.1
+         * @return      void
+         */
+        public function load_textdomain() {
+            // Set filter for language directory
+            $lang_dir = EDD_UPLOAD_FILE_DIR . '/languages/';
+            $lang_dir = apply_filters( 'edd_upload_file_languages_directory', $lang_dir );
+
+            // Traditional WordPress plugin locale filter
+            $locale = apply_filters( 'plugin_locale', get_locale(), 'edd-upload-file' );
+            $mofile = sprintf( '%1$s-%2$s.mo', 'edd-upload-file', $locale );
+
+            // Setup paths to current locale file
+            $mofile_local   = $lang_dir . $mofile;
+            $mofile_global  = WP_LANG_DIR . '/edd-upload-file/' . $mofile;
+
+            if( file_exists( $mofile_global ) ) {
+                // Look in global /wp-content/languages/edd-upload-file/ folder
+                load_textdomain( 'edd-upload-file', $mofile_global );
+            } elseif( file_exists( $mofile_local ) ) {
+                // Look in local /wp-content/plugins/edd-upload-file/languages/ folder
+                load_textdomain( 'edd-upload-file', $mofile_local );
+            } else {
+                // Load the default language files
+                load_plugin_textdomain( 'edd-upload-file', false, $lang_dir );
+            }
+        }
+
+
+        /**
+         * Modify plugin metalinks
+         *
+         * @access      public
+         * @since       1.0.1
+         * @param       array $links The current links array
+         * @param       string $file A specific plugin table entry
+         * @return      array $links The modified links array
+         */
+        public function plugin_metalinks( $links, $file ) {
+            if( $file == plugin_basename( __FILE__ ) ) {
+                $help_link = array(
+                    '<a href="https://easydigitaldownloads.com/support/forum/add-on-plugins/upload-file-extension/" target="_blank">' . __( 'Support Forum', 'edd-upload-file' ) . '</a>'
+                );
+
+                $docs_link = array(
+                    '<a href="http://section214.com/docs/category/edd-upload-file/" target="_blank">' . __( 'Docs', 'edd-upload-file' ) . '</a>'
+                );
+
+                $links = array_merge( $links, $help_link, $docs_link );
+            }
+
+            return $links;
+        }
+
+
+        /**
+         * Add settings
+         *
+         * @access      public
+         * @since       1.0.0
+         * @param       array $settings The existing EDD settings array
+         * @return      array The modified EDD settings array
+         */
+        public function settings( $settings ) {
+            $new_settings = array(
+            	array(
+					'id'	=> 'edd_file_upload_settings',
+					'name'	=> '<strong>' . __( 'File Upload Settings', 'edd-file-upload' ) . '</strong>',
+					'desc'	=> '',
+					'type'	=> 'header'
+				),
+				array(
+					'id'	=> 'edd_file_upload_location',
+					'name'	=> __( 'File Upload Location', 'edd-file-upload' ),
+					'desc'	=> __( 'Specify where to display the file upload form', 'edd-file-upload' ),
+					'type'	=> 'select',
+					'options'	=> array(
+						'checkout'	=> __( 'Checkout Page', 'edd-file-upload' ),
+						'receipt'	=> __( 'Receipt Page', 'edd-file-upload' )
+					),
+					'std'	=> 'checkout',
+				),
+				array(
+					'id'	=> 'edd_file_upload_extensions',
+					'name'	=> __( 'Allowed File Extensions', 'edd-file-upload' ),
+					'desc'	=> __( 'Comma separate list of allowed extensions, leave blank to allow all', 'edd-file-upload' ),
+					'type'	=> 'text'
+				),
+				array(
+					'id'	=> 'edd_file_upload_limit',
+					'name'	=> __( 'Maximum number of files', 'edd-file-upload' ),
+					'desc'	=> __( 'Enter the allowed number of file uploads per download, or 0 for unlimited', 'edd-file-upload' ),
+					'type'	=> 'number',
+					'size'	=> 'small',
+					'std'	=> 1,
+				)
+            );
+
+            return array_merge( $settings, $new_settings );
+        }
+
+
+        /**
+         * Ensure that the upload dir exists
+         *
+         * @access      public
+         * @since       1.0.1
+         * @return      void
+         */
+        public static function create_upload_dir() {
+			$wp_upload_dir = wp_upload_dir();
+            $uploadPath = $wp_upload_dir['basedir'] . '/edd-upload-files/';
+
+            if( !is_dir( $uploadPath ) ) {
+                // Ensure that the upload directory is protected
+                wp_mkdir_p( $uploadPath );
+
+                // Top level blank index.php
+                if( !file_exists( $uploadPath . 'index.php' ) ) {
+                    @file_put_contents( $uploadPath . 'index.php', '<?php' . PHP_EOL . '// Silence is golden.' );
+                }
+
+                // Top level .htaccess
+                $rules = "Options -Indexes";
+                if( file_exists( $uploadPath . '.htaccess' ) ) {
+                    $contents = @file_get_contents( $uploadPath . '.htaccess' );
+
+                    if( $contents !== $rules || !$contents ) {
+                        @file_put_contents( $uploadPath . '.htaccess', $rules );
+                    }
+                }
+            }
+
+
+		}
+    }
 }
 
-if ( ! defined( 'EDD_UPLOAD_FILE_PLUGIN_FILE' ) ) {
-	define( 'EDD_UPLOAD_FILE_PLUGIN_FILE', __FILE__ );
+
+/**
+ * The main function responsible for returning the one true EDD_Upload_File
+ * instance to functions everywhere
+ *
+ * @since       1.0.0
+ * @return      \EDD_Upload_File The one true EDD_Upload_File
+ */
+function EDD_Upload_File_load() {
+    if( !class_exists( 'Easy_Digital_Downloads' ) ) {
+        if( !class_exists( 'S214_EDD_Activation' ) ) {
+            require_once( 'includes/class.s214-edd-activation.php' );
+        }
+
+        $activation = new S214_EDD_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
+        $activation = $activation->run();
+    } else {
+        return EDD_Upload_File::instance();
+    }
 }
-
-class EDD_Upload_File {
-
-	private static $instance = null;
-
-	const PLUGIN_NAME         = 'EDD Upload File';
-	const PLUGIN_VERSION_NAME = '1.0.0';
-	const PLUGIN_VERSION_CODE = '1';
-	const PLUGIN_AUTHOR       = 'Barry Kooij';
-
-	public function __construct() {
-		$this->includes();
-		$this->init();
-	}
-
-	/**
-	 * Function that requires all includes
-	 */
-	private function includes() {
-
-		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
-		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/updater/EDD_License_Handler.php';
-
-		if ( is_admin() ) {
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/plugin-dependency.php';
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/settings.php';
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/view-order-details.php';
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/admin/meta-box.php';
-		}else {
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/print-uploaded-files.php';
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/receipt.php';
-			require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/frontend/checkout.php';
-		}
-
-	}
-
-	/**
-	 * Function that setups the plugin
-	 */
-	private function init() {
-
-		// Load plugin textdomain
-		load_plugin_textdomain( 'edd-fu', false, dirname( plugin_basename( EDD_UPLOAD_FILE_PLUGIN_FILE ) ) . '/languages/' );
+add_action( 'plugins_loaded', 'EDD_Upload_File_load' );
 
 
-		// Instantiate the licensing / updater.
-		$license = new EDD_License( __FILE__, self::PLUGIN_NAME, self::PLUGIN_VERSION_NAME, self::PLUGIN_AUTHOR );
+/**
+ * Process upgrades
+ *
+ * @since       1.0.1
+ * @global		array $edd_options The EDD options array
+ * @return      void
+ */
+function edd_upload_file_upgrade() {
+	global $edd_options;
 
-		// Setup the File Manager
-		EDD_FU_File_Manager::instance();
+    if( empty( $edd_options['edd_file_upload_location'] ) && ! empty( $edd_options['fu_upload_location'] ) ) {
+    	$edd_options['edd_file_upload_location'] = $edd_options['fu_upload_location'];
+    	unset( $edd_options['fu_upload_location'] );
+    }
 
-	}
+    if( empty( $edd_options['edd_file_upload_extensions'] ) && ! empty( $edd_options['fu_file_extensions'] ) ) {
+    	$edd_options['edd_file_upload_extensions'] = $edd_options['fu_file_extensions'];
+    	unset( $edd_options['fu_file_extensions'] );
+    }
 
-	/**
-	 * Function to load EDD options, settings default file upload options when not set by user
-	 *
-	 * @return array EDD options
-	 */
-	public static function get_options() {
-		global $edd_options;
-		return wp_parse_args( $edd_options, array(
-			'fu_upload_location' => 'receipt',
-			'fu_file_limit'      => '1',
-			'fu_file_extensions' => '',
-		) );
-	}
+    if( empty( $edd_options['edd_file_upload_limit'] ) && ! empty( $edd_options['fu_file_limit'] ) ) {
+    	$edd_options['edd_file_upload_limit'] = $edd_options['fu_file_limit'];
+    	unset( $edd_options['fu_file_limit'] );
+    }
 
-	/**
-	 * Function to display error messages
-	 *
-	 * @param $message
-	 */
-	public static function error_message( $message ) {
-
-		$edd_fu_options = self::get_options();
-
-		if ( $edd_fu_options['fu_upload_location'] == 'checkout' ) {
-
-			$messages = EDD()->session->get( 'edd_cart_messages' );
-
-			if ( ! $messages ) {
-				$messages = array();
-			}
-
-			$messages['edd_fu_error_message'] = $message;
-
-			EDD()->session->set( 'edd_cart_messages', $messages );
-
-		}else {
-
-			echo "<tr><td colspan='2' style='color:#ff0000;font-weight:bold;'>{$message}</td></tr>\n";
-
-		}
-
-	}
-
-	/**
-	 * Function that is run when plugin is installed
-	 */
-	public static function install() {
-
-		// Check if EDD is installed and activated
-		if ( ! is_plugin_active( 'easy-digital-downloads/easy-digital-downloads.php' ) ) {
-			return;
-		}
-
-		// Load the File Manager
-		require_once EDD_UPLOAD_FILE_PLUGIN_DIR . 'includes/EDD_FU_File_Manager.php';
-
-		// Create the EDD Files Upload dir
-		wp_mkdir_p( EDD_FU_File_Manager::instance()->get_file_dir() );
-
-		// Create an empty .htaccess file
-		if ( ! file_exists( EDD_FU_File_Manager::instance()->get_file_dir() . '/.htaccess' ) ) {
-			@file_put_contents( EDD_FU_File_Manager::instance()->get_file_dir() . '/.htaccess', '' );
-		}
-
-		// Create an empty index.php file
-		if ( ! file_exists( EDD_FU_File_Manager::instance()->get_file_dir() . '/index.php' ) ) {
-			@file_put_contents( EDD_FU_File_Manager::instance()->get_file_dir() . '/index.php', '' );
-		}
-
-	}
-
+    update_option( 'edd_settings', $edd_options );
 }
-
-// Create object - Plugin init
-add_action( 'plugins_loaded', create_function( '', 'new EDD_Upload_File();' ) );
-
-// Activation hook
-register_activation_hook( EDD_UPLOAD_FILE_PLUGIN_FILE, array( 'EDD_Upload_File', 'install' ) );
+register_activation_hook( __FILE__, 'edd_upload_file_upgrade' );
