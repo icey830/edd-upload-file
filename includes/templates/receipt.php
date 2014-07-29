@@ -42,13 +42,21 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
 	$button_style	= edd_get_option( 'button_style', 'button' );
 	$color			= edd_get_option( 'checkout_color', 'blue' );
 
-	?>
-	<h3><?php _e( 'Upload new file', 'edd-upload-file' ); ?></h3>
-	<form action="" method="post" enctype="multipart/form-data">
-		<input type="file" name="edd-upload-file" value="" />
-		<input type="submit" name="Submit" value="<?php _e( 'Upload', 'edd-upload-file' ); ?>" class="<?php echo $button_style . ' ' . $color; ?>" />
-	</form>
-	<?php
+	// Get the file upload limit
+    //$limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
+    $limit = (int) edd_upload_file_max_files( $payment );
+
+    // Make sure we aren't over our limit
+    $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
+    if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) < $limit ) {
+		?>
+		<h3><?php _e( 'Upload new file', 'edd-upload-file' ); ?></h3>
+		<form action="" method="post" enctype="multipart/form-data">
+			<input type="file" name="edd-upload-file" value="" />
+			<input type="submit" name="Submit" value="<?php _e( 'Upload', 'edd-upload-file' ); ?>" class="<?php echo $button_style . ' ' . $color; ?>" />
+		</form>
+		<?php
+	}
 }
 
 

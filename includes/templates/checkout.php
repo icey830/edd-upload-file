@@ -44,11 +44,12 @@ function edd_upload_file_checkout_upload_field() {
 	EDD_Upload_File_Manager::instance()->print_temp_uploaded_files();
 
 	// Get the file upload limit
-    $limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
+    //$limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
+    $limit = (int) edd_upload_file_max_files();
 
     // Make sure we aren't over our limit
     $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
-    if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) + 1 < $limit ) {
+    if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) < $limit ) {
 		?>
 		<fieldset id="edd_checkout_user_info">
 			<span><legend><?php _e( 'File Upload', 'edd-upload-file' ); ?></legend></span>

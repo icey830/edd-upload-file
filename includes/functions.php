@@ -105,3 +105,33 @@ function edd_upload_file_view_files( $payment_id ) {
 	<?php
 }
 add_action( 'edd_view_order_details_main_after', 'edd_upload_file_view_files' );
+
+
+/**
+ * Get the max number of uploads allowed
+ *
+ * @since		1.0.1
+ * @param		object $payment The purchase we are working with
+ * @return		int $limit The max number of files
+ */
+function edd_upload_file_max_files( $payment = false ) {
+	if( edd_is_checkout() ) {
+		$cart_items	= edd_get_cart_contents();
+	} else {
+		$cart_items	= edd_get_payment_meta_cart_details( $payment->ID, true );
+	}
+
+	$global_limit	= edd_get_option( 'edd_upload_file_limit', 1 );
+	$limit			= 0;
+
+	// Check files for upload permission
+	if( count( $cart_items ) > 0 ) {
+		foreach( $cart_items as $cart_item ) {
+			if( get_post_meta( $cart_item['id'], '_edd_upload_file_enabled', true ) ? true : false ) {
+				$limit = $limit + $global_limit;
+			}
+		}
+	}
+
+	return $limit;
+}

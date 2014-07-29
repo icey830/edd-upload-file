@@ -127,7 +127,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         public function handle_file_upload( $payment ) {
         	if( isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
         		// Get the file upload limit
-        		$limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
+                $limit = edd_upload_file_max_files( $payment );
 
         		// Make sure we aren't over our limit
         		$uploaded_files = get_post_meta( $payment->ID, 'edd_upload_file' );
@@ -190,7 +190,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         public function handle_temp_file_upload() {
         	if( edd_is_checkout() && isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
 				// Get the file upload limit
-        		$limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
+        		$limit = edd_upload_file_max_files();
 
         		// Make sure we aren't over our limit
         		$uploaded_files = $this->get_session_files();
