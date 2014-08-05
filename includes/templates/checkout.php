@@ -40,6 +40,8 @@ function edd_upload_file_checkout_upload_field() {
 	$button_style	= edd_get_option( 'button_style', 'button' );
 	$color			= edd_get_option( 'checkout_color', 'blue' );
 
+	do_action( 'edd_upload_file_before' );
+
 	// Print uploaded files
 	EDD_Upload_File_Manager::instance()->print_temp_uploaded_files();
 
@@ -68,6 +70,8 @@ function edd_upload_file_checkout_upload_field() {
 		</fieldset>
 		<?php
 	}
+
+	do_action( 'edd_upload_file_after' );
 }
 
 

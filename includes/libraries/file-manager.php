@@ -125,6 +125,8 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
          * @return		void
          */
         public function handle_file_upload( $payment ) {
+            global $edd_upload_file_errors;
+
         	if( isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
         		// Get the file upload limit
                 $limit = edd_upload_file_max_files( $payment );
@@ -132,13 +134,13 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         		// Make sure we aren't over our limit
         		$uploaded_files = get_post_meta( $payment->ID, 'edd_upload_file' );
         		if( $limit != 0 && count( $uploaded_files ) >= $limit ) {
-        			edd_upload_file_error( __( 'Maximum number of uploads reached!', 'edd-upload-file' ) );
+        			$edd_upload_file_error[] = __( 'Maximum number of uploads reached!', 'edd-upload-file' );
         			return;
         		}
 
         		// Verify file extension validity
         		if( ! $this->check_extension( $_FILES['edd-upload-file']['name'] ) ) {
-        			edd_upload_file_error( __( 'File extension not allowed!', 'edd-upload-file' ) );
+        			$edd_upload_file_errors[] = __( 'File extension not allowed!', 'edd-upload-file' );
         			return;
         		}
 
@@ -149,7 +151,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         			// Attach to post
         			add_post_meta( $payment->ID, 'edd_upload_file_files', $filename );
         		} else {
-        			edd_upload_file_error( __( 'File upload failed!', 'edd-upload-file' ) );
+        			$edd_upload_file_errors[] = __( 'File upload failed!', 'edd-upload-file' );
         			return;
         		}
         	}
@@ -188,6 +190,8 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
          * @return		void
          */
         public function handle_temp_file_upload() {
+            global $edd_upload_file_errors;
+
         	if( edd_is_checkout() && isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
 				// Get the file upload limit
         		$limit = edd_upload_file_max_files();
@@ -195,13 +199,13 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         		// Make sure we aren't over our limit
         		$uploaded_files = $this->get_session_files();
         		if( $limit != 0 && count( $uploaded_files ) >= $limit ) {
-        			edd_upload_file_error( __( 'Maximum number of uploads reached!', 'edd-upload-file' ) );
+        			$edd_upload_file_errors[] = __( 'Maximum number of uploads reached!', 'edd-upload-file' );
         			return;
         		}
 
         		// Verify file extension validity
         		if( ! $this->check_extension( $_FILES['edd-upload-file']['name'] ) ) {
-        			edd_upload_file_error( __( 'File extension not allowed!', 'edd-upload-file' ) );
+        			$edd_upload_file_errors[] = __( 'File extension not allowed!', 'edd-upload-file' );
         			return;
         		}
 
@@ -211,7 +215,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         		if( move_uploaded_file( $_FILES['edd-upload-file']['tmp_name'], get_temp_dir() . $filename ) ) {
         			$this->add_file_to_session( $filename );
         		} else {
-        			edd_upload_file_error( __( 'File upload failed!', 'edd-upload-file' ) );
+        			$edd_upload_file_errors[] = __( 'File upload failed!', 'edd-upload-file' );
         			return;
         		}
         	}
@@ -355,7 +359,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
         	if( is_array( $temp_files ) && count( $temp_files ) > 0 ) {
         		foreach( $temp_files as $temp_file ) {
         			// Copy file to upload dir
-        			if( copy( get_temp_dir() . $temp_file, edd_upload_file_get_file_dir() . '/' . $temp_file ) ) {
+        			if( copy( get_temp_dir() . $temp_file, edd_upload_file_get_upload_dir() . '/' . $temp_file ) ) {
         				// Attach uploaded file to post
         				add_post_meta( $payment_id, 'edd_upload_file_files', $temp_file );
 

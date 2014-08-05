@@ -45,20 +45,19 @@ function edd_upload_file_get_upload_url() {
  * @return		void
  */
 function edd_upload_file_error( $message ) {
-	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) ) {
-		$messages = EDD()->session->get( 'edd_cart_messages' );
+	global $edd_upload_file_errors;
 
-		if( ! $messages ) {
-			$messages = array();
+	if( is_array( $edd_upload_file_errors ) ) {
+		foreach( $edd_upload_file_errors as $error ) {
+			if( edd_get_option( 'edd_upload_file_location', 'checkout' ) ) {
+				echo '<div class="edd_errors"><p class="edd_error" id="edd_msg_edd_upload_file_error">' . $error . '</p></div>';
+			} else {
+				echo '<tr><td colspan="2" style="color: #ff0000; font-weight: bold;">' . $error . '</td></tr>' . "\n";
+			}
 		}
-
-		$messages['edd_upload_file_error'] = $message;
-
-		EDD()->session->set( 'edd_cart_messages', $messages );
-	} else {
-		echo '<tr><td colspan="2" style="color: #ff0000; font-weight: bold;">' . $message . '</td></tr>' . "\n";
 	}
 }
+add_action( 'edd_upload_file_before', 'edd_upload_file_error', 11 );
 
 
 /**
