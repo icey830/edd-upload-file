@@ -60,7 +60,7 @@ function edd_upload_file_checkout_upload_field() {
 				<label class="edd-label" for="edd-upload-file">
 					<?php _e( 'File', 'edd-upload-file' ); ?> <span class="edd-required-indicator">*</span>
 				</label>
-				<span class="edd-description"><?php echo edd_get_option( 'edd_upload_file_field_desc', __( 'Please select the file to attach to this order.', 'edd-upload-file' ) ); ?></span>
+				<span class="edd-description"><?php echo edd_get_option( 'edd_upload_file_form_desc', __( 'Please select the file to attach to this order.', 'edd-upload-file' ) ); ?></span>
 
 				<form action="" method="post" enctype="multipart/form-data">
 					<input type="file" name="edd-upload-file" value="" />
