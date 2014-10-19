@@ -51,6 +51,7 @@ function edd_upload_file_checkout_upload_field() {
 
     // Make sure we aren't over our limit
     $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
+
     if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) < $limit ) {
 		?>
 		<fieldset id="edd_checkout_user_info">

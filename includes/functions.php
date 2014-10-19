@@ -120,7 +120,8 @@ function edd_upload_file_max_files( $payment = false ) {
 		$cart_items	= edd_get_payment_meta_cart_details( $payment->ID, true );
 	}
 
-	$global_limit	= edd_get_option( 'edd_upload_file_limit', 1 );
+    $global_limit	= edd_get_option( 'edd_upload_file_limit', 0 );
+    $global_limit   = ( $global_limit == 0 ? 999 : $global_limit );
 	$limit			= 0;
 
 	// Check files for upload permission
@@ -129,7 +130,7 @@ function edd_upload_file_max_files( $payment = false ) {
 			if( get_post_meta( $cart_item['id'], '_edd_upload_file_enabled', true ) ? true : false ) {
 				$limit = $limit + $global_limit;
 			}
-		}
+        }
 	}
 
 	return $limit;
