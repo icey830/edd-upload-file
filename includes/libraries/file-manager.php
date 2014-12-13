@@ -51,7 +51,7 @@ if( !class_exists( 'EDD_Upload_File_Manager' ) ) {
          * @return      void
          */
         private function hooks() {
-            if( edd_get_option( 'edd_upload_file_location' ) == 'receipt' ) {
+            if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'receipt' ) {
             	add_action( 'edd_payment_receipt_before', array( $this, 'handle_file_upload' ), 0, 1 );
             	add_action( 'edd_payment_receipt_after_table', array( $this, 'handle_file_delete' ), 0, 1 );
             } else {

@@ -30,8 +30,8 @@ function edd_upload_file_checkout_upload_field() {
 			}
 		}
 	}
-
-	// Return if we can't upload
+    
+    // Return if we can't upload
 	if( false === $upload_enabled ) {
 		return;
 	}
@@ -77,7 +77,7 @@ function edd_upload_file_checkout_upload_field() {
 
 
 // Hook to the checkout page
-if( edd_get_option( 'edd_upload_file_location' ) == 'checkout' ) {
+if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_upload_file_checkout_upload_field', 10 );
 	add_action( 'edd_complete_purchase', array( EDD_Upload_File_Manager::instance(), 'attach_temp_files_to_payment' ), 10, 1 );
 }
