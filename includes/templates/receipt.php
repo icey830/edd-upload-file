@@ -47,7 +47,8 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
     $limit = (int) edd_upload_file_max_files( $payment );
 
     // Make sure we aren't over our limit
-    $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
+    $uploaded_files = get_post_meta( $payment->ID, 'edd_upload_file_files', true );
+    
     if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) < $limit ) {
 		?>
 		<h3><?php _e( 'Upload new file', 'edd-upload-file' ); ?></h3>
@@ -69,12 +70,11 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
  * @return		void
  */
 function edd_upload_file_print_uploaded_files( $payment, $edd_receipt_args ) {
-	EDD_Upload_File_Manager::instance()->print_uploaded_files( $payment->ID );
+	edd_upload_file_print_receipt_files( $payment->ID );
 }
 
 
 // Hook to the receipt page
 if( edd_get_option( 'edd_upload_file_location' ) == 'receipt' ) {
 	add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_print_uploaded_files', 11, 2 );
-	add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_receipt_upload_field', 12, 2 );
-}
+	add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_receipt_upload_field', 12, 2 );}

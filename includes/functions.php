@@ -86,7 +86,7 @@ function edd_upload_file_view_files( $payment_id ) {
 
 				foreach( $uploaded_files as $key => $file ) {
 					echo '<tr class="'  . ( $i % 2 == 0 ? 'alternate' : '' ) . '">';
-					echo '<td class="name column-name">' . EDD_Upload_File_Manager::instance()->get_original_filename( $file ) . '</td>';
+					echo '<td class="name column-name">' . edd_upload_file_get_original_filename( $file ) . '</td>';
 					echo '<td class="price column-price"><a href="' . edd_upload_file_get_upload_url() . '/' . $file . '" target="_blank">' . __( 'View File', 'edd-upload-file' ) . '</a></td>';
 					echo '</tr>';
 
@@ -132,6 +132,6 @@ function edd_upload_file_max_files( $payment = false ) {
 			}
         }
 	}
-
-	return $limit;
+    
+    return $limit;
 }

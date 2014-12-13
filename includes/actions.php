@@ -19,14 +19,18 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function edd_upload_file_delete() {
 	if( isset( $_GET['delete-file']) ) {
-		EDD_Upload_File_Manager::instance()->delete_file_from_session( $_GET['delete-file'] );
+        edd_upload_file_delete_from_session( $_GET['delete-file'] );
 
 		// Actually delete file
 		if( file_exists( get_temp_dir() . $_GET['delete-file'] ) ) {
 			unlink( get_temp_dir() . $_GET['delete-file'] );
 		}
 
-		wp_redirect( remove_query_arg( array( 'edd_action', 'delete-file' ) ) );
+        if( ! edd_is_checkout() ) {
+            wp_redirect( remove_query_arg( array( 'edd_action' ) ) );
+        } else {
+            wp_redirect( remove_query_arg( array( 'edd_action', 'delete-file' ) ) );
+        }
 		edd_die();
 	}
 }

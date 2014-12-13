@@ -43,14 +43,14 @@ function edd_upload_file_checkout_upload_field() {
 	do_action( 'edd_upload_file_before' );
 
 	// Print uploaded files
-	EDD_Upload_File_Manager::instance()->print_temp_uploaded_files();
+    edd_upload_file_print_checkout_files();
 
 	// Get the file upload limit
     //$limit = (int) edd_get_option( 'edd_upload_file_limit', 1 );
     $limit = (int) edd_upload_file_max_files();
 
     // Make sure we aren't over our limit
-    $uploaded_files = EDD_Upload_File_Manager::instance()->get_session_files();
+    $uploaded_files = edd_upload_file_get_session_files();
 
     if( $limit == 0 || empty( $uploaded_files ) || count( $uploaded_files ) < $limit ) {
 		?>
@@ -79,5 +79,5 @@ function edd_upload_file_checkout_upload_field() {
 // Hook to the checkout page
 if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
 	add_action( 'edd_before_purchase_form', 'edd_upload_file_checkout_upload_field', 10 );
-	add_action( 'edd_complete_purchase', array( EDD_Upload_File_Manager::instance(), 'attach_temp_files_to_payment' ), 10, 1 );
+	add_action( 'edd_complete_purchase', 'edd_upload_file_attach_files', 10, 1 );
 }
