@@ -210,29 +210,29 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
          * @return      void
          */
         public static function create_upload_dir() {
-            $uploadPath = edd_upload_file_get_upload_dir();
+            $uploadPath = trailingslashit( edd_upload_file_get_upload_dir() );
 
-            if( !is_dir( $uploadPath ) ) {
-                // Ensure that the upload directory is protected
+            // Ensure that the upload directory exists
+            if( ! is_dir( $uploadPath ) ) {
                 wp_mkdir_p( $uploadPath );
-
-                // Top level blank index.php
-                if( !file_exists( $uploadPath . 'index.php' ) ) {
-                    @file_put_contents( $uploadPath . 'index.php', '<?php' . PHP_EOL . '// Silence is golden.' );
-                }
-
-                // Top level .htaccess
-                $rules = "Options -Indexes";
-                if( file_exists( $uploadPath . '.htaccess' ) ) {
-                    $contents = @file_get_contents( $uploadPath . '.htaccess' );
-
-                    if( $contents !== $rules || !$contents ) {
-                        @file_put_contents( $uploadPath . '.htaccess', $rules );
-                    }
-                }
             }
 
+            // Top level blank index.php
+            if( ! file_exists( $uploadPath . 'index.php' ) ) {
+                @file_put_contents( $uploadPath . 'index.php', '<?php' . PHP_EOL . '// Silence is golden.' );
+            }
 
+            // Top level .htaccess
+            $rules = "Options -Indexes";
+            if( file_exists( $uploadPath . '.htaccess' ) ) {
+                $contents = @file_get_contents( $uploadPath . '.htaccess' );
+
+                if( $contents !== $rules || !$contents ) {
+                    @file_put_contents( $uploadPath . '.htaccess', $rules );
+                }
+            } else {
+                @file_put_contents( $uploadPath . '.htaccess', $rules );
+            }
 		}
     }
 }
