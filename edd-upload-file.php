@@ -102,9 +102,6 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
          * @return      void
          */
         private function hooks() {
-            // Edit plugin metalinks
-            add_filter( 'plugin_row_meta', array( $this, 'plugin_metalinks' ), null, 2 );
-
             // Handle licensing
             if( class_exists( 'EDD_License' ) ) {
                 $license = new EDD_License( __FILE__, 'Upload File', EDD_UPLOAD_FILE_VERSION, 'Daniel J Griffiths' );
@@ -148,32 +145,6 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
                 // Load the default language files
                 load_plugin_textdomain( 'edd-upload-file', false, $lang_dir );
             }
-        }
-
-
-        /**
-         * Modify plugin metalinks
-         *
-         * @access      public
-         * @since       1.0.1
-         * @param       array $links The current links array
-         * @param       string $file A specific plugin table entry
-         * @return      array $links The modified links array
-         */
-        public function plugin_metalinks( $links, $file ) {
-            if( $file == plugin_basename( __FILE__ ) ) {
-                $help_link = array(
-                    '<a href="https://easydigitaldownloads.com/support/forum/add-on-plugins/upload-file-extension/" target="_blank">' . __( 'Support Forum', 'edd-upload-file' ) . '</a>'
-                );
-
-                $docs_link = array(
-                    '<a href="http://section214.com/docs/category/edd-upload-file/" target="_blank">' . __( 'Docs', 'edd-upload-file' ) . '</a>'
-                );
-
-                $links = array_merge( $links, $help_link, $docs_link );
-            }
-
-            return $links;
         }
 
 
