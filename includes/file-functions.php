@@ -21,7 +21,11 @@ if( ! defined( 'ABSPATH' ) ) exit;
 function edd_upload_file_generate_filename( $filename ) {
     $filename_parts = pathinfo( $filename );
 
-    return $filename_parts['filename'] . '-' . uniqid() . '.' . $filename_parts['extension'];
+    // Generate a hash... safer than uniqid
+    $hash1 = hash( 'md5', $filename_parts['filename'] );
+    $hash2 = hash( 'md5', time() );
+
+    return $filename_parts['filename'] . '-' . hash( 'md5', $hash1 . $hash2 ) . '.' . $filename_parts['extension'];
 }
 
 
