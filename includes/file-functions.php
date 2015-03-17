@@ -22,10 +22,9 @@ function edd_upload_file_generate_filename( $filename ) {
     $filename_parts = pathinfo( $filename );
 
     // Generate a hash... safer than uniqid
-    $hash1 = hash( 'md5', $filename_parts['filename'] );
-    $hash2 = hash( 'md5', time() );
+    $hash = wp_hash( $filename_parts['filename'] . current_time( 'timestamp' ) );
 
-    return $filename_parts['filename'] . '-' . hash( 'md5', $hash1 . $hash2 ) . '.' . $filename_parts['extension'];
+    return $filename_parts['filename'] . '-' . $hash . '.' . $filename_parts['extension'];
 }
 
 
