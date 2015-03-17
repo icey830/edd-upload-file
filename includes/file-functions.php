@@ -242,7 +242,7 @@ function edd_upload_file_print_receipt_files( $payment_id ) {
 
             if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'receipt' ) {
                 echo '<td>';
-                echo '<a href="?edd_action=upload_file_delete&delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a>';
+                echo '<a href="' . wp_nonce_url( add_query_arg( array( 'edd_action' => 'upload_file_delete', 'delete-file' => $file ) ), 'edd-upload-file-nonce', 'edd-upload-file-nonce' ) . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a>';
                 echo '</td>';
             }
 
@@ -277,7 +277,7 @@ function edd_upload_file_print_checkout_files() {
         foreach( $uploaded_files as $key => $file ) {
             echo '<tr>';
             echo '<td>' . edd_upload_file_get_original_filename( $file ) . '</td>';
-            echo '<td><a href="?edd_action=upload_file_delete&delete-file=' . $file . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
+            echo '<td><a href="' . wp_nonce_url( add_query_arg( array( 'edd_action' => 'upload_file_delete', 'delete-file' => $file ) ), 'edd-upload-file-nonce', 'edd-upload-file-nonce' ) . '">' . __( 'Delete File', 'edd-upload-file' ) . '</a></td>';
             echo '</tr>';
 
             $i++;

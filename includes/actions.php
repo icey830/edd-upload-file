@@ -18,7 +18,11 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return		string $upload_dir The file upload directory
  */
 function edd_upload_file_delete() {
-	if( isset( $_GET['delete-file']) ) {
+    if( ! isset( $_GET['edd-upload-file-nonce'] ) || ! wp_verify_nonce( $_GET['edd-upload-file-nonce'], 'edd-upload-file-nonce' ) ) {
+        return;
+    }
+
+    if( isset( $_GET['delete-file']) ) {
         edd_upload_file_delete_from_session( $_GET['delete-file'] );
 
 		// Actually delete file
