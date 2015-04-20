@@ -31,9 +31,9 @@ function edd_upload_file_delete() {
 		}
 
         if( ! edd_is_checkout() ) {
-            wp_redirect( remove_query_arg( array( 'edd_action' ) ) );
+            wp_safe_redirect( remove_query_arg( array( 'edd_action' ) ) );
         } else {
-            wp_redirect( remove_query_arg( array( 'edd_action', 'delete-file' ) ) );
+            wp_safe_redirect( remove_query_arg( array( 'edd_action', 'delete-file' ) ) );
         }
 		edd_die();
 	}

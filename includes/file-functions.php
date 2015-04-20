@@ -76,7 +76,7 @@ function edd_upload_file_check_extension( $filename ) {
  */
 function edd_upload_file_process_receipt_upload( $payment ) {
     global $edd_upload_file_errors;
-    
+
     if( isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
         // Get the file upload limit
         $limit = edd_upload_file_max_files( $payment );
@@ -237,7 +237,7 @@ function edd_upload_file_print_receipt_files( $payment_id ) {
 
         foreach( $uploaded_files as $key => $file ) {
             echo '<tr>';
-            echo '<td><a href="' . edd_upload_file_get_upload_url() . '/' . $file . '" target="_blank">' . edd_upload_file_get_original_filename( $file ) . '</a></td>';
+            echo '<td><a href="' . esc_url( edd_upload_file_get_upload_url() . '/' . $file ) . '" target="_blank">' . edd_upload_file_get_original_filename( $file ) . '</a></td>';
 
             if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'receipt' ) {
                 echo '<td>';
@@ -304,7 +304,7 @@ function edd_upload_file_attach_files( $payment_id ) {
             // Copy to upload dir
             if( copy( get_temp_dir() . $temp_file, edd_upload_file_get_upload_dir() . '/' . $temp_file ) ) {
                 add_post_meta( $payment_id, 'edd_upload_file_files', $temp_file );
-                
+
                 // Remove from temp dir
                 if( file_exists( get_temp_dir() . $temp_file ) ) {
                     unlink( get_temp_dir() . $temp_file );

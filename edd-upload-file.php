@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Upload File
  * Plugin URI:      https://easydigitaldownloads.com/extensions/edd-upload-file/
  * Description:     Allows your customers to attach a file to their order. Files can be attached at the checkout page or at the receipt page.
- * Version:         1.0.4
+ * Version:         1.0.5
  * Author:          Daniel J Griffiths and Barry Kooij
  * Author URI:      https://easydigitaldownloads.com
  *
@@ -60,7 +60,7 @@ if( !class_exists( 'EDD_Upload_File' ) ) {
          */
         private function setup_constants() {
             // Plugin version
-            define( 'EDD_UPLOAD_FILE_VERSION', '1.0.4' );
+            define( 'EDD_UPLOAD_FILE_VERSION', '1.0.5' );
 
             // Plugin path
             define( 'EDD_UPLOAD_FILE_DIR', plugin_dir_path( __FILE__ ) );
