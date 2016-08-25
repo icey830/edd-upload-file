@@ -83,41 +83,78 @@ function edd_upload_file_show_files_on_receipt( $payment, $edd_receipt_args ) {
 		return;
 	}
 
-	$files = get_post_meta( $payment->ID, '_edd_upload_file', false );
+	$uploaded_files = get_post_meta( $payment->ID, 'edd_upload_file_files', false );
 
-	if( $files ) {
+	if( ! $uploaded_files ) {
+		$uploaded_files = get_post_meta( $payment->ID, '_edd_upload_file', false );
+	}
+
+	$allow_download = edd_get_option( 'edd_upload_file_allow_download', false );
+
+	if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
 		echo '<tr class="edd_upload_file_files">';
 		echo '<td colspan="2"><strong>' . __( 'Uploaded Files:', 'edd-upload-file' ) . '</strong></td>';
 		echo '</tr>';
 
-		$display = array();
+		if( is_string( $uploaded_files[0] ) ) {
+			foreach( $uploaded_files as $key => $file ) {
+				echo '<tr><td colspan="2">';
 
-		foreach( $files as $file ) {
-			$download_id   = $file['download']['id'];
-			$download_name = get_the_title( $download_id );
+				if( $allow_download ) {
+					$download_url = wp_nonce_url( add_query_arg( array(
+						'edd_action' => 'upload_file_download',
+						'filename'   => edd_upload_file_get_original_filename( $file ),
+						'filepath'   => $file
+					) ), 'edd_upload_file_download_nonce', '_wpnonce' );
 
-			if( edd_has_variable_prices( $download_id ) ) {
-				$prices         = edd_get_variable_prices( $download_id );
-				$download_name .= ' - ' . $prices[$file['download']['price_id']];
+					echo '&mdash;&nbsp;<a href="' . $download_url . '">' . edd_upload_file_get_original_filename( $file ) . '</a>';
+				} else {
+					echo '&mdash;&nbsp;' . edd_upload_file_get_original_filename( $file );
+				}
+
+				echo '</td></tr>';
+			}
+		} else {
+			$display = array();
+
+			foreach( $uploaded_files as $file ) {
+				$download_id   = $file['download']['id'];
+				$download_name = get_the_title( $download_id );
+
+				if( edd_has_variable_prices( $download_id ) ) {
+					$prices         = edd_get_variable_prices( $download_id );
+					$download_name .= ' - ' . $prices[$file['download']['price_id']];
+				}
+
+				$display[$download_id][$file['download']['item_id']] = array(
+					'name' => $download_name,
+					'file' => $file['filename'],
+					'uuid' => $file['uuid']
+				);
 			}
 
-			$display[$download_id][$file['download']['item_id']] = array(
-				'name'    => $download_name,
-				'file'    => $file['filename']
-			);
-		}
+			foreach( $display as $download ) {
+				echo '<tr>';
+				echo '<td>' . $download[1]['name'] . '</td>';
+				echo '<td>';
 
-		foreach( $display as $download ) {
-			echo '<tr>';
-			echo '<td>' . $download[1]['name'] . '</td>';
-			echo '<td>';
+				foreach( $download as $file ) {
+					if( $allow_download ) {
+						$download_url = wp_nonce_url( add_query_arg( array(
+							'edd_action' => 'upload_file_download',
+							'filename'   => $file['file'],
+							'filepath'   => trailingslashit( $file['uuid'] ) . $file['file']
+						) ), 'edd_upload_file_download_nonce', '_wpnonce' );
 
-			foreach( $download as $file ) {
-				echo '<div class="edd-upload-file-receipt-item">&nbsp;&mdash;&nbsp;' . $file['file'] . '</div>';
+						echo '<div class="edd-upload-file-receipt-item">&nbsp;&mdash;&nbsp;<a href="' . $download_url . '">' . $file['file'] . '</a></div>';
+					} else {
+						echo '<div class="edd-upload-file-receipt-item">&nbsp;&mdash;&nbsp;' . $file['file'] . '</div>';
+					}
+				}
+
+				echo '</td>';
+				echo '</tr>';
 			}
-
-			echo '</td>';
-			echo '</tr>';
 		}
 	}
 }

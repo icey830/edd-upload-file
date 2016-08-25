@@ -82,6 +82,12 @@ function edd_upload_file_register_settings( $settings ) {
 				'tooltip_desc'  => __( 'This setting can be overridden on a per-product basis.', 'edd-upload-file' ),
 			),
 			array(
+				'id'   => 'edd_upload_file_allow_download',
+				'name' => __( 'Allow User Download', 'edd-upload-file' ),
+				'desc' => __( 'Check to allow users to download files from the purchase details page', 'edd-upload-file' ),
+				'type' => 'checkbox'
+			),
+			array(
 				'id'   => 'edd_upload_file_text_settings',
 				'name' => '<strong>' . __( 'Text Settings', 'edd-upload-file' ) . '</strong>',
 				'desc' => '',
@@ -140,7 +146,7 @@ function edd_upload_file_add_debug( $settings ) {
 		$debug_setting[] = array(
 			'id'   => 'edd_upload_file_enable_debug',
 			'name' => __( 'Enable Debug', 'edd-upload-file' ),
-			'desc' => sprintf( __( 'Log plugin errors. You can view errors %s and in the Javascript console.', 'edd-upload-file' ), '<a href="' . admin_url( 'tools.php?page=s214-debug-logs' ) . '">' . __( 'here', 'edd-getresponse' ) . '</a>' ),
+			'desc' => sprintf( __( 'Log plugin errors. You can view errors %s and in the Javascript console', 'edd-upload-file' ), '<a href="' . admin_url( 'tools.php?page=s214-debug-logs' ) . '">' . __( 'here', 'edd-upload-file' ) . '</a>' ),
 			'type' => 'checkbox'
 		);
 
