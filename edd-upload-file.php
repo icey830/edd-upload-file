@@ -115,7 +115,7 @@ if( ! class_exists( 'EDD_Upload_File' ) ) {
 			require_once EDD_UPLOAD_FILE_DIR . 'includes/download/actions.php';
 			require_once EDD_UPLOAD_FILE_DIR . 'includes/download/functions.php';
 
-			//require_once EDD_UPLOAD_FILE_DIR . 'includes/deprecated.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/deprecated-functions.php';
 
 			if( is_admin() ) {
 				require_once EDD_UPLOAD_FILE_DIR . 'includes/admin/download/metabox.php';

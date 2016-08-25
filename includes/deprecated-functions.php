@@ -22,6 +22,10 @@ if( ! defined( 'ABSPATH' ) ) {
  * @return      int $limit The max number of files
  */
 function edd_upload_file_max_files( $payment = false ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	if( edd_is_checkout() ) {
 		$cart_items	= edd_get_cart_contents();
 	} else {
@@ -53,6 +57,10 @@ function edd_upload_file_max_files( $payment = false ) {
  * @return      string $upload_dir The file upload directory
  */
 function edd_upload_file_delete() {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	if( ! isset( $_GET['edd-upload-file-nonce'] ) || ! wp_verify_nonce( $_GET['edd-upload-file-nonce'], 'edd-upload-file-nonce' ) ) {
 		return;
 	}
@@ -73,7 +81,7 @@ function edd_upload_file_delete() {
 		edd_die();
 	}
 }
-add_action( 'edd_upload_file_delete', 'edd_upload_file_delete' );
+//add_action( 'edd_upload_file_delete', 'edd_upload_file_delete' );
 
 
 /**
@@ -85,6 +93,10 @@ add_action( 'edd_upload_file_delete', 'edd_upload_file_delete' );
  * @return      void
  */
 function edd_upload_file_error( $message ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	global $edd_upload_file_errors;
 
 	if( is_array( $edd_upload_file_errors ) ) {
@@ -97,7 +109,7 @@ function edd_upload_file_error( $message ) {
 		}
 	}
 }
-add_action( 'edd_upload_file_before', 'edd_upload_file_error', 11 );
+//add_action( 'edd_upload_file_before', 'edd_upload_file_error', 11 );
 
 
 /**
@@ -109,6 +121,10 @@ add_action( 'edd_upload_file_before', 'edd_upload_file_error', 11 );
  * @return      void
  */
 function edd_upload_file_attach_files( $payment_id ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$temp_files = edd_upload_file_get_session_files();
 
 	if( is_array( $temp_files ) && count( $temp_files ) > 0 ) {
@@ -127,7 +143,7 @@ function edd_upload_file_attach_files( $payment_id ) {
 		}
 	}
 }
-add_action( 'edd_complete_purchase', 'edd_upload_file_attach_files', 10, 1 );
+//add_action( 'edd_complete_purchase', 'edd_upload_file_attach_files', 10, 1 );
 
 
 /**
@@ -138,6 +154,10 @@ add_action( 'edd_complete_purchase', 'edd_upload_file_attach_files', 10, 1 );
  * @return      void
  */
 function edd_upload_file_print_checkout_files() {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$uploaded_files = edd_upload_file_get_session_files();
 
 	if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
@@ -173,6 +193,10 @@ function edd_upload_file_print_checkout_files() {
  * @return      void
  */
 function edd_upload_file_print_receipt_files( $payment_id ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$uploaded_files = get_post_meta( $payment_id, 'edd_upload_file_files' );
 
 	if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
@@ -210,6 +234,10 @@ function edd_upload_file_print_receipt_files( $payment_id ) {
  * @return      void
  */
 function edd_upload_file_process_deletion( $payment ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	// Only display on the receipt page
 	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'receipt' && isset( $_GET['delete-file'] ) ) {
 		// Remove from post meta
@@ -220,7 +248,7 @@ function edd_upload_file_process_deletion( $payment ) {
 		}
 	}
 }
-add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_process_deletion', 0, 1 );
+//add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_process_deletion', 0, 1 );
 
 
 
@@ -232,6 +260,10 @@ add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_process_deletion
  * @return      void
  */
 function edd_upload_file_process_checkout_upload() {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	global $edd_upload_file_errors;
 
 	if( edd_is_checkout() && isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
@@ -262,7 +294,7 @@ function edd_upload_file_process_checkout_upload() {
 		}
 	}
 }
-add_action( 'template_redirect', 'edd_upload_file_process_checkout_upload' );
+//add_action( 'template_redirect', 'edd_upload_file_process_checkout_upload' );
 
 
 /**
@@ -273,6 +305,10 @@ add_action( 'template_redirect', 'edd_upload_file_process_checkout_upload' );
  * @return      array The uploaded files
  */
 function edd_upload_file_get_session_files() {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	return wp_parse_args( EDD()->session->get( 'edd_upload_files' ), array() );
 }
 
@@ -286,6 +322,10 @@ function edd_upload_file_get_session_files() {
  * @return      void
  */
 function edd_upload_file_add_to_session( $filename ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$session_files   = edd_upload_file_get_session_files();
 	$session_files[] = $filename;
 
@@ -302,6 +342,10 @@ function edd_upload_file_add_to_session( $filename ) {
  * @return      bool $return True if successful, false otherwise
  */
 function edd_upload_file_delete_from_session( $filename ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$session_files = edd_upload_file_get_session_files();
 	$file_key      = array_search( $filename, $session_files );
 	$return        = false;
@@ -326,6 +370,10 @@ function edd_upload_file_delete_from_session( $filename ) {
  * @return      string $filename The new filename
  */
 function edd_upload_file_generate_filename( $filename ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	$filename_parts = pathinfo( $filename );
 
 	// Generate a hash... safer than uniqid
@@ -344,6 +392,10 @@ function edd_upload_file_generate_filename( $filename ) {
  * @return      bool $is_allowed True if allowed, false otherwise
  */
 function edd_upload_file_check_extension( $filename ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'edd_upload_file_get_allowed_extensions()', $backtrace );
+
 	$extensions = edd_get_option( 'edd_upload_file_extensions', '' );
 	$is_allowed = true;
 
@@ -369,6 +421,10 @@ function edd_upload_file_check_extension( $filename ) {
  * @return      void
  */
 function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'edd_upload_file_display_receipt_upload_field', $backtrace );
+
 	$cart_items		= edd_get_payment_meta_cart_details( $payment->ID, true );
 	$upload_enabled	= false;
 
@@ -419,6 +475,10 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
  * @return      void
  */
 function edd_upload_file_print_uploaded_files( $payment, $edd_receipt_args ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'edd_upload_file_show_files_on_receipt()', $backtrace );
+
 	edd_upload_file_print_receipt_files( $payment->ID );
 }
 
@@ -432,6 +492,10 @@ function edd_upload_file_print_uploaded_files( $payment, $edd_receipt_args ) {
  * @return      void
  */
 function edd_upload_file_process_receipt_upload( $payment ) {
+	$backtrace = debug_backtrace();
+
+	_edd_deprecated_function( __FUNCTION__, '2.0.0', 'no alternatives', $backtrace );
+
 	global $edd_upload_file_errors;
 
 	if( isset( $_FILES['edd-upload-file'] ) && $_FILES['edd-upload-file']['error'] == 0 ) {
@@ -462,4 +526,4 @@ function edd_upload_file_process_receipt_upload( $payment ) {
 		}
 	}
 }
-add_action( 'edd_payment_receipt_before', 'edd_upload_file_process_receipt_upload', 0, 1 );
+//add_action( 'edd_payment_receipt_before', 'edd_upload_file_process_receipt_upload', 0, 1 );

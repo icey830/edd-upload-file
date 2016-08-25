@@ -19,7 +19,7 @@ if( ! defined( 'ABSPATH' ) ) {
  * @since       1.0.1
  * @return      void
  */
-function edd_upload_file_checkout_upload_field() {
+function edd_upload_file_display_checkout_upload_field() {
 	// Bail if the form is displayed on receipt
 	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) != 'checkout' ) {
 		return;
@@ -29,7 +29,7 @@ function edd_upload_file_checkout_upload_field() {
 
 	edd_upload_file_display_form( $cart_items, 'checkout' );
 }
-add_action( 'edd_before_purchase_form', 'edd_upload_file_checkout_upload_field', 10 );
+add_action( 'edd_before_purchase_form', 'edd_upload_file_display_checkout_upload_field', 10 );
 
 
 /**
@@ -40,7 +40,7 @@ add_action( 'edd_before_purchase_form', 'edd_upload_file_checkout_upload_field',
  * @param		array $edd_receipt_args Arguemnts for this receipt
  * @return      void
  */
-function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
+function edd_upload_file_display_receipt_upload_field( $payment, $edd_receipt_args ) {
 	// Bail if the form is displayed on checkout
 	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
 		return;
@@ -54,7 +54,7 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
 
 	edd_upload_file_display_form( $cart_items, 'receipt', $payment->ID );
 }
-add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_receipt_upload_field', 12, 2 );
+add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_display_receipt_upload_field', 12, 2 );
 
 
 /**
