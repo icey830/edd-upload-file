@@ -3,7 +3,7 @@
  * Upload handler
  *
  * @package     EDD/UploadFile/UploadHandler
- * @since       1.1.0
+ * @since       2.0.0
  */
 
 
@@ -16,7 +16,7 @@ if( ! defined( 'ABSPATH' ) ) {
 /**
  * EDD_Upload_File_Uploader Class
  *
- * @since       1.1.0
+ * @since       2.0.0
  */
 class EDD_Upload_File_Uploader {
 
@@ -25,7 +25,7 @@ class EDD_Upload_File_Uploader {
 	 * Setup our endpoint
 	 *
 	 * @access      public
-	 * @since       1.1.0
+	 * @since       2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'add_endpoint' ) );
@@ -37,7 +37,7 @@ class EDD_Upload_File_Uploader {
 	 * Registers a new rewrite endpoint
 	 *
 	 * @access      public
-	 * @since       1.1.0
+	 * @since       2.0.0
 	 * @param       array $rewrite_rules WordPress Rewrite Rules
 	 */
 	public function add_endpoint( $rewrite_rules ) {
@@ -49,7 +49,7 @@ class EDD_Upload_File_Uploader {
 	 * Listens for and process uploads
 	 *
 	 * @access      public
-	 * @since       1.1.0
+	 * @since       2.0.0
 	 * @return      void
 	 */
 	public function process_query() {

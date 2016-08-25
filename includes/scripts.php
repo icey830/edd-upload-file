@@ -3,7 +3,7 @@
  * Scripts
  *
  * @package     EDD\UploadFile\Scripts
- * @since       1.1.0
+ * @since       2.0.0
  */
 
 
@@ -16,7 +16,7 @@ if( ! defined( 'ABSPATH' ) ) {
 /**
  * Load admin scripts
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @return      void
  */
 function edd_upload_file_load_admin_scripts() {
@@ -33,7 +33,7 @@ add_action( 'admin_enqueue_scripts', 'edd_upload_file_load_admin_scripts' );
 /**
  * Load frontend scripts
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @return      void
  */
 function edd_upload_file_load_scripts() {
@@ -54,7 +54,7 @@ add_action( 'wp_enqueue_scripts', 'edd_upload_file_load_scripts' );
 /**
  * Load the uploader template
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @return      void
  */
 function edd_upload_file_load_template() {

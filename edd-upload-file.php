@@ -35,14 +35,14 @@ if( ! class_exists( 'EDD_Upload_File' ) ) {
 
 		/**
 		 * @var         object $uploader The upload handler object
-		 * @since       1.1.0
+		 * @since       2.0.0
 		 */
 		public $uploader;
 
 
 		/**
 		 * @var         bool $debugging Whether or not debugging is available
-		 * @since       1.1.0
+		 * @since       2.0.0
 		 */
 		public $debugging = false;
 
@@ -109,7 +109,11 @@ if( ! class_exists( 'EDD_Upload_File' ) ) {
 			require_once EDD_UPLOAD_FILE_DIR . 'includes/filters.php';
 			require_once EDD_UPLOAD_FILE_DIR . 'includes/functions.php';
 			require_once EDD_UPLOAD_FILE_DIR . 'includes/scripts.php';
-			require_once EDD_UPLOAD_FILE_DIR . 'includes/class.edd-upload-file-uploader.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/upload/actions.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/upload/functions.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/upload/class.edd-upload-file-uploader.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/download/actions.php';
+			require_once EDD_UPLOAD_FILE_DIR . 'includes/download/functions.php';
 
 			//require_once EDD_UPLOAD_FILE_DIR . 'includes/deprecated.php';
 

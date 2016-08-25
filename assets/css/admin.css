@@ -31,3 +31,13 @@
 .edd-upload-file-ext-col:last-child {
 	border-left: 0;
 }
+
+#edd-upload-file-files .inside {
+	margin: 0;
+	padding: 0;
+}
+
+#edd-upload-file-files th {
+	font-weight: 600;
+	font-size: 13px;
+}

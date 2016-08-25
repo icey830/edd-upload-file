@@ -1,6 +1,6 @@
 <?php
 /**
- * Process EDD actions
+ * Misc actions
  *
  * @package     EDD\UploadFile\Actions
  * @since       1.0.1
@@ -71,217 +71,9 @@ add_action( 'admin_init', 'edd_upload_file_directory_exists' );
 
 
 /**
- * Link files on payment completion
- *
- * @since       1.1.3
- * @param       int $payment_id The ID for this purchase
- * @return      void
- */
-function edd_upload_file_link_files( $payment_id ) {
-	if( isset( $_POST['edd-upload-file'] ) ) {
-		foreach( $_POST['edd-upload-file'] as $file ) {
-			$file_data = substr( $file, 1, -1 );
-			$file_data = explode( '}{', $file_data );
-
-			$download_data = explode( '-', $file_data[0] );
-			$meta_data     = array(
-				'uuid'     => $file_data[1],
-				'filename' => $file_data[2]
-			);
-
-			if( count( $download_data ) == 3 ) {
-				$meta_data['download'] = array(
-					'id'       => $download_data[0],
-					'price_id' => $download_data[1],
-					'item_id'  => $download_data[2]
-				);
-			} else {
-				$meta_data['download'] = array(
-					'id'      => $download_data[0],
-					'item_id' => $download_data[1]
-				);
-			}
-
-			add_post_meta( $payment_id, '_edd_upload_file', $meta_data );
-		}
-	}
-}
-add_action( 'edd_complete_purchase', 'edd_upload_file_link_files', 10, 1 );
-
-
-/**
- * Link files on receipt upload
- *
- * @since       1.1.0
- * @return      void
- */
-function edd_upload_file_ajax_update_files() {
-	if( ! empty( $_POST['download_data'] ) || ! empty( $_POST['uuid'] ) || ! empty( $_POST['filename'] ) || ! empty( $_POST['payment_id'] ) ) {
-
-		$download_data = explode( '-', $_POST['download_data'] );
-		$meta_data     = array(
-			'uuid'     => $_POST['uuid'],
-			'filename' => $_POST['filename']
-		);
-
-		if( count( $download_data ) == 3 ) {
-			$meta_data['download'] = array(
-				'id'       => $download_data[0],
-				'price_id' => $download_data[1],
-				'item_id'  => $download_data[2]
-			);
-		} else {
-			$meta_data['download'] = array(
-				'id'      => $download_data[0],
-				'item_id' => $download_data[1]
-			);
-		}
-
-		$return = add_post_meta( $_POST['payment_id'], '_edd_upload_file', $meta_data );
-
-		echo json_encode($return);
-	}
-	edd_die();
-}
-add_action( 'wp_ajax_edd_upload_file_process', 'edd_upload_file_ajax_update_files' );
-add_action( 'wp_ajax_nopriv_edd_upload_file_process', 'edd_upload_file_ajax_update_files' );
-
-
-/**
- * Unink files on receipt delete
- *
- * @since       1.1.0
- * @return      void
- */
-function edd_upload_file_ajax_delete_files() {
-	if( ! empty( $_POST['download_data'] ) || ! empty( $_POST['payment_id'] ) ) {
-
-		$file_data = substr( $_POST['download_data'], 1, -1 );
-		$file_data = explode( '}{', $file_data );
-
-		$download_data = explode( '-', $file_data[0] );
-		$meta_data     = array(
-			'uuid'     => $file_data[1],
-			'filename' => $file_data[2]
-		);
-
-		if( count( $download_data ) == 3 ) {
-			$meta_data['download'] = array(
-				'id'       => $download_data[0],
-				'price_id' => $download_data[1],
-				'item_id'  => $download_data[2]
-			);
-		} else {
-			$meta_data['download'] = array(
-				'id'      => $download_data[0],
-				'item_id' => $download_data[1]
-			);
-		}
-
-		$return = delete_post_meta( $_POST['payment_id'], '_edd_upload_file', $meta_data );
-
-		echo json_encode($return);
-	}
-	edd_die();
-}
-add_action( 'wp_ajax_edd_upload_file_delete', 'edd_upload_file_ajax_delete_files' );
-add_action( 'wp_ajax_nopriv_edd_upload_file_delete', 'edd_upload_file_ajax_delete_files' );
-
-
-/**
- * Add uploaded files to the view details page
- *
- * @since       1.0.1
- * @param       int $payment_id The ID for the purchase we are viewing
- * @return      void
- */
-function edd_upload_file_view_files( $payment_id ) {
-	?>
-	<div id="edd-purchased-files" class="postbox">
-		<h3 class="hndle"><?php _e( 'Uploaded Files', 'edd-upload-file' ); ?></h3>
-
-		<div class="inside">
-			<?php
-			$uploaded_files = get_post_meta( $payment_id, 'edd_upload_file_files' );
-
-			if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
-				$i = 0;
-				$upload_dir = wp_upload_dir();
-				$upload_dir = $upload_dir['basedir'] . '/edd-upload-files';
-
-				echo '<table class="wp-list-table widefat fixed" cellspacing="0">';
-				echo '<tbody id="edd-upload-files-list">';
-
-				foreach( $uploaded_files as $key => $file ) {
-					echo '<tr class="'  . ( $i % 2 == 0 ? 'alternate' : '' ) . '">';
-					echo '<td class="name column-name">' . edd_upload_file_get_original_filename( $file ) . '</td>';
-					echo '<td class="price column-price"><a href="' . edd_upload_file_get_upload_url() . '/' . $file . '" target="_blank">' . __( 'View File', 'edd-upload-file' ) . '</a></td>';
-					echo '</tr>';
-
-					$i++;
-				}
-
-				echo '</tbody>';
-				echo '</table>';
-			} else {
-				echo __( 'No files uploaded', 'edd-upload-file' );
-			}
-			?>
-		</div>
-	</div>
-	<?php
-}
-add_action( 'edd_view_order_details_main_after', 'edd_upload_file_view_files' );
-
-
-/**
- * Add upload field to checkout
- *
- * @since       1.0.1
- * @return      void
- */
-function edd_upload_file_checkout_upload_field() {
-	// Bail if the form is displayed on receipt
-	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) != 'checkout' ) {
-		return;
-	}
-
-	$cart_items = edd_get_cart_contents();
-
-	edd_upload_file_display_form( $cart_items, 'checkout' );
-}
-add_action( 'edd_before_purchase_form', 'edd_upload_file_checkout_upload_field', 10 );
-
-
-/**
- * Add upload field to receipt
- *
- * @since       1.0.1
- * @param		object $payment The purchase we are working with
- * @param		array $edd_receipt_args Arguemnts for this receipt
- * @return      void
- */
-function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
-	// Bail if the form is displayed on checkout
-	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
-		return;
-	}
-
-	if( isset( $_GET['payment_key'] ) || get_post_meta( $payment->ID, '_edd_upload_file', false ) ) {
-		return;
-	}
-
-	$cart_items = edd_get_payment_meta_cart_details( $payment->ID, true );
-
-	edd_upload_file_display_form( $cart_items, 'receipt', $payment->ID );
-}
-add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_receipt_upload_field', 12, 2 );
-
-
-/**
  * Display uploaded files on the [edd_receipt] short code
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @param       object $payment The payment object
  * @param       array $edd_receipt_args Arguments for the receipt
  * @return      void
@@ -330,3 +122,121 @@ function edd_upload_file_show_files_on_receipt( $payment, $edd_receipt_args ) {
 	}
 }
 add_action( 'edd_payment_receipt_after', 'edd_upload_file_show_files_on_receipt', 10, 2 );
+
+
+/**
+ * Add uploaded files to the view details page
+ *
+ * @since       1.0.1
+ * @param       int $payment_id The ID for the purchase we are viewing
+ * @return      void
+ */
+function edd_upload_file_view_files( $payment_id ) {
+	$uploaded_files = get_post_meta( $payment_id, 'edd_upload_file_files', false );
+
+	if( ! $uploaded_files ) {
+		$uploaded_files = get_post_meta( $payment_id, '_edd_upload_file', false );
+	}
+	?>
+	<div id="edd-upload-file-files" class="postbox">
+		<h3 class="hndle"><?php _e( 'Uploaded Files', 'edd-upload-file' ); ?></h3>
+
+		<div class="inside">
+			<?php
+			if( $uploaded_files != '' && count( $uploaded_files ) > 0 ) {
+				if( is_string( $uploaded_files[0] ) ) {
+					$i = 0;
+
+					echo '<table class="wp-list-table widefat fixed" cellspacing="0">';
+
+					echo '<thead>';
+					echo '<tr>';
+					echo '<th class="name column-name">' . __( 'File', 'edd-upload-file' ) . '</th>';
+					echo '<th class="action column-action">' . __( 'Action', 'edd-upload-file' ) . '</th>';
+					echo '</tr>';
+					echo '</thead>';
+
+					echo '<tbody id="edd-upload-files-list">';
+
+					foreach( $uploaded_files as $key => $file ) {
+						echo '<tr class="'  . ( $i % 2 == 0 ? 'alternate' : '' ) . '">';
+						echo '<td class="name column-name">' . edd_upload_file_get_original_filename( $file ) . '</td>';
+
+						$download_url = wp_nonce_url( add_query_arg( array(
+							'edd-action' => 'upload_file_download',
+							'filename'   => edd_upload_file_get_original_filename( $file ),
+							'filepath'   => $file
+						) ), 'edd_upload_file_download_nonce', '_wpnonce' );
+
+						echo '<td class="upload-file column-upload-file"><a href="' . $download_url . '">' . __( 'Download File', 'edd-upload-file' ) . '</a></td>';
+						echo '</tr>';
+
+						$i++;
+					}
+
+					echo '</tbody>';
+					echo '</table>';
+				} else {
+					echo '<table class="wp-list-table widefat fixed" cellspacing="0">';
+
+					echo '<thead>';
+					echo '<tr>';
+					echo '<th class="name column-name">' . __( 'Product', 'edd-upload-file' ) . '</th>';
+					echo '<th class="upload-file column-upload-file">' . __( 'Files', 'edd-upload-file' ) . '</th>';
+					echo '</tr>';
+					echo '</thead>';
+
+					echo '<tbody id="edd-upload-files-list">';
+
+					$display = array();
+					$i       = 0;
+
+					foreach( $uploaded_files as $file ) {
+						$download_id   = $file['download']['id'];
+						$download_name = get_the_title( $download_id );
+
+						if( edd_has_variable_prices( $download_id ) ) {
+							$prices         = edd_get_variable_prices( $download_id );
+							$download_name .= ' - ' . $prices[$file['download']['price_id']];
+						}
+
+						$display[$download_id][$file['download']['item_id']] = array(
+							'name' => $download_name,
+							'file' => $file['filename'],
+							'uuid' => $file['uuid']
+						);
+					}
+
+					foreach( $display as $download ) {
+						echo '<tr class="'  . ( $i % 2 == 0 ? 'alternate' : '' ) . '">';
+						echo '<td class="name column-name">' . $download[1]['name'] . '</td>';
+						echo '<td class="upload-file column-upload-file">';
+
+						foreach( $download as $file ) {
+							$download_url = wp_nonce_url( add_query_arg( array(
+								'edd-action' => 'upload_file_download',
+								'filename'   => $file['file'],
+								'filepath'   => trailingslashit( $file['uuid'] ) . $file['file']
+							) ), 'edd_upload_file_download_nonce', '_wpnonce' );
+
+							echo '<div class="edd-upload-file-receipt-item">&nbsp;&mdash;&nbsp;' . $file['file'] . '&nbsp;<a href="' . $download_url . '"><i data-code="f316" class="dashicons dashicons-download"></i></a></div>';
+						}
+
+						echo '</td>';
+						echo '</tr>';
+
+						$i++;
+					}
+
+					echo '</tbody>';
+					echo '</table>';
+				}
+			} else {
+				_e( 'No files uploaded', 'edd-upload-file' );
+			}
+			?>
+		</div>
+	</div>
+	<?php
+}
+add_action( 'edd_view_order_details_main_after', 'edd_upload_file_view_files' );

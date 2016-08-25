@@ -3,7 +3,7 @@
  * Filters
  *
  * @package         EDD\UploadFile\Filters
- * @since           1.1.0
+ * @since           2.0.0
  */
 
 
@@ -16,7 +16,7 @@ if( ! defined( 'ABSPATH' ) ) {
 /**
  * Adds our templates dir to the EDD template stack
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @param       array $paths The existing template stack
  * @return      array $paths The updated template stack
  */

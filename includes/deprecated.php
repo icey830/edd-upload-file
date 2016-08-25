@@ -336,22 +336,6 @@ function edd_upload_file_generate_filename( $filename ) {
 
 
 /**
- * Strip unique ID from filename
- *
- * @since       1.0.3
- * @deprecated  1.1.0
- * @param       string $filename The original filename
- * @return      string $filename The filename sans ID
- */
-function edd_upload_file_get_original_filename( $filename ) {
-	$filename_parts = pathinfo( $filename );
-	$filename       = substr( $filename_parts['filename'], 0, strrpos( $filename_parts['filename'], '-' ) );
-
-	return $filename . '.' . $filename_parts['extension'];
-}
-
-
-/**
  * Check if a file has a permitted extension
  *
  * @since       1.0.3
