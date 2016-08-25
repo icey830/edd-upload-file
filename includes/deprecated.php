@@ -3,7 +3,7 @@
  * Deprecated functions
  *
  * @package     EDD\UploadFile\Deprecated
- * @since       1.1.0
+ * @since       2.0.0
  */
 
 
@@ -17,7 +17,7 @@ if( ! defined( 'ABSPATH' ) ) {
  * Get the max number of uploads allowed
  *
  * @since       1.0.1
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       object $payment The purchase we are working with
  * @return      int $limit The max number of files
  */
@@ -49,7 +49,7 @@ function edd_upload_file_max_files( $payment = false ) {
  * Delete an uploaded file
  *
  * @since       1.0.1
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @return      string $upload_dir The file upload directory
  */
 function edd_upload_file_delete() {
@@ -80,7 +80,7 @@ add_action( 'edd_upload_file_delete', 'edd_upload_file_delete' );
  * Process and display error messages
  *
  * @since       1.0.1
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       string $message The error message to display
  * @return      void
  */
@@ -104,7 +104,7 @@ add_action( 'edd_upload_file_before', 'edd_upload_file_error', 11 );
  * Attach temp files on payment completion
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       int $payment_id The ID for this purchase
  * @return      void
  */
@@ -134,7 +134,7 @@ add_action( 'edd_complete_purchase', 'edd_upload_file_attach_files', 10, 1 );
  * Print uploaded files (checkout page)
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @return      void
  */
 function edd_upload_file_print_checkout_files() {
@@ -168,7 +168,7 @@ function edd_upload_file_print_checkout_files() {
  * Print uploaded files (receipt page)
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       int $payment_id The ID for a given purchase
  * @return      void
  */
@@ -205,7 +205,7 @@ function edd_upload_file_print_receipt_files( $payment_id ) {
  * Process file deletion
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       object $payment The purchase we are working with
  * @return      void
  */
@@ -228,7 +228,7 @@ add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_process_deletion
  * Process file uploads (checkout page)
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @return      void
  */
 function edd_upload_file_process_checkout_upload() {
@@ -269,7 +269,7 @@ add_action( 'template_redirect', 'edd_upload_file_process_checkout_upload' );
  * Get uploaded files from session
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @return      array The uploaded files
  */
 function edd_upload_file_get_session_files() {
@@ -281,7 +281,7 @@ function edd_upload_file_get_session_files() {
  * Add uploaded files from session
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       string $filename The file to add
  * @return      void
  */
@@ -297,7 +297,7 @@ function edd_upload_file_add_to_session( $filename ) {
  * Delete uploaded files from session
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       string $filename The file to delete
  * @return      bool $return True if successful, false otherwise
  */
@@ -321,7 +321,7 @@ function edd_upload_file_delete_from_session( $filename ) {
  * Generate filenames
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       string $filename The original filename
  * @return      string $filename The new filename
  */
@@ -339,7 +339,7 @@ function edd_upload_file_generate_filename( $filename ) {
  * Check if a file has a permitted extension
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       string $filename The file to check
  * @return      bool $is_allowed True if allowed, false otherwise
  */
@@ -363,7 +363,7 @@ function edd_upload_file_check_extension( $filename ) {
  * Add upload field to receipt
  *
  * @since       1.0.1
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       object $payment The purchase we are working with
  * @param       array $edd_receipt_args Arguemnts for this receipt
  * @return      void
@@ -413,7 +413,7 @@ function edd_upload_file_receipt_upload_field( $payment, $edd_receipt_args ) {
  * Print uploaded files on receipt
  *
  * @since       1.0.1
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       object $payment The purchase we are working with
  * @param       array $edd_receipt_args Arguemnts for this receipt
  * @return      void
@@ -427,7 +427,7 @@ function edd_upload_file_print_uploaded_files( $payment, $edd_receipt_args ) {
  * Process file uploads (receipt page)
  *
  * @since       1.0.3
- * @deprecated  1.1.0
+ * @deprecated  2.0.0
  * @param       object $payment The purchase we are working with
  * @return      void
  */

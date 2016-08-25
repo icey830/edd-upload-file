@@ -124,7 +124,7 @@ add_filter( 'edd_settings_extensions', 'edd_upload_file_register_settings', 1 );
 /**
  * Add debug option if the S214 Debug plugin is enabled
  *
- * @since       1.1.0
+ * @since       2.0.0
  * @param       array $settings The current settings
  * @return      array $settings The updated settings
  */
