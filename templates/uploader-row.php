@@ -11,7 +11,7 @@
 		<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
 			<span class="qq-upload-drop-area-text-selector"></span>
 		</div>
-		<div class="qq-upload-button-selector qq-upload-button <?php echo $button_style . ' ' . $color; ?>">
+		<div class="qq-upload-button-selector qq-upload-button edd-submit <?php echo $button_style . ' ' . $color; ?>">
 			<div><?php _e( 'Upload', 'edd-upload-file' ); ?></div>
 		</div>
 		<span class="qq-drop-processing-selector qq-drop-processing">
