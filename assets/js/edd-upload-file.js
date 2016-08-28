@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
                                 $('input[name="edd-gateway"]').after('<input type="hidden" name="edd-upload-file[]" value="{' + item_id + '}{' + response.uuid + '}{' + name + '}" class="edd-upload-file-' + id + '" />');
                             } else {
                                 $('#edd-upload-file-form').append('<input type="hidden" name="edd-upload-file[]" value="{' + item_id + '}{' + response.uuid + '}{' + name + '}" class="edd-upload-file-' + id + '" />');
-								$('#edd-upload-file-form').append('<input type="hidden" name="edd-upload-file-uuid[' + id + ']" value="' + response.uuid + '" />');
+                                $('#edd-upload-file-form').append('<input type="hidden" name="edd-upload-file-uuid[' + id + ']" value="' + response.uuid + '" />');
 
                                 var postData = {
                                     action: 'edd_upload_file_process',
@@ -131,17 +131,30 @@ jQuery(document).ready(function ($) {
                 });
             });
 
-            $('.edd-upload-file-uploader-toggle').on('click', function (e) {
+            $('.edd-upload-file-uploader-show').on('click', function (e) {
                 e.preventDefault();
 
-                if($(this).parent().next('.edd-upload-file-uploader').is(':visible')) {
-                    $(this).parent().next('.edd-upload-file-uploader').fadeOut('fast', function () {
-                        $(this).css('display', 'none');
-                    });
-                } else {
-                    $(this).parent().next('.edd-upload-file-uploader').fadeIn('fast').css('display', 'block');
-                }
+                $(this).parent().next('.edd-upload-file-uploader').fadeIn('fast').css('display', 'block');
+
+                $(this).fadeOut('fast', function () {
+                    $(this).css('display', 'none');
+                    $(this).next('.edd-upload-file-uploader-hide').fadeIn('fast').css('display', 'inline-block');
+                });
             });
+
+            $('.edd-upload-file-uploader-hide').on('click', function (e) {
+                e.preventDefault();
+
+                $(this).parent().next('.edd-upload-file-uploader').fadeOut('fast', function () {
+                    $(this).css('display', 'none');
+                });
+
+                $(this).fadeOut('fast', function () {
+                    $(this).css('display', 'none');
+                    $(this).prev('.edd-upload-file-uploader-show').fadeIn('fast').css('display', 'inline-block');
+                });
+            });
+
         }
     };
     EDD_Upload_File_Uploader.init();
