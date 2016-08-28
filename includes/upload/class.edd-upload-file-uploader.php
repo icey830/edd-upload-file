@@ -60,7 +60,7 @@ class EDD_Upload_File_Uploader {
 			return;
 		}
 
-		require_once EDD_UPLOAD_FILE_DIR . 'includes/upload-handler.php';
+		require_once EDD_UPLOAD_FILE_DIR . 'includes/upload/upload-handler.php';
 
 		$uploader = new UploadHandler();
 

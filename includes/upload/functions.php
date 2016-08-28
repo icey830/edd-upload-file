@@ -72,7 +72,7 @@ function edd_upload_file_display_form( $cart_items, $page, $payment_id = 0 ) {
 			$extensions = edd_upload_file_get_allowed_extensions( $download['download_id'] );
 			$extensions = $extensions ? $extensions : 'false';
 
-			echo '<label class="edd-label">' . edd_upload_file_parse_line_item( $line_item, $download['download_id'], $price_id ) . ' <a href="#" class="edd-upload-file-uploader-toggle"><span class="dashicons dashicons-sort"></span></a></label>';
+			echo '<label class="edd-label">' . edd_upload_file_parse_line_item( $line_item, $download['download_id'], $price_id ) . ' <a href="#" class="edd-upload-file-uploader-show"><span class="dashicons dashicons-arrow-down-alt2"></span></a><a href="#" class="edd-upload-file-uploader-hide" style="display: none;"><span class="dashicons dashicons-arrow-up-alt2"></span></a></label>';
 
 			echo '<div id="edd-upload-file-uploader-' . $field_id . '" class="edd-upload-file-uploader" data-limit="' . edd_upload_file_get_limit( $download['download_id'] ) . '" data-extensions="' . $extensions . '" data-item-id="' . $field_id . '"></div>';
 			echo '<input type="hidden" name="edd_upload_file_files[]" value="" />';

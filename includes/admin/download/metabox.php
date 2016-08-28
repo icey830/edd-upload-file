@@ -47,7 +47,7 @@ function edd_upload_file_render_meta_box() {
 
 	$enabled    = get_post_meta( $post_id, '_edd_upload_file_enabled', true ) ? true : false;
 	$limit      = get_post_meta( $post_id, '_edd_upload_file_limit', true );
-	$limit      = (int) $limit >= 0 ? $limit : 0;
+	$limit      = (int) $limit > 0 ? $limit : 0;
 	$extensions = get_post_meta( $post_id, '_edd_upload_file_extensions', true );
 	?>
 	<div id="edd_upload_file_enabled_wrap">
