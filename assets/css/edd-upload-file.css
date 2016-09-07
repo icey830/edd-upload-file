@@ -1,0 +1,22 @@
+.edd-upload-file-upload-row {
+	margin-bottom: 15px;
+}
+
+.edd-upload-file-upload-row:last-child {
+	margin-bottom: 0;
+}
+
+.edd-upload-file-upload-row a.edd-upload-file-uploader-show,
+.edd-upload-file-upload-row a.edd-upload-file-uploader-hide {
+	text-decoration: none;
+	box-shadow: none;
+}
+
+.edd-upload-file-uploader {
+	display: none;
+}
+
+a.edd-upload-file-uploader-show span,
+a.edd-upload-file-uploader-hide span {
+	margin-top: -2px;
+}

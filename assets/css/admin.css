@@ -1,0 +1,43 @@
+.edd-upload-file-show-file-types-wrap {
+	display: block;
+}
+
+.edd-upload-file-ext-list {
+	margin: 10px 0;
+	display: none;
+}
+
+.edd-upload-file-ext-list > div {
+	padding: 10px;
+	border: 1px solid #e1e1e1;
+}
+
+.edd-upload-file-ext-col {
+	display: inline-block;
+	width: 15em;
+	vertical-align: top;
+	background: #fff;
+}
+
+.edd-upload-file-ext-col:first-child {
+	border-right: 0;
+}
+
+.edd-upload-file-ext-col:nth-child(2) {
+	border-left: 0;
+	border-right: 0;
+}
+
+.edd-upload-file-ext-col:last-child {
+	border-left: 0;
+}
+
+#edd-upload-file-files .inside {
+	margin: 0;
+	padding: 0;
+}
+
+#edd-upload-file-files th {
+	font-weight: 600;
+	font-size: 13px;
+}
