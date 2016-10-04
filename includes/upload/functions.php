@@ -44,6 +44,11 @@ function edd_upload_file_display_form( $cart_items, $page, $payment_id = 0 ) {
 		return;
 	}
 
+	// Make sure Dashicons is loaded since the toggle needs it
+	if( ! wp_style_is( 'dashicons', 'enqueued' ) ) {
+		wp_enqueue_style( 'dashicons' );
+	}
+
 	do_action( 'edd_upload_file_before' );
 
 	if( $page == 'checkout' ) {
