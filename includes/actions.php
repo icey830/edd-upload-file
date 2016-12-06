@@ -123,7 +123,7 @@ function edd_upload_file_show_files_on_receipt( $payment, $edd_receipt_args ) {
 
 				if( edd_has_variable_prices( $download_id ) ) {
 					$prices         = edd_get_variable_prices( $download_id );
-					$download_name .= ' - ' . $prices[$file['download']['price_id']];
+					$download_name .= ' - ' . $prices[$file['download']['price_id']]['name'];
 				}
 
 				$display[$download_id][$file['download']['item_id']] = array(
@@ -234,7 +234,7 @@ function edd_upload_file_view_files( $payment_id ) {
 
 						if( edd_has_variable_prices( $download_id ) ) {
 							$prices         = edd_get_variable_prices( $download_id );
-							$download_name .= ' - ' . $prices[$file['download']['price_id']];
+							$download_name .= ' - ' . $prices[$file['download']['price_id']]['name'];
 						}
 
 						$display[$download_id][$file['download']['item_id']] = array(
