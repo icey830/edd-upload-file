@@ -24,7 +24,9 @@ function edd_upload_file_load_admin_scripts() {
 	wp_enqueue_script( 'edd-upload-file', EDD_UPLOAD_FILE_URL . 'assets/js/admin.js', array( 'jquery' ), EDD_UPLOAD_FILE_VER );
 	wp_localize_script( 'edd-upload-file', 'edd_upload_file_vars', array(
 		'hide_file_types' => __( 'Hide allowed file types', 'edd-upload-file' ),
-		'show_file_types' => __( 'Show allowed file types', 'edd-upload-file' )
+		'show_file_types' => __( 'Show allowed file types', 'edd-upload-file' ),
+		'delete_file'     => __( 'Are you sure you want to delete {filename}?', 'edd-upload-file' ),
+		'ajaxurl'         => edd_get_ajax_url()
 	) );
 }
 add_action( 'admin_enqueue_scripts', 'edd_upload_file_load_admin_scripts' );
