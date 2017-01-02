@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -20,15 +20,15 @@ if( ! defined( 'ABSPATH' ) ) {
  * @return      void
  */
 function edd_upload_file_process_download() {
-	if( ! wp_verify_nonce( $_GET['_wpnonce'], 'edd_upload_file_download_nonce' ) ) {
+	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'edd_upload_file_download_nonce' ) ) {
 		return;
 	}
 
-	if( ! isset( $_GET['filename'] ) || ! isset( $_GET['filepath'] ) ) {
+	if ( ! isset( $_GET['filename'] ) || ! isset( $_GET['filepath'] ) ) {
 		return;
 	}
 
-	if( ! function_exists( 'edd_get_file_ctype' ) ) {
+	if ( ! function_exists( 'edd_get_file_ctype' ) ) {
 		require_once EDD_PLUGIN_DIR . 'includes/process-download.php';
 	}
 
@@ -47,7 +47,7 @@ function edd_upload_file_process_download() {
 	}
 
 	@session_write_close();
-	if( function_exists( 'apache_setenv' ) ) {
+	if ( function_exists( 'apache_setenv' ) ) {
 		@apache_setenv('no-gzip', 1);
 	}
 	@ini_set( 'zlib.output_compression', 'Off' );
@@ -59,7 +59,7 @@ function edd_upload_file_process_download() {
 	header("Content-Disposition: attachment; filename=\"" . $_GET['filename'] . "\"");
 	header("Content-Transfer-Encoding: binary");
 
-	if( 'x_sendfile' == $method && ( ! function_exists( 'apache_get_modules' ) || ! in_array( 'mod_xsendfile', apache_get_modules() ) ) ) {
+	if ( 'x_sendfile' == $method && ( ! function_exists( 'apache_get_modules' ) || ! in_array( 'mod_xsendfile', apache_get_modules() ) ) ) {
 		// If X-Sendfile is selected but is not supported, fallback to Direct
 		$method = 'direct';
 	}
@@ -77,7 +77,7 @@ function edd_upload_file_process_download() {
 
 	}
 
-	switch( $method ) :
+	switch ( $method ) :
 
 		case 'redirect' :
 
@@ -97,7 +97,7 @@ function edd_upload_file_process_download() {
 				$direct    = true;
 				$file_path = $requested_file;
 
-			} else if( defined( 'UPLOADS' ) && strpos( $requested_file, UPLOADS ) !== false ) {
+			} elseif ( defined( 'UPLOADS' ) && strpos( $requested_file, UPLOADS ) !== false ) {
 
 				/**
 				 * This is a local file given by URL so we need to figure out the path
@@ -108,14 +108,14 @@ function edd_upload_file_process_download() {
 				$file_path  = realpath( ABSPATH . $file_path );
 				$direct     = true;
 
-			} else if( strpos( $requested_file, content_url() ) !== false ) {
+			} elseif ( strpos( $requested_file, content_url() ) !== false ) {
 
 				/** This is a local file given by URL so we need to figure out the path */
 				$file_path  = str_replace( content_url(), WP_CONTENT_DIR, $requested_file );
 				$file_path  = realpath( $file_path );
 				$direct     = true;
 
-			} else if( strpos( $requested_file, set_url_scheme( content_url(), 'https' ) ) !== false ) {
+			} elseif ( strpos( $requested_file, set_url_scheme( content_url(), 'https' ) ) !== false ) {
 
 				/** This is a local file given by an HTTPS URL so we need to figure out the path */
 				$file_path  = str_replace( set_url_scheme( content_url(), 'https' ), WP_CONTENT_DIR, $requested_file );
@@ -140,7 +140,7 @@ function edd_upload_file_process_download() {
 
 			}
 
-			if( $direct ) {
+			if ( $direct ) {
 
 				edd_deliver_download( $file_path );
 
