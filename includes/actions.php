@@ -199,13 +199,23 @@ function edd_upload_file_view_files( $payment_id ) {
 						echo '<tr class="'  . ( $i % 2 == 0 ? 'alternate' : '' ) . '">';
 						echo '<td class="name column-name">' . edd_upload_file_get_original_filename( $file ) . '</td>';
 
+						echo '<td class="upload-file column-upload-file">';
+						$actions_style = ( file_exists( edd_upload_file_get_upload_dir() . '/' . $file ) ? '' : 'display: none' );
+						$deleted_style = ( $actions_style == '' ? 'display: none' : '' );
+
+						echo '<div id="edd-upload-file-' . $file['file'] . '">';
+						echo '<span class="edd-upload-file-actions" style="' . $actions_style . '">';
 						$download_url = wp_nonce_url( add_query_arg( array(
 							'edd-action' => 'upload_file_download',
 							'filename'   => edd_upload_file_get_original_filename( $file ),
 							'filepath'   => $file
 						) ), 'edd_upload_file_download_nonce', '_wpnonce' );
-
-						echo '<td class="upload-file column-upload-file"><a href="' . $download_url . '">' . __( 'Download File', 'edd-upload-file' ) . '</a></td>';
+						echo '<a href="' . $download_url . '" title="' . __( 'Download', 'edd-upload-file' ) . '"><span class="dashicons dashicons-download"></span></a>';
+						echo '<a href="#" class="edd-upload-file-delete-file" data-file-name="' . edd_upload_file_get_original_filename( $file ) . '" data-file-path="' . $file . '" data-payment-id="' . $payment_id . '" title="' . __( 'Delete', 'edd-upload-file' ) . '"><span class="dashicons dashicons-trash"></span></a>';
+						echo '</span>';
+						echo '<span class="edd-upload-file-deleted">' . __( 'File Deleted', 'edd-upload-file' ) . '</span>';
+						echo '</div>';
+						echo '</td>';
 						echo '</tr>';
 
 						$i++;
@@ -250,13 +260,23 @@ function edd_upload_file_view_files( $payment_id ) {
 						echo '<td class="upload-file column-upload-file">';
 
 						foreach( $download as $file ) {
+							$filepath      = trailingslashit( $file['uuid'] ) . $file['file'];
+							$actions_style = ( file_exists( edd_upload_file_get_upload_dir() . '/' . $filepath ) ? '' : 'display: none' );
+							$deleted_style = ( $actions_style == '' ? 'display: none' : '' );
+
+							echo '<div class="edd-upload-file-receipt-item" id="edd-upload-file-' . $file['file'] . '">&nbsp;&mdash;&nbsp;' . $file['file'] . '&nbsp;';
 							$download_url = wp_nonce_url( add_query_arg( array(
 								'edd-action' => 'upload_file_download',
 								'filename'   => $file['file'],
-								'filepath'   => trailingslashit( $file['uuid'] ) . $file['file']
+								'filepath'   => $filepath
 							) ), 'edd_upload_file_download_nonce', '_wpnonce' );
 
-							echo '<div class="edd-upload-file-receipt-item">&nbsp;&mdash;&nbsp;' . $file['file'] . '&nbsp;<a href="' . $download_url . '"><i data-code="f316" class="dashicons dashicons-download"></i></a></div>';
+							echo '<span class="edd-upload-file-actions" style="' . $actions_style . '">';
+							echo '<a href="' . $download_url . '" title="' . __( 'Download', 'edd-upload-file' ) . '"><span class="dashicons dashicons-download"></span></a>';
+							echo '<a href="#" class="edd-upload-file-delete-file" data-file-name="' . $file['file'] . '" data-file-path="' . $filepath . '" data-payment-id="' . $payment_id . '" title="' . __( 'Delete', 'edd-upload-file' ) . '"><span class="dashicons dashicons-trash"></span></a>';
+							echo '</span>';
+							echo '<span class="edd-upload-file-deleted" style="' . $deleted_style . '">' . __( 'File Deleted', 'edd-upload-file' ) . '</span>';
+							echo '</div>';
 						}
 
 						echo '</td>';
@@ -269,7 +289,7 @@ function edd_upload_file_view_files( $payment_id ) {
 					echo '</table>';
 				}
 			} else {
-				_e( 'No files uploaded', 'edd-upload-file' );
+				echo '<div class="inside"><p>' . __( 'No files uploaded', 'edd-upload-file' ) . '</p></div>';
 			}
 			?>
 		</div>
@@ -277,3 +297,24 @@ function edd_upload_file_view_files( $payment_id ) {
 	<?php
 }
 add_action( 'edd_view_order_details_main_after', 'edd_upload_file_view_files' );
+
+
+/**
+ * Delete a file with ajax
+ *
+ * @since       2.1.0
+ * @return      void
+*/
+function edd_ajax_edd_upload_file_delete_file() {
+	if ( ! current_user_can( 'edit_shop_payments', $_POST['payment_id'] ) ) {
+		wp_die( __( 'You do not have permission to edit this payment record', 'edd-upload-file' ), __( 'Error', 'edd-upload-file' ), array( 'response' => 403 ) );
+	}
+
+	if ( edd_upload_file_delete_file( $_POST['file_path'] ) ) {
+		die( '1' );
+	} else {
+		die( '-1' );
+	}
+
+}
+add_action( 'wp_ajax_edd_upload_file_delete_file', 'edd_ajax_edd_upload_file_delete_file' );

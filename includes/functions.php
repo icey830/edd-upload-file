@@ -131,3 +131,23 @@ function edd_upload_file_get_allowed_extensions( $download_id = 0 ) {
 
 	return $extensions;
 }
+
+
+/**
+ * Delete a file
+ *
+ * @since       2.1.0
+ * @param       string $file The file to delete
+ * @return      void
+*/
+function edd_upload_file_delete_file( $file = '' ) {
+	$fullpath = edd_upload_file_get_upload_dir() . '/' . $file;
+
+	if( file_exists( $fullpath ) ) {
+		if( unlink( $fullpath ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
