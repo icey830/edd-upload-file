@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -56,7 +56,7 @@ class EDD_Upload_File_Uploader {
 		global $wp_query;
 
 		// Check for edd-upload-file var. Get out if not present
-		if( empty( $wp_query->query_vars['edd-upload-file'] ) ) {
+		if ( empty( $wp_query->query_vars['edd-upload-file'] ) ) {
 			return;
 		}
 
@@ -71,10 +71,10 @@ class EDD_Upload_File_Uploader {
 		$output_folder               = edd_upload_file_get_upload_dir();
 
 		$method = $_SERVER['REQUEST_METHOD'];
-		if( $method == 'POST' ) {
+		if ( $method == 'POST' ) {
 			header('Content-Type: text/plain');
 
-			if( $wp_query->query_vars['edd-upload-file'] == 'done' ) {
+			if ( $wp_query->query_vars['edd-upload-file'] == 'done' ) {
 				$result = $uploader->combineChunks( $output_folder );
 			} else {
 				$result = $uploader->handleUpload( $output_folder );
@@ -83,7 +83,7 @@ class EDD_Upload_File_Uploader {
 			}
 
 			echo json_encode( $result );
-		} elseif( $method == 'DELETE' ) {
+		} elseif ( $method == 'DELETE' ) {
 			$result = $uploader->handleDelete( $output_folder );
 
 			echo json_encode( $result );

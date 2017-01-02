@@ -1,8 +1,8 @@
-/*global jQuery, document, edd_upload_file_vars*/
+/*global jQuery, document, edd_upload_file_vars, confirm, console*/
 jQuery(document).ready(function ($) {
     'use strict';
 
-    var EDD_Upload_File_Download, EDD_Upload_File_Settings;
+    var EDD_Upload_File_Download, EDD_Upload_File_Settings, EDD_Upload_File_Payment;
 
     /**
      * Download post type
@@ -51,4 +51,46 @@ jQuery(document).ready(function ($) {
         }
     };
     EDD_Upload_File_Settings.init();
+
+    /**
+     * Payment page
+     */
+    EDD_Upload_File_Payment = {
+        init : function () {
+            this.general();
+        },
+
+        general : function () {
+            $( document.body ).on('click', '.edd-upload-file-delete-file', function(e) {
+                e.preventDefault();
+
+                var file_name = $(this).data('file-name');
+                var confirm_message = edd_upload_file_vars.delete_file.replace( '{filename}', file_name );
+
+                if( confirm( confirm_message ) ) {
+                    var postData = {
+                        action : 'edd_upload_file_delete_file',
+                        file_path : $(this).data('file-path'),
+                        payment_id : $(this).data('payment-id')
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        data: postData,
+                        url: edd_upload_file_vars.ajaxurl,
+                        success: function (response) {
+                            window.location.href=window.location.href;
+                            return false;
+                        }
+                    }).fail(function (data) {
+                        if ( window.console && window.console.log ) {
+                            console.log( data );
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
+    };
+    EDD_Upload_File_Payment.init();
 });

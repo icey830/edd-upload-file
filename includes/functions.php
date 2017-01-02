@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -50,29 +50,29 @@ function edd_upload_file_get_allowed_file_types( $echo = false ) {
 	$mime_types = get_allowed_mime_types();
 	$file_types = array_keys( $mime_types );
 
-	if( $echo ) {
+	if ( $echo ) {
 		$third      = ceil( count( $file_types ) / 3 );
 		$ext_list   = array_chunk( $file_types, $third );
 		$file_types = '<div class="edd-upload-file-ext-list">';
 
-		foreach( $ext_list as $list => $col ) {
+		foreach ( $ext_list as $list => $col ) {
 			$count = count( $col );
 			$i     = 1;
 
 			$file_types .= '<div class="edd-upload-file-ext-col">';
 
-			foreach( $col as $ext ) {
+			foreach ( $col as $ext ) {
 				$file_types .= $ext;
 
-				if( $i < $count ) {
+				if ( $i < $count ) {
 					$file_types .= '<br />';
 				}
 
 				$i++;
 			}
 
-			if( $list == '2' ) {
-				for( $i = $count; $i <= $third; $i++) {
+			if ( $list == '2' ) {
+				for ( $i = $count; $i <= $third; $i++) {
 					$file_types .= '<br />';
 				}
 			}
@@ -99,7 +99,7 @@ function edd_upload_file_get_limit( $download_id = 0 ) {
 	$limit         = edd_get_option( 'edd_upload_file_limit', 1 );
 	$product_limit = get_post_meta( $download_id, '_edd_upload_file_limit', true );
 
-	if( $product_limit && $product_limit !== 0 ) {
+	if ( $product_limit && $product_limit !== 0 ) {
 		$limit = $product_limit;
 	}
 
@@ -119,15 +119,35 @@ function edd_upload_file_get_allowed_extensions( $download_id = 0 ) {
 	$extensions         = edd_get_option( 'edd_upload_file_extensions', array() );
 	$product_extensions = get_post_meta( $download_id, '_edd_upload_file_extensions', true );
 
-	if( $product_extensions && $product_extensions !== '' ) {
+	if ( $product_extensions && $product_extensions !== '' ) {
 		$extensions = $product_extensions;
 	}
 
-	if( ! $extensions || $extensions == '' ) {
+	if ( ! $extensions || $extensions == '' ) {
 		$extensions = false;
 	} else {
 		$extensions = str_replace( ' ', '', $extensions );
 	}
 
 	return $extensions;
+}
+
+
+/**
+ * Delete a file
+ *
+ * @since       2.1.0
+ * @param       string $file The file to delete
+ * @return      void
+*/
+function edd_upload_file_delete_file( $file = '' ) {
+	$fullpath = edd_upload_file_get_upload_dir() . '/' . $file;
+
+	if ( file_exists( $fullpath ) ) {
+		if ( unlink( $fullpath ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }

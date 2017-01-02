@@ -58,7 +58,7 @@ class UploadHandler {
         $this->uploadName = $name;
 
         if (!file_exists($targetPath)){
-            mkdir(dirname($targetPath));
+            mkdir(dirname($targetPath), 0777, true);
         }
         $target = fopen($targetPath, 'wb');
 
@@ -134,6 +134,11 @@ class UploadHandler {
             $name = $this->getName();
         }
 
+        // check file error
+        if($file['error']) {
+            return array('error' => 'Upload Error #'.$file['error']);
+        }
+
         // Validate name
         if ($name === null || $name === ''){
             return array('error' => 'File name empty.');
@@ -174,7 +179,7 @@ class UploadHandler {
             $targetFolder = $this->chunksFolder.DIRECTORY_SEPARATOR.$uuid;
 
             if (!file_exists($targetFolder)){
-                mkdir($targetFolder);
+                mkdir($targetFolder, 0777, true);
             }
 
             $target = $targetFolder.'/'.$partIndex;
@@ -192,7 +197,7 @@ class UploadHandler {
                 $this->uploadName = basename($target);
 
                 if (!is_dir(dirname($target))){
-                    mkdir(dirname($target));
+                    mkdir(dirname($target), 0777, true);
                 }
                 if (move_uploaded_file($file['tmp_name'], $target)){
                     return array('success'=> true, "uuid" => $uuid);

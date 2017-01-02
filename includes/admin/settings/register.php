@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -135,7 +135,7 @@ add_filter( 'edd_settings_extensions', 'edd_upload_file_register_settings', 1 );
  * @return      array $settings The updated settings
  */
 function edd_upload_file_add_debug( $settings ) {
-	if( class_exists( 'S214_Debug' ) ) {
+	if ( class_exists( 'S214_Debug' ) ) {
 		$debug_setting[] = array(
 			'id'   => 'edd_upload_file_debugging',
 			'name' => '<strong>' . __( 'Debugging', 'edd-upload-file' ) . '</strong>',

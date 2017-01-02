@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -21,7 +21,7 @@ if( ! defined( 'ABSPATH' ) ) {
  */
 function edd_upload_file_display_checkout_upload_field() {
 	// Bail if the form is displayed on receipt
-	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) != 'checkout' ) {
+	if ( edd_get_option( 'edd_upload_file_location', 'checkout' ) != 'checkout' ) {
 		return;
 	}
 
@@ -42,11 +42,11 @@ add_action( 'edd_before_purchase_form', 'edd_upload_file_display_checkout_upload
  */
 function edd_upload_file_display_receipt_upload_field( $payment, $edd_receipt_args ) {
 	// Bail if the form is displayed on checkout
-	if( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
+	if ( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
 		return;
 	}
 
-	if( isset( $_GET['payment_key'] ) || get_post_meta( $payment->ID, '_edd_upload_file', false ) ) {
+	if ( isset( $_GET['payment_key'] ) || get_post_meta( $payment->ID, '_edd_upload_file', false ) ) {
 		return;
 	}
 
@@ -65,8 +65,8 @@ add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_display_receipt_
  * @return      void
  */
 function edd_upload_file_link_files( $payment_id ) {
-	if( isset( $_POST['edd-upload-file'] ) ) {
-		foreach( $_POST['edd-upload-file'] as $file ) {
+	if ( isset( $_POST['edd-upload-file'] ) ) {
+		foreach ( $_POST['edd-upload-file'] as $file ) {
 			$file_data = substr( $file, 1, -1 );
 			$file_data = explode( '}{', $file_data );
 
@@ -76,7 +76,7 @@ function edd_upload_file_link_files( $payment_id ) {
 				'filename' => $file_data[2]
 			);
 
-			if( count( $download_data ) == 3 ) {
+			if ( count( $download_data ) == 3 ) {
 				$meta_data['download'] = array(
 					'id'       => $download_data[0],
 					'price_id' => $download_data[1],
@@ -103,7 +103,7 @@ add_action( 'edd_complete_purchase', 'edd_upload_file_link_files', 10, 1 );
  * @return      void
  */
 function edd_upload_file_ajax_update_files() {
-	if( ! empty( $_POST['download_data'] ) || ! empty( $_POST['uuid'] ) || ! empty( $_POST['filename'] ) || ! empty( $_POST['payment_id'] ) ) {
+	if ( ! empty( $_POST['download_data'] ) || ! empty( $_POST['uuid'] ) || ! empty( $_POST['filename'] ) || ! empty( $_POST['payment_id'] ) ) {
 
 		$download_data = explode( '-', $_POST['download_data'] );
 		$meta_data     = array(
@@ -111,7 +111,7 @@ function edd_upload_file_ajax_update_files() {
 			'filename' => $_POST['filename']
 		);
 
-		if( count( $download_data ) == 3 ) {
+		if ( count( $download_data ) == 3 ) {
 			$meta_data['download'] = array(
 				'id'       => $download_data[0],
 				'price_id' => $download_data[1],
@@ -141,7 +141,7 @@ add_action( 'wp_ajax_nopriv_edd_upload_file_process', 'edd_upload_file_ajax_upda
  * @return      void
  */
 function edd_upload_file_ajax_delete_files() {
-	if( ! empty( $_POST['download_data'] ) || ! empty( $_POST['payment_id'] ) ) {
+	if ( ! empty( $_POST['download_data'] ) || ! empty( $_POST['payment_id'] ) ) {
 
 		$file_data = substr( $_POST['download_data'], 1, -1 );
 		$file_data = explode( '}{', $file_data );
@@ -152,7 +152,7 @@ function edd_upload_file_ajax_delete_files() {
 			'filename' => $file_data[2]
 		);
 
-		if( count( $download_data ) == 3 ) {
+		if ( count( $download_data ) == 3 ) {
 			$meta_data['download'] = array(
 				'id'       => $download_data[0],
 				'price_id' => $download_data[1],
