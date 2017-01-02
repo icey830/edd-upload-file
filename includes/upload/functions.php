@@ -52,7 +52,7 @@ function edd_upload_file_display_form( $cart_items, $page, $payment_id = 0 ) {
 	do_action( 'edd_upload_file_before' );
 
 	if( $page == 'checkout' ) {
-		echo '<fieldset id="edd_checkout_user_info">';
+		echo '<fieldset id="edd_checkout_upload_file">';
 		echo '<legend>' . edd_get_option( 'edd_upload_file_form_title', __( 'Upload File(s)', 'edd-upload-file' ) ) . '</legend>';
 	} else {
 		echo '<h3>' . edd_get_option( 'edd_upload_file_form_title', __( 'Upload File(s)', 'edd-upload-file' ) ) . '</h3>';
@@ -64,7 +64,7 @@ function edd_upload_file_display_form( $cart_items, $page, $payment_id = 0 ) {
 	$line_item = edd_get_option( 'edd_upload_file_line_item', sprintf( __( 'Upload up to %s %s for %s', 'edd-upload-file' ), '{limit}', '{files}', '{product}' ) );
 
 	if( $desc ) {
-		echo '<span class="edd-description">' . $desc . '</span><hr />';
+		echo '<p class="edd-upload-file-description"><span class="edd-description">' . $desc . '</span></p>';
 	}
 
 	foreach( $allowed_items as $download ) {
