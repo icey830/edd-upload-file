@@ -34,7 +34,8 @@ function edd_upload_file_directory_exists() {
 	}
 
 	// Top level .htaccess
-	$rules = "Options -Indexes";
+	$rules  = "Options -Indexes \n";
+	$rules .= "php_flag engine off";
 	if ( file_exists( $uploadPath . '.htaccess' ) ) {
 		$contents = @file_get_contents( $uploadPath . '.htaccess' );
 
@@ -56,7 +57,8 @@ function edd_upload_file_directory_exists() {
 	}
 
 	// Top level .htaccess
-	$rules = "Options -Indexes";
+	$rules  = "Options -Indexes \n";
+	$rules .= "php_flag engine off";
 	if ( file_exists( $chunkPath . '.htaccess' ) ) {
 		$contents = @file_get_contents( $chunkPath . '.htaccess' );
 
