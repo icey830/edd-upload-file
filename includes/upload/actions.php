@@ -61,10 +61,13 @@ add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_display_receipt_
  * Link files on payment completion
  *
  * @since       1.1.3
- * @param       int $payment_id The ID for this purchase
+ *
+ * @param       int    $payment_id The ID for this purchase
+ * @param       object $payment    The payment object being saved
+ *
  * @return      void
  */
-function edd_upload_file_link_files( $payment_id ) {
+function edd_upload_file_link_files( $payment_id, $payment ) {
 	if ( isset( $_POST['edd-upload-file'] ) ) {
 		foreach ( $_POST['edd-upload-file'] as $file ) {
 			$file_data = substr( $file, 1, -1 );
@@ -93,7 +96,7 @@ function edd_upload_file_link_files( $payment_id ) {
 		}
 	}
 }
-add_action( 'edd_complete_purchase', 'edd_upload_file_link_files', 10, 1 );
+add_action( 'edd_payment_saved', 'edd_upload_file_link_files', 10, 2 );
 
 
 /**
