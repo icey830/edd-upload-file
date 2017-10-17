@@ -39,6 +39,12 @@ if ( ! class_exists( 'EDD_Upload_File' ) ) {
 		 */
 		public $uploader;
 
+		/**
+		 * @var         object $upgrader The upgrader object
+		 * @since       2.0.0
+		 */
+		public $upgrader;
+
 
 		/**
 		 * @var         bool $debugging Whether or not debugging is available
@@ -62,6 +68,10 @@ if ( ! class_exists( 'EDD_Upload_File' ) ) {
 				self::$instance->load_textdomain();
 				self::$instance->hooks();
 				self::$instance->uploader = new EDD_Upload_File_Uploader();
+
+				if ( is_admin() ) {
+					self::$instance->upgrader = new EDD_Upload_File_Upgrader();
+				}
 
 				if ( class_exists( 'S214_Debug' ) ) {
 					if ( edd_get_option( 'edd_upload_file_enable_debug', false ) ) {
@@ -120,6 +130,7 @@ if ( ! class_exists( 'EDD_Upload_File' ) ) {
 			if ( is_admin() ) {
 				require_once EDD_UPLOAD_FILE_DIR . 'includes/admin/download/metabox.php';
 				require_once EDD_UPLOAD_FILE_DIR . 'includes/admin/settings/register.php';
+				require_once EDD_UPLOAD_FILE_DIR . 'includes/admin/class-edd-upload-file-upgrader.php';
 			}
 		}
 
