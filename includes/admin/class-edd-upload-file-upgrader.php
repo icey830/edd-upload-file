@@ -57,8 +57,6 @@ final class EDD_Upload_File_Upgrader {
 			return;
 		}
 
-		$upload_file_version = get_option( 'edd_upload_file_version' );
-
 		if ( version_compare( EDD_UPLOAD_FILE_VER, '2.1.3', '<' ) || ! edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
 			printf( '<div class="updated"><p>' . __( 'Easy Digital Downloads needs to upgrade the Upload File database, click <a href="%s">here</a> to start the upgrade.', 'edd-upload-file' ) . '</p></div>', esc_url_raw( admin_url( 'index.php?page=edd-upgrades&edd-upgrade=upload_file_upgrade_213_meta' ) ) );
 		}
@@ -120,7 +118,7 @@ final class EDD_Upload_File_Upgrader {
 				SELECT *
 				FROM {$wpdb->postmeta}
 				WHERE meta_key = %s
-				LIMIT %d, %
+				LIMIT %d, %d
 				", '_edd_upload_file', $offset, $number ) );
 
 		if ( ! empty( $existing_meta ) ) {
