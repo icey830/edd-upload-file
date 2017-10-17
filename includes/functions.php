@@ -103,7 +103,12 @@ function edd_upload_file_get_limit( $download_id = 0 ) {
 		$limit = $product_limit;
 	}
 
-	return $limit;
+	// Do not allow more than 25 files to be uploaded
+	if ( $limit > 25 ) {
+		$limit = 25;
+	}
+
+	return apply_filters( 'edd_upload_file_limit', $limit );
 }
 
 
