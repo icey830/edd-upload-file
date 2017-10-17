@@ -196,51 +196,39 @@ function edd_upload_file_view_files( $payment_id ) {
 					echo '<tbody id="edd-upload-files-list">';
 					$display = array();
 
-					foreach ( $uploaded_files as $file ) {
-						$download_id   = $file['download']['id'];
-						$download_name = get_the_title( $download_id );
+					foreach ( $uploaded_files as $download_id => $files ) {
+						foreach ( $files as $file ) {
+							$download_name = get_the_title( $download_id );
 
-						if ( edd_has_variable_prices( $download_id ) ) {
-							$prices        = edd_get_variable_prices( $download_id );
-							$download_name .= ' - ' . $prices[ $file['download']['price_id'] ]['name'];
-						}
+							if ( edd_has_variable_prices( $download_id ) ) {
+								$prices         = edd_get_variable_prices( $download_id );
+								$download_name .= ' - ' . $prices[ $file['download']['price_id'] ]['name'];
+							}
 
-						$display[ $download_id ][ $file['download']['item_id'] ] = array(
-							'name' => $download_name,
-							'file' => $file['filename'],
-							'uuid' => $file['uuid'],
-						);
-					}
+							echo '<tr>';
+								echo '<td class="name column-name">' . $download_name . '</td>';
+								echo '<td class="upload-file column-upload-file">';
+									$filepath      = trailingslashit( $file['uuid'] ) . $file['filename'];
+									$actions_style = ( file_exists( edd_upload_file_get_upload_dir() . '/' . $filepath ) ? '' : 'display: none' );
+									$deleted_style = ( $actions_style == '' ? 'display: none' : '' );
 
-					foreach ( $display as $download ) {
-						echo '<tr>';
-							echo '<td class="name column-name">' . $download[1]['name'] . '</td>';
-							echo '<td class="upload-file column-upload-file">';
-
-							foreach ( $download as $file ) {
-								$filepath      = trailingslashit( $file['uuid'] ) . $file['file'];
-								$actions_style = ( file_exists( edd_upload_file_get_upload_dir() . '/' . $filepath ) ? '' : 'display: none' );
-								$deleted_style = ( $actions_style == '' ? 'display: none' : '' );
-
-								echo '<div class="edd-upload-file-receipt-item" id="edd-upload-file-' . $file['file'] . '">&nbsp;&mdash;&nbsp;' . $file['file'] . '&nbsp;';
+									echo '<div class="edd-upload-file-receipt-item" id="edd-upload-file-' . $file['filename'] . '">&nbsp;&mdash;&nbsp;' . $file['filename'] . '&nbsp;';
 									$download_url = wp_nonce_url( add_query_arg( array(
 										'edd-action' => 'upload_file_download',
-										'filename'   => $file['file'],
+										'filename'   => $file['filename'],
 										'filepath'   => $filepath,
 									) ), 'edd_upload_file_download_nonce', '_wpnonce' );
 
 									echo '<span class="edd-upload-file-actions" style="' . $actions_style . '">';
-										echo '<a href="' . $download_url . '" title="' . __( 'Download', 'edd-upload-file' ) . '"><span class="dashicons dashicons-download"></span></a>';
-										echo '<a href="#" class="edd-upload-file-delete-file" data-file-name="' . $file['file'] . '" data-file-path="' . $filepath . '" data-payment-id="' . $payment_id . '" title="' . __( 'Delete', 'edd-upload-file' ) . '"><span class="dashicons dashicons-trash"></span></a>';
+									echo '<a href="' . $download_url . '" title="' . __( 'Download', 'edd-upload-file' ) . '"><span class="dashicons dashicons-download"></span></a>';
+									echo '<a href="#" class="edd-upload-file-delete-file" data-file-name="' . $file['filename'] . '" data-file-path="' . $filepath . '" data-payment-id="' . $payment_id . '" title="' . __( 'Delete', 'edd-upload-file' ) . '"><span class="dashicons dashicons-trash"></span></a>';
 									echo '</span>';
 									echo '<span class="edd-upload-file-deleted" style="' . $deleted_style . '">' . __( 'File Deleted', 'edd-upload-file' ) . '</span>';
-								echo '</div>';
-							}
-
-							echo '</td>';
-						echo '</tr>';
+									echo '</div>';
+								echo '</td>';
+							echo '</tr>';
+						}
 					}
-
 					echo '</tbody>';
 				echo '</table>';
 			} else {
