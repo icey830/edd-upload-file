@@ -57,7 +57,7 @@ final class EDD_Upload_File_Upgrader {
 			return;
 		}
 
-		if ( version_compare( EDD_UPLOAD_FILE_VER, '2.1.3', '<' ) || ! edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
+		if ( ! edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
 			printf( '<div class="updated"><p>' . __( 'Easy Digital Downloads needs to upgrade the Upload File database, click <a href="%s">here</a> to start the upgrade.', 'edd-upload-file' ) . '</p></div>', esc_url_raw( admin_url( 'index.php?page=edd-upgrades&edd-upgrade=upload_file_upgrade_213_meta' ) ) );
 		}
 	}
@@ -97,7 +97,6 @@ final class EDD_Upload_File_Upgrader {
 			$has_meta = $wpdb->get_col( $sql );
 
 			if ( empty( $has_meta ) ) {
-				update_option( 'edd_upload_file_version', preg_replace( '/[^0-9.].*/', '', EDD_UPLOAD_FILE_VER ) );
 				edd_set_upgrade_complete( 'upload_file_upgrade_213_meta' );
 				delete_option( 'edd_doing_upgrade' );
 				wp_redirect( admin_url() );
@@ -149,7 +148,6 @@ final class EDD_Upload_File_Upgrader {
 			), admin_url( 'index.php' ) ) );
 			wp_redirect( $redirect );
 		} else {
-			update_option( 'edd_upload_file_version', preg_replace( '/[^0-9.].*/', '', EDD_UPLOAD_FILE_VER ) );
 			edd_set_upgrade_complete( 'upload_file_upgrade_213_meta' );
 			delete_option( 'edd_doing_upgrade' );
 			wp_redirect( admin_url() );
