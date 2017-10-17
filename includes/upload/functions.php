@@ -53,7 +53,7 @@ function edd_upload_file_display_form( $cart_items, $page, $payment_id = 0 ) {
 
 	if ( $page == 'checkout' ) {
 		echo '<fieldset id="edd_checkout_upload_file">';
-		echo '<legend>' . edd_get_option( 'edd_upload_file_form_title', __( 'Upload File(s)', 'edd-upload-file' ) ) . '</legend>';
+		echo '<legend><span>' . edd_get_option( 'edd_upload_file_form_title', __( 'Upload File(s)', 'edd-upload-file' ) ) . '</span></legend>';
 	} else {
 		echo '<h3>' . edd_get_option( 'edd_upload_file_form_title', __( 'Upload File(s)', 'edd-upload-file' ) ) . '</h3>';
 		echo '<table id="edd-upload-file-form" class="edd-table"><tr><td>';
