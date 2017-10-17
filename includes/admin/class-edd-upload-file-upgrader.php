@@ -29,6 +29,30 @@ final class EDD_Upload_File_Upgrader {
 	 */
 	public function __construct() {
 		$this->hooks();
+		$this->check_if_upgrade_needed();
+	}
+
+	/**
+	 * Checks if it's necessary to display an upgrade notice.
+	 * 
+	 * @since  2.1.3
+	 * @access private
+	 * @return void
+	 */
+	private function check_if_upgrade_needed() {
+		global $wpdb;
+
+		$sql = "
+			SELECT meta_key
+			FROM {$wpdb->postmeta}
+			WHERE meta_key = '_edd_upload_file'
+			LIMIT 1
+		";
+		$has_meta = $wpdb->get_col( $sql );
+
+		if ( empty( $has_meta ) ) {
+			edd_set_upgrade_complete( 'upload_file_upgrade_213_meta' );
+		}
 	}
 
 	/**
