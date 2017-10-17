@@ -74,9 +74,12 @@ function edd_upload_file_register_settings( $settings ) {
 			array(
 				'id'            => 'edd_upload_file_limit',
 				'name'          => __( 'Maximum number of files', 'edd-upload-file' ),
-				'desc'          => __( 'Enter the allowed number of file uploads per download, or 0 for unlimited', 'edd-upload-file' ),
+				'desc'          => __( 'Enter the allowed number of file uploads per download.', 'edd-upload-file' ),
 				'type'          => 'number',
 				'size'          => 'small',
+				'min'           => 1,
+				'max'           => 25,
+				'step'          => 1,
 				'std'           => 1,
 				'tooltip_title' => __( 'Note', 'edd-upload-file' ),
 				'tooltip_desc'  => __( 'This setting can be overridden on a per-product basis.', 'edd-upload-file' ),
