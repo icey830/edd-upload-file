@@ -59,7 +59,7 @@ final class EDD_Upload_File_Upgrader {
 
 		$upload_file_version = get_option( 'edd_upload_file_version' );
 
-		if ( version_compare( edd_reviews()->version, '2.1.3', '<' ) || ! edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
+		if ( version_compare( EDD_UPLOAD_FILE_VER, '2.1.3', '<' ) || ! edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
 			printf(
 				'<div class="updated"><p>' . __( 'Easy Digital Downloads needs to upgrade the Upload File database, click <a href="%s">here</a> to start the upgrade.', 'edd-upload-file' ) . '</p></div>',
 				esc_url_raw( admin_url( 'index.php?page=edd-upgrades&edd-upgrade=upload_file_upgrade_213_meta' ) )
@@ -74,5 +74,28 @@ final class EDD_Upload_File_Upgrader {
 	 */
 	public function v213_meta_upgrades() {
 		global $wpdb;
+
+		$existing_meta = $wpdb->get_results( "
+			SELECT *
+			FROM {$wpdb->postmeta}
+			WHERE meta_key = '_edd_upload_file'
+		" );
+
+		$new_meta = array();
+
+		// Filter all duplicate existing meta
+		foreach ( $existing_meta as $result ) {
+			$meta_value = maybe_unserialize( $result->meta_value );
+			$new_meta[ $result->post_id ][] = $meta_value;
+			$new_meta[ $result->post_id ] = array_unique( $new_meta[$result->post_id], SORT_REGULAR );
+		}
+
+		// Delete all meta
+		$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_edd_upload_file' ) );
+
+		// Recreate all the meta using the new schema
+		foreach ( $new_meta as $post_id => $meta ) {
+			update_post_meta( $post_id, '_edd_upload_file', $meta );
+		}
 	}
 }
