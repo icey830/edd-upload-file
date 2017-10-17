@@ -32,25 +32,6 @@
 	border-left: 0;
 }
 
-#edd-upload-file-files .inside {
-	margin: 0;
-	padding: 0;
-}
-
-#edd-upload-file-files .inside > .inside {
-	margin: 11px 0;
-	padding: 0 12px;
-}
-
-#edd-upload-file-files .inside table {
-	border-width: 0 0 1px 0;
-}
-
-#edd-upload-file-files th {
-	font-weight: 600;
-	font-size: 13px;
-}
-
 .edd-upload-file-deleted {
 	color: #a00;
 	font-style: italic;

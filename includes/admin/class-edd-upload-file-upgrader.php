@@ -125,9 +125,9 @@ final class EDD_Upload_File_Upgrader {
 
 			// Filter all duplicate existing meta
 			foreach ( $existing_meta as $result ) {
-				$meta_value                     = maybe_unserialize( $result->meta_value );
-				$new_meta[ $result->post_id ][] = $meta_value;
-				$new_meta[ $result->post_id ]   = array_unique( $new_meta[ $result->post_id ], SORT_REGULAR );
+				$meta_value                                                      = maybe_unserialize( $result->meta_value );
+				$new_meta[ $result->post_id ][ $meta_value['download']['id'] ][] = $meta_value;
+				$new_meta[ $result->post_id ][ $meta_value['download']['id'] ]   = array_unique( $new_meta[ $result->post_id ][ $meta_value['download']['id'] ], SORT_REGULAR );
 			}
 
 			// Delete all meta
