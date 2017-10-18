@@ -42,6 +42,10 @@ final class EDD_Upload_File_Upgrader {
 	private function check_if_upgrade_needed() {
 		global $wpdb;
 
+		if ( edd_has_upgrade_completed( 'upload_file_upgrade_213_meta' ) ) {
+			return;
+		}
+
 		$sql = "
 			SELECT meta_key
 			FROM {$wpdb->postmeta}
