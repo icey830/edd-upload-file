@@ -81,6 +81,15 @@ function edd_upload_file_link_files( $payment_id, $payment ) {
 
 			$download_data = explode( '-', $file_data[0] );
 
+			$uuids = wp_list_pluck( $meta[ $download_data[0] ], 'uuid' );
+			/**
+			 * File has already linked to the payment, so bail. Necessary because edd_payment_saved is triggered multiple
+			 * times throughout the checkout process (each time EDD_Payment::save is called).
+			 */
+			if ( in_array( $file_data[1], $uuids ) ) {
+				continue;
+			}
+
 			$meta_data = array(
 				'uuid'     => $file_data[1],
 				'filename' => $file_data[2]
@@ -116,6 +125,13 @@ add_action( 'edd_payment_saved', 'edd_upload_file_link_files', 10, 2 );
  */
 function edd_upload_file_ajax_update_files() {
 	if ( ! empty( $_POST['download_data'] ) || ! empty( $_POST['uuid'] ) || ! empty( $_POST['filename'] ) || ! empty( $_POST['payment_id'] ) ) {
+		$payment_id = absint( trim( $_POST['payment_id'] ) );
+
+		$meta = get_post_meta( $payment_id, '_edd_upload_file', true );
+
+		if ( ! $meta ) {
+			$meta = array();
+		}
 
 		$download_data = explode( '-', $_POST['download_data'] );
 		$meta_data     = array(
@@ -136,9 +152,11 @@ function edd_upload_file_ajax_update_files() {
 			);
 		}
 
-		$return = add_post_meta( $_POST['payment_id'], '_edd_upload_file', $meta_data );
+		$meta[ $download_data[0] ][] = $meta_data;
 
-		echo json_encode($return);
+		$return = update_post_meta( $payment_id, '_edd_upload_file', $meta );
+
+		echo json_encode( $return );
 	}
 	edd_die();
 }
