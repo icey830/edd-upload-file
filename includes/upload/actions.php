@@ -69,12 +69,19 @@ add_action( 'edd_payment_receipt_after_table', 'edd_upload_file_display_receipt_
  */
 function edd_upload_file_link_files( $payment_id, $payment ) {
 	if ( isset( $_POST['edd-upload-file'] ) ) {
+		$meta = get_post_meta( $payment_id, '_edd_upload_file', true );
+
+		if ( ! $meta ) {
+			$meta = array();
+		}
+
 		foreach ( $_POST['edd-upload-file'] as $file ) {
 			$file_data = substr( $file, 1, -1 );
 			$file_data = explode( '}{', $file_data );
 
 			$download_data = explode( '-', $file_data[0] );
-			$meta_data     = array(
+
+			$meta_data = array(
 				'uuid'     => $file_data[1],
 				'filename' => $file_data[2]
 			);
@@ -92,8 +99,10 @@ function edd_upload_file_link_files( $payment_id, $payment ) {
 				);
 			}
 
-			add_post_meta( $payment_id, '_edd_upload_file', $meta_data );
+			$meta[ $download_data[0] ][] = $meta_data;
 		}
+
+		update_post_meta( $payment_id, '_edd_upload_file', $meta );
 	}
 }
 add_action( 'edd_payment_saved', 'edd_upload_file_link_files', 10, 2 );
