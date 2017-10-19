@@ -172,6 +172,14 @@ add_action( 'wp_ajax_nopriv_edd_upload_file_process', 'edd_upload_file_ajax_upda
  */
 function edd_upload_file_ajax_delete_files() {
 	if ( ! empty( $_POST['download_data'] ) || ! empty( $_POST['payment_id'] ) ) {
+		$payment_id = absint( trim( $_POST['payment_id'] ) );
+
+		$meta = get_post_meta( $payment_id, '_edd_upload_file', true );
+
+		// No meta exists so bail
+		if ( ! $meta ) {
+			return true;
+		}
 
 		$file_data = substr( $_POST['download_data'], 1, -1 );
 		$file_data = explode( '}{', $file_data );
@@ -182,23 +190,31 @@ function edd_upload_file_ajax_delete_files() {
 			'filename' => $file_data[2]
 		);
 
-		if ( count( $download_data ) == 3 ) {
-			$meta_data['download'] = array(
-				'id'       => $download_data[0],
-				'price_id' => $download_data[1],
-				'item_id'  => $download_data[2]
-			);
-		} else {
-			$meta_data['download'] = array(
-				'id'      => $download_data[0],
-				'item_id' => $download_data[1]
-			);
+		if ( isset( $meta[ $download_data[0] ] ) ) {
+			for ( $i = 0; $i < count( $meta[ $download_data[0] ] ); $i++ ) {
+				$file = $meta[ $download_data[0] ][ $i ];
+
+				if ( isset( $file['uuid'] ) && $file_data[1] == $file['uuid'] ) {
+					array_splice( $meta[ $download_data[0] ], $i, 1 );
+					break;
+				}
+			}
 		}
 
-		$return = delete_post_meta( $_POST['payment_id'], '_edd_upload_file', $meta_data );
+		if ( empty( $meta[ $download_data[0] ] ) ) {
+			unset( $meta[ $download_data[0] ] );
+			array_values( $meta );
+		}
 
-		echo json_encode($return);
+		if ( empty( $meta ) ) {
+			$return = delete_post_meta( $_POST['payment_id'], '_edd_upload_file' );
+		} else {
+			$return = update_post_meta( $_POST['payment_id'], '_edd_upload_file', $meta );
+		}
+
+		echo json_encode( $return );
 	}
+
 	edd_die();
 }
 add_action( 'wp_ajax_edd_upload_file_delete', 'edd_upload_file_ajax_delete_files' );
