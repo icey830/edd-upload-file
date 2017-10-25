@@ -46,7 +46,7 @@ function edd_upload_file_load_scripts() {
 	wp_localize_script( 'edd-upload-file', 'edd_upload_file_vars', array(
 		'debug'           => edd_upload_file()->debugging,
 		'ajaxurl'         => edd_get_ajax_url(),
-		'endpoint'        => get_home_url() . '?edd-upload-file=',
+		'endpoint'        => home_url( 'index.php' ) . '?edd-upload-file=',
 		'placeholder_url' => EDD_UPLOAD_FILE_URL . 'assets/js/fine-uploader/placeholders'
 	) );
 }
