@@ -44,7 +44,7 @@ function edd_upload_file_load_scripts() {
 	wp_enqueue_style( 'edd-upload-file', EDD_UPLOAD_FILE_URL . 'assets/css/edd-upload-file.css', array(), EDD_UPLOAD_FILE_VER );
 	wp_enqueue_script( 'edd-upload-file', EDD_UPLOAD_FILE_URL . 'assets/js/edd-upload-file.js', array( 'edd-upload-file-fine' ), EDD_UPLOAD_FILE_VER );
 	wp_localize_script( 'edd-upload-file', 'edd_upload_file_vars', array(
-		'debug'           => edd_upload_file()->debugging,
+		'debug'           => edd_is_debug_mode(),
 		'ajaxurl'         => edd_get_ajax_url(),
 		'endpoint'        => home_url( 'index.php' ) . '?edd-upload-file=',
 		'placeholder_url' => EDD_UPLOAD_FILE_URL . 'assets/js/fine-uploader/placeholders'

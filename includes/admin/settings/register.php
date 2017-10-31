@@ -128,34 +128,3 @@ function edd_upload_file_register_settings( $settings ) {
 	return array_merge( $settings, $new_settings );
 }
 add_filter( 'edd_settings_extensions', 'edd_upload_file_register_settings', 1 );
-
-
-/**
- * Add debug option if the S214 Debug plugin is enabled
- *
- * @since       2.0.0
- * @param       array $settings The current settings
- * @return      array $settings The updated settings
- */
-function edd_upload_file_add_debug( $settings ) {
-	if ( class_exists( 'S214_Debug' ) ) {
-		$debug_setting[] = array(
-			'id'   => 'edd_upload_file_debugging',
-			'name' => '<strong>' . __( 'Debugging', 'edd-upload-file' ) . '</strong>',
-			'desc' => '',
-			'type' => 'header'
-		);
-
-		$debug_setting[] = array(
-			'id'   => 'edd_upload_file_enable_debug',
-			'name' => __( 'Enable Debug', 'edd-upload-file' ),
-			'desc' => sprintf( __( 'Log plugin errors. You can view errors %s and in the Javascript console', 'edd-upload-file' ), '<a href="' . admin_url( 'tools.php?page=s214-debug-logs' ) . '">' . __( 'here', 'edd-upload-file' ) . '</a>' ),
-			'type' => 'checkbox'
-		);
-
-		$settings = array_merge( $settings, $debug_setting );
-	}
-
-	return $settings;
-}
-add_filter( 'edd_upload_file_settings', 'edd_upload_file_add_debug' );

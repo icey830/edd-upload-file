@@ -41,13 +41,6 @@ if ( ! class_exists( 'EDD_Upload_File' ) ) {
 
 
 		/**
-		 * @var         bool $debugging Whether or not debugging is available
-		 * @since       2.0.0
-		 */
-		public $debugging = false;
-
-
-		/**
 		 * Get active instance
 		 *
 		 * @access      public
@@ -62,12 +55,6 @@ if ( ! class_exists( 'EDD_Upload_File' ) ) {
 				self::$instance->load_textdomain();
 				self::$instance->hooks();
 				self::$instance->uploader = new EDD_Upload_File_Uploader();
-
-				if ( class_exists( 'S214_Debug' ) ) {
-					if ( edd_get_option( 'edd_upload_file_enable_debug', false ) ) {
-						self::$instance->debugging = true;
-					}
-				}
 			}
 
 			return self::$instance;
