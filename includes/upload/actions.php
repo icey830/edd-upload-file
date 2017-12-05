@@ -40,13 +40,9 @@ add_action( 'edd_before_purchase_form', 'edd_upload_file_display_checkout_upload
  * @param		array $edd_receipt_args Arguemnts for this receipt
  * @return      void
  */
-function edd_upload_file_display_receipt_upload_field( $payment, $edd_receipt_args ) {
+function edd_upload_file_display_receipt_upload_field( $payment ) {
 	// Bail if the form is displayed on checkout
 	if ( edd_get_option( 'edd_upload_file_location', 'checkout' ) == 'checkout' ) {
-		return;
-	}
-
-	if ( isset( $_GET['payment_key'] ) || get_post_meta( $payment->ID, '_edd_upload_file', false ) ) {
 		return;
 	}
 
